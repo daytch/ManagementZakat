@@ -1,0 +1,14 @@
+﻿<div class="uk-modal" id="@ViewBag.ModalId">
+    <div class="uk-modal-dialog   uk-modal-dialog-large">
+        <button type="button" class="uk-modal-close uk-close"></button> 
+        <div class="uk-modal-header">
+            <h3 class="uk-modal-title modaltitle">@ViewBag.ModalTitle</h3> 
+
+        </div> 
+        <div class="uk-modal-content modalcontent">
+            @RenderBody()
+        </div> 
+        
+    </div> 
+    
+</div>

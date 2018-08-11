@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ae034dfd294c4f44bfe8a388eb999758" Name="Diagram1">
+        <EntityTypeShape EntityType="SMZModel.Customer" Width="1.5" PointX="0.75" PointY="10.375" />
+        <EntityTypeShape EntityType="SMZModel.Family" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="SMZModel.Nota" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="SMZModel.NotaDetail" Width="1.5" PointX="5.25" PointY="5.75" />
+        <EntityTypeShape EntityType="SMZModel.Product" Width="1.5" PointX="3" PointY="5.625" />
+        <EntityTypeShape EntityType="SMZModel.ProductHistory" Width="1.5" PointX="5.25" PointY="10" />
+        <EntityTypeShape EntityType="SMZModel.Vendor" Width="1.5" PointX="0.75" PointY="6" />
+        <AssociationConnector Association="SMZModel.FK_Family_Customer" />
+        <AssociationConnector Association="SMZModel.FK_Nota_Customer" />
+        <AssociationConnector Association="SMZModel.FK_NotaDetail_Nota" />
+        <AssociationConnector Association="SMZModel.FK_NotaDetail_Product" />
+        <AssociationConnector Association="SMZModel.FK_Product_Vendor" />
+        <AssociationConnector Association="SMZModel.FK_ProductHistory_ProductHistory" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

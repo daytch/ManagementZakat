@@ -1,0 +1,53 @@
+    .dt-uikit-header{
+        margin-bottom:0px !important;
+    }
+    .x20{
+        width:20px;
+    }
+    @media only screen and (max-width: 500px) {
+
+    #breadcrumbs li
+    {
+      display:none;
+          
+    }
+    #breadcrumbs li:last-child
+    {
+      display:block;
+      font-weight:bold;
+    }
+    .buttontop{
+        width:100%;
+    }
+    .buttontop button{
+        width:100%;
+    }
+        .buttontop A{
+        width:100%;
+    }
+    }
+    .pnxtable .dataTables_filter{
+       // display:none;
+    }
+    #dloader{ 
+    position:fixed; 
+    top:0; left:0; 
+    z-index:20000;
+    background:rgba(0,0,0,0.6); 
+
+    width:100%; 
+    height:100%; 
+    display:none; 
+}
+    .pwait{
+position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -64px;
+    margin-left: -64px;
+    width: 128px;
+    height: 128px;
+}
+    .uk-notify{
+        z-index:20000 !important;
+    }

@@ -1,0 +1,232 @@
+﻿<div class="row hidden-print" id="backbutton">
+    <div class="col-xs-3">
+        <a class="btn btn-block btn-default" onclick="back();">Back</a>
+    </div>
+    <div class="col-xs-6"></div>
+    <div class="col-xs-3">
+        <a class="btn btn-block btn-info" onclick="printAll()">Print</a>
+    </div>
+    <hr />
+</div>
+<fieldset>
+    <div class="row">
+        <div class="col-xs-3"><img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="img-responsive center-block" style="margin-left: auto !important;margin-right: auto !important;" height="100" width="200" /></div>
+        <div class="col-xs-6">
+            <h4 class="text-center">
+                YAYASAN MASJID AL ITTIHAD <br />
+                LEGENDA WISATA
+            </h4>
+            <address class="text-center">
+                Alamat : Jl. Raya Boulevard Legenda Wisata Wanaherang <br />
+                Kec. Gunung Putri, Kab. Bogor 16965 Telp/Fax : (021) 82498368
+            </address>
+        </div>
+        <div class="col-xs-3 hidden-print"></div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+            <p>PANITIA IDUL ADHA DAN QURBAN <span id="hijriyear"></span> M / <span id="masehiyear"></span> M </p>
+            <p>Tanggal : <span id="now"></span></p>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Vendor">Vendor</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <select name="vendor" class="form-control"><option class="form-control">--Select--</option></select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="noProduct">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="NoHewan">No Hewan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <strong style="font-size:larger" id="NoHewan"></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="nota">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="NoNota">No.Nota</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <strong id="NoNota"></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <p>Sudah diterima dari : </p>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Nama">Nama</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="Nama PengQurban" id="Nama">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Telp">Telp</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="No Telp" readonly="readonly" id="Telp">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Alamat">Alamat</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" readonly="readonly" id="Address" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Family">Pahala Qurban</label>
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <div class="row" id="1">
+                            <div class="col-xs-8">
+                                <span id="family"></span>
+                                @*<input type="text" class="form-control" placeholder="Family" id="Family1" data-id="">*@
+                            </div>
+                            @*<div class="col-xs-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button></div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Hewan">Hewan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <select class="form-control" name="product">
+                            <option value="value">-- Select --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="BiayaPemotongan">Biaya Pemotongan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="Biaya Pemotongan" readonly="readonly" id="BiayaPemotongan">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="BiayaPemeliharaan">Biaya Pemeliharaan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="Biaya Pemeliharaan" readonly="readonly" id="BiayaPemeliharaan">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Infaq">Infaq</label>
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <input type="text" class="form-control" placeholder="Infaq" id="Infaq">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Total">Total</label>
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <input type="text" class="form-control" placeholder="Total" id="Total" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="Req">Bagian Hewan Qurban yang diinginkan :</label>
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <textarea type="text" class="form-control" placeholder="Bagian Hewan Qurban yang diinginkan" id="Req"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button id="submit" onclick="Submit()" class="btn btn-info btn-block hidden-print">Submit</button>
+        </div>
+        <div class="col-xs-6"></div>
+    </div>
+</fieldset>
+
+
+@section Scripts
+{
+    <style>
+        .tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
+        .tt-hint {
+            /*width: 396px;
+        height: 30px;
+        padding: 8px 12px;
+        font-size: 24px;*/
+            line-height: 30px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .tt-query { /* UPDATE: newer versions use tt-input instead of tt-query */
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+            color: #999;
+        }
+
+        .tt-menu { /* UPDATE: newer versions use tt-menu instead of tt-dropdown-menu */
+            width: 422px;
+            margin-top: 12px;
+            padding: 8px 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+
+        .tt-suggestion {
+            padding: 3px 20px;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+            .tt-suggestion.tt-is-under-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+                color: #fff;
+                background-color: #0097cf;
+            }
+    </style>
+    <script type="text/javascript" src="~/Scripts/pages/transaksi.js?v=@ViewBag.NOW"></script>
+}
