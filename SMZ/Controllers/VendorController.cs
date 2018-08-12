@@ -62,7 +62,7 @@ namespace SMZ.Controllers
                     response.Name = result.Name;
                     response.Address = result.Address;
                     response.Telp = result.Telp.ToString();
-                    response.ListProduct = listProduct.Select(x => new Prod() { ID = x.ID, Name = x.Name }).ToList();
+                    response.ListProduct = listProduct.Select(x => new Prod() { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
                     response.IsSuccess = true;
                 }
                 else

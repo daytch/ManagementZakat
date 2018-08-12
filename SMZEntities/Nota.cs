@@ -30,6 +30,7 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool RowStatus { get; set; }
+        public Nullable<int> CareDays { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual ICollection<NotaDetail> NotaDetails { get; set; }

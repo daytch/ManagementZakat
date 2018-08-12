@@ -42,6 +42,7 @@
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="TransactionDate" Type="datetime" Nullable="false" />
           <Property Name="Note" Type="varchar(max)" />
+          <Property Name="CareDays" Type="int" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
@@ -300,6 +301,7 @@
           <Property Name="RowStatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="SMZModel.FK_Nota_Customer" FromRole="Nota" ToRole="Customer" />
           <NavigationProperty Name="NotaDetails" Relationship="SMZModel.FK_NotaDetail_Nota" FromRole="Nota" ToRole="NotaDetail" />
+          <Property Name="CareDays" Type="Int32" />
         </EntityType>
         <EntityType Name="NotaDetail">
           <Key>
@@ -481,6 +483,7 @@
           <EntitySetMapping Name="Notas">
             <EntityTypeMapping TypeName="SMZModel.Nota">
               <MappingFragment StoreEntitySet="Nota">
+                <ScalarProperty Name="CareDays" ColumnName="CareDays" />
                 <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />

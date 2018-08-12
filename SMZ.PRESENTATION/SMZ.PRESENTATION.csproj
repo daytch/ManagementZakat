@@ -180,7 +180,6 @@
     </Content>
     <None Include="Properties\PublishProfiles\smzui - Web Deploy.pubxml" />
     <None Include="Scripts\jquery\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\default\common.js" />
     <Content Include="Scripts\dataTable\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\default\constant.js" />

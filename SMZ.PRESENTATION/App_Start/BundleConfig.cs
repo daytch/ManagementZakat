@@ -58,7 +58,7 @@ namespace SMZ.PRESENTATION
                     "~/Scripts/typeahead/typeahead.bundle.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/common").Include(
-                    "~/Scripts/common.js"));
+                    "~/Scripts/default/common.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                     "~/Scripts/jquery/jquery-ui.min.js"));

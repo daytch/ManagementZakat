@@ -52,9 +52,10 @@ namespace SMZ.Controllers
                     List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true && x.VendorID == 1).ToList();
                     List<Product> ListProductPanitia = ctx.Products.Where(x => x.Rowstatus == true).ToList();
                     int IDPotong = ListProduct.Where(x => x.Name == "Biaya Pemotongan").First().ID;
-                    int IDPelihara = ListProduct.Where(x => x.Name == "Biaya Pemeliharaan").First().ID;
+                    int IDPeliharaKambing = ListProduct.Where(x => x.Name.Contains("kambing") && x.VendorID == 1).First().ID;
+                    int IDPeliharaSapi = ListProduct.Where(x => x.Name.Contains("sapi") && x.VendorID == 1).First().ID;
                     int IDInfaq = ListProduct.Where(x => x.Name == "Infaq").First().ID;
-                    List<int> ListPanitiaID = new List<int>() { IDPotong, IDPelihara, IDInfaq };
+                    List<int> ListPanitiaID = new List<int>() { IDPotong, IDPeliharaKambing, IDPeliharaSapi, IDInfaq };
                     Nota nota = ctx.Notas.Where(x => x.RowStatus == true && x.ID == request.NotaID).First();
                     List<NotaDetail> ListDetail = ctx.NotaDetails.Where(x => x.RowStatus == true && x.NotaID == nota.ID).ToList();
                     Customer customer = ctx.Customers.Where(x => x.Rowstatus == true && x.ID == nota.CustomerID).First();
@@ -66,14 +67,17 @@ namespace SMZ.Controllers
                     custom.Telp = customer.Telp;
                     custom.ListFamily = listFamily.Select(x => new Famz() { ID = x.ID, FamilyName = x.Name }).ToList();
 
-                    nd = ListDetail.Where(x => x.ProductID == IDPelihara).FirstOrDefault();
-                    response.BPelihara = (nd == null) ? 0 : nd.Price;
+                    nd = ListDetail.Where(x => x.ProductID == IDPeliharaKambing).FirstOrDefault();
+                    response.BiayaTitipKambing = (nd == null) ? 0 : nd.Price;
+
+                    nd = ListDetail.Where(x => x.ProductID == IDPeliharaSapi).FirstOrDefault();
+                    response.BiayaTitipSapi = (nd == null) ? 0 : nd.Price;
 
                     nd = ListDetail.Where(x => x.ProductID == IDPotong).FirstOrDefault();
                     response.BPemotongan = (nd == null) ? 0 : nd.Price;
 
                     nd = ListDetail.Where(x => x.ProductID == IDInfaq).FirstOrDefault();
-                    response.BPelihara = (nd == null) ? 0 : nd.Price;
+                    response.Infaq = (nd == null) ? 0 : nd.Price;
 
                     response.NoHewan = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().ProductNo;
                     productVendorID = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().ProductID;
@@ -151,7 +155,8 @@ namespace SMZ.Controllers
                         lp.Add(p);
                     }
                     response.ListProduct = lp;
-                    response.BPelihara = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemeliharaan").First().Price;
+                    response.BiayaTitipKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("kambing") && x.VendorID==1).First().Price;
+                    response.BiayaTitipSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("sapi") && x.VendorID == 1).First().Price;
                     response.BPemotongan = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan").First().Price;
                     response.IsSuccess = true;
                     response.Message = "Sukses load data.";
@@ -185,7 +190,8 @@ namespace SMZ.Controllers
                                       Name = pro.Name
                                   }).ToList();
             result.PotongID = Listpro.Where(x => x.Name == "Biaya Pemotongan").First().ID;
-            result.PeliharaID = Listpro.Where(x => x.Name == "Biaya Pemeliharaan").First().ID;
+            result.TitipKambingID = Listpro.Where(x => x.Name.ToLower().Contains("kambing")).FirstOrDefault().ID;
+            result.TitipSapiID = Listpro.Where(x => x.Name.ToLower().Contains("sapi")).First().ID;
             result.InfaqID = Listpro.Where(x => x.Name == "Infaq").First().ID;
             return result;
         }
@@ -238,6 +244,7 @@ namespace SMZ.Controllers
                     nota.FamilyID = famzID;
                     nota.TransactionDate = DateTime.Now;
                     nota.Note = request.Transaksi.Note;
+                    nota.CareDays = request.Transaksi.CareDays;
                     nota.NotaCode = GenerateCode(lastNotaID);
                     nota.CreatedBy = "admin";
                     nota.CreatedOn = DateTime.Now;
@@ -251,11 +258,18 @@ namespace SMZ.Controllers
                     if (request.Transaksi.BiayaPemeliharaan > 0)
                     {
                         NotaDetail nd = new NotaDetail();
+                        if (product.Name.ToLower().Contains("sapi"))
+                        {
+                            nd.ProductID = PanitiaProd.TitipSapiID;
+                        }
+                        else
+                        {
+                            nd.ProductID = PanitiaProd.TitipKambingID;
+                        }
                         nd.NotaID = nota.ID;
                         nd.Nota = nota;
                         nd.Price = request.Transaksi.BiayaPemeliharaan;
                         nd.Total = 1;
-                        nd.ProductID = PanitiaProd.PeliharaID;
                         nd.CreatedBy = "admin";
                         nd.CreatedOn = DateTime.Now;
                         nd.RowStatus = true;

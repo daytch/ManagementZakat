@@ -10,6 +10,7 @@
     $('#now').html(now);
     $('#noProduct').hide();
     $('#nota').hide();
+    $('#backbutton').hide();
 
     InitData();
 
@@ -88,9 +89,13 @@ var Data = {
         Price:'',
         BiayaPemotongan: '',
         BiayaPemeliharaan: '',
-        Note: ''
+        Note: '',
+        CareDays:''
     }
 };
+
+var BiayaTitipSapi = 0;
+var BiayaTitipKambing = 0;
 
 var source = API + "Transaksi?load=true";
 
@@ -106,6 +111,7 @@ function InitData() {
             success: function (response) {
                 if (response.IsSuccess) {
 
+                    $('#backbutton').show();
                     var data = [];
                     var opt = '';
                     var vendorList = response.ListVendor;
@@ -174,7 +180,6 @@ function InitData() {
             success: function (response) {
                 if (response.IsSuccess) {
 
-                    $('#backbutton').hide();
                     $('#noProduct').attr("class", "visible-print");
                     $('#nota').attr("class", "visible-print");
 
@@ -205,8 +210,28 @@ $('#Infaq').change(function () {
     PopulateTotal(product.val());
 });
 
+$('#qtydays').change(function () {
+    debugger;
+    var days = $(this).val();
+    var bPelihara = convertToAngka($('#BiayaPemeliharaan').val());
+    var total = $('#Total').val();
+    total = convertToAngka(total);
+    var all = (Number(days) * Number(bPelihara)) + total;
+    $('#Total').val(convertToRupiah(all));
+    Data.Transaksi.CareDays = days;
+});
+
 $('select[name="product"]').change(function () {
+    
     Data.Transaksi.ProductID = $(this).val();
+    var jenisHewan = this.options[this.selectedIndex].innerHTML;
+    var biayaTitip = 0;
+    if (jenisHewan.toLocaleLowerCase().indexOf('sapi') == -1) {
+        biayaTitip = convertToRupiah(BiayaTitipKambing);
+    } else {
+        biayaTitip = convertToRupiah(BiayaTitipSapi);
+    }
+    $('#BiayaPemeliharaan').val(biayaTitip);
     $('#Total').val(0);
     var product = $(this);
     var price = this.options[this.selectedIndex].getAttribute('data-price');
@@ -232,10 +257,11 @@ $('select[name="vendor"]').change(function () {
                     for (var i = 0; i < listPro.length; i++) {
                         opt = opt + '<option class="form-control" value="' + listPro[i].ID + '" data-price="' + listPro[i].Price + '">' + listPro[i].Name + '</option>';
                     }
-                    var bPelihara = convertToRupiah(response.BPelihara);
+
                     var bPotong = convertToRupiah(response.BPemotongan);
                     $('#BiayaPemotongan').val(bPotong);
-                    $('#BiayaPemeliharaan').val(bPelihara);
+                    BiayaTitipSapi = response.BiayaTitipSapi;
+                    BiayaTitipKambing = response.BiayaTitipKambing;
                     $('select[name="product"]').append(opt);
                 } else {
                     swal(
@@ -250,13 +276,12 @@ $('select[name="vendor"]').change(function () {
 })
 
 function PopulateTotal(amount) {
-    debugger;
+    
     var infaq = ($('#Infaq').val()) ? 0 : $('#Infaq').val();
     var total = $('#Total').val();
     var bPotong = $('#BiayaPemotongan').val();
-    var bPelihara = $('#BiayaPemeliharaan').val();
     if (total < 1) {
-        total = convertToAngka(bPotong) + convertToAngka(bPelihara) + Number(amount) + Number(infaq);
+        total = convertToAngka(bPotong) + Number(amount) + Number(infaq);
     } else {
         total = convertToAngka(total);
         total = Number(total) + Number(amount);
@@ -293,10 +318,12 @@ function ValidateOnSubmit() {
 }
 
 function Submit() {
-    debugger;
+    
+    var qtyDays = $('#qtydays').val();
     var bPotong = $('#BiayaPemotongan').val();
     var bPelihara = $('#BiayaPemeliharaan').val();
-    Data.Transaksi.BiayaPemeliharaan = convertToAngka(bPelihara);
+    var totalBiayaTitip = ((qtyDays = 0) || (qtyDays = '')) ? 0 : convertToAngka(bPelihara) * Number(qtyDays);
+    Data.Transaksi.BiayaPemeliharaan = totalBiayaTitip;
     Data.Transaksi.BiayaPemotongan = convertToAngka(bPotong);
     Data.Transaksi.Note = $('#Req').val();
     if (ValidateOnSubmit()) {

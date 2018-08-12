@@ -28,12 +28,14 @@ namespace SMZ.Models.Request
         public int BiayaPemotongan { get; set; }
         public int BiayaPemeliharaan { get; set; }
         public string Note { get; set; }
+        public int? CareDays { get; set; }
     }
 
     public class Panitia
     {
         public int PotongID { get; set; }
-        public int PeliharaID { get; set; }
+        public int TitipKambingID { get; set; }
+        public int TitipSapiID { get; set; }
         public int InfaqID { get; set; }
     }
 
