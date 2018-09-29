@@ -11,7 +11,7 @@ namespace SMZ.Areas.HelpPage.Controllers
     /// </summary>
     public class HelpController : Controller
     {
-        private const string ErrorViewName = "Error";
+        public const string ErrorViewName = "Error";
 
         public HelpController()
             : this(GlobalConfiguration.Configuration)
@@ -23,7 +23,7 @@ namespace SMZ.Areas.HelpPage.Controllers
             Configuration = config;
         }
 
-        public HttpConfiguration Configuration { get; private set; }
+        public HttpConfiguration Configuration { get; set; }
 
         public ActionResult Index()
         {

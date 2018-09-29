@@ -9,12 +9,13 @@
         <EntityTypeShape EntityType="SMZModel.Family" Width="1.5" PointX="3" PointY="10.625" />
         <EntityTypeShape EntityType="SMZModel.Nota" Width="1.5" PointX="3" PointY="0.75" />
         <EntityTypeShape EntityType="SMZModel.NotaDetail" Width="1.5" PointX="5.25" PointY="5.75" />
-        <EntityTypeShape EntityType="SMZModel.Product" Width="1.5" PointX="3" PointY="5.625" />
         <EntityTypeShape EntityType="SMZModel.ProductHistory" Width="1.5" PointX="5.25" PointY="10" />
-        <EntityTypeShape EntityType="SMZModel.Vendor" Width="1.5" PointX="0.75" PointY="6" />
         <AssociationConnector Association="SMZModel.FK_Family_Customer" />
         <AssociationConnector Association="SMZModel.FK_Nota_Customer" />
         <AssociationConnector Association="SMZModel.FK_NotaDetail_Nota" />
+        <EntityTypeShape EntityType="SMZModel.User" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SMZModel.Product" Width="1.5" PointX="3" PointY="5.75" />
+        <EntityTypeShape EntityType="SMZModel.Vendor" Width="1.5" PointX="0.75" PointY="6.125" />
         <AssociationConnector Association="SMZModel.FK_NotaDetail_Product" />
         <AssociationConnector Association="SMZModel.FK_Product_Vendor" />
         <AssociationConnector Association="SMZModel.FK_ProductHistory_ProductHistory" />

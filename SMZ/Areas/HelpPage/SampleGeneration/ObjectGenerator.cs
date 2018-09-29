@@ -14,7 +14,7 @@ namespace SMZ.Areas.HelpPage
     public class ObjectGenerator
     {
         internal const int DefaultCollectionSize = 2;
-        private readonly SimpleTypeObjectGenerator SimpleObjectGenerator = new SimpleTypeObjectGenerator();
+        public readonly SimpleTypeObjectGenerator SimpleObjectGenerator = new SimpleTypeObjectGenerator();
 
         /// <summary>
         /// Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
@@ -36,7 +36,7 @@ namespace SMZ.Areas.HelpPage
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
-        private object GenerateObject(Type type, Dictionary<Type, object> createdObjectReferences)
+        public object GenerateObject(Type type, Dictionary<Type, object> createdObjectReferences)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace SMZ.Areas.HelpPage
             return null;
         }
 
-        private static object GenerateGenericType(Type type, int collectionSize, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateGenericType(Type type, int collectionSize, Dictionary<Type, object> createdObjectReferences)
         {
             Type genericTypeDefinition = type.GetGenericTypeDefinition();
             if (genericTypeDefinition == typeof(Nullable<>))
@@ -165,7 +165,7 @@ namespace SMZ.Areas.HelpPage
             return null;
         }
 
-        private static object GenerateTuple(Type type, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateTuple(Type type, Dictionary<Type, object> createdObjectReferences)
         {
             Type[] genericArgs = type.GetGenericArguments();
             object[] parameterValues = new object[genericArgs.Length];
@@ -184,7 +184,7 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static bool IsTuple(Type genericTypeDefinition)
+        public static bool IsTuple(Type genericTypeDefinition)
         {
             return genericTypeDefinition == typeof(Tuple<>) ||
                 genericTypeDefinition == typeof(Tuple<,>) ||
@@ -196,7 +196,7 @@ namespace SMZ.Areas.HelpPage
                 genericTypeDefinition == typeof(Tuple<,,,,,,,>);
         }
 
-        private static object GenerateKeyValuePair(Type keyValuePairType, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateKeyValuePair(Type keyValuePairType, Dictionary<Type, object> createdObjectReferences)
         {
             Type[] genericArgs = keyValuePairType.GetGenericArguments();
             Type typeK = genericArgs[0];
@@ -213,7 +213,7 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static object GenerateArray(Type arrayType, int size, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateArray(Type arrayType, int size, Dictionary<Type, object> createdObjectReferences)
         {
             Type type = arrayType.GetElementType();
             Array result = Array.CreateInstance(type, size);
@@ -234,7 +234,7 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static object GenerateDictionary(Type dictionaryType, int size, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateDictionary(Type dictionaryType, int size, Dictionary<Type, object> createdObjectReferences)
         {
             Type typeK = typeof(object);
             Type typeV = typeof(object);
@@ -269,7 +269,7 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static object GenerateEnum(Type enumType)
+        public static object GenerateEnum(Type enumType)
         {
             Array possibleValues = Enum.GetValues(enumType);
             if (possibleValues.Length > 0)
@@ -279,7 +279,7 @@ namespace SMZ.Areas.HelpPage
             return null;
         }
 
-        private static object GenerateQueryable(Type queryableType, int size, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateQueryable(Type queryableType, int size, Dictionary<Type, object> createdObjectReferences)
         {
             bool isGeneric = queryableType.IsGenericType;
             object list;
@@ -306,7 +306,7 @@ namespace SMZ.Areas.HelpPage
             return Queryable.AsQueryable((IEnumerable)list);
         }
 
-        private static object GenerateCollection(Type collectionType, int size, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateCollection(Type collectionType, int size, Dictionary<Type, object> createdObjectReferences)
         {
             Type type = collectionType.IsGenericType ?
                 collectionType.GetGenericArguments()[0] :
@@ -330,14 +330,14 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static object GenerateNullable(Type nullableType, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateNullable(Type nullableType, Dictionary<Type, object> createdObjectReferences)
         {
             Type type = nullableType.GetGenericArguments()[0];
             ObjectGenerator objectGenerator = new ObjectGenerator();
             return objectGenerator.GenerateObject(type, createdObjectReferences);
         }
 
-        private static object GenerateComplexObject(Type type, Dictionary<Type, object> createdObjectReferences)
+        public static object GenerateComplexObject(Type type, Dictionary<Type, object> createdObjectReferences)
         {
             object result = null;
 
@@ -368,7 +368,7 @@ namespace SMZ.Areas.HelpPage
             return result;
         }
 
-        private static void SetPublicProperties(Type type, object obj, Dictionary<Type, object> createdObjectReferences)
+        public static void SetPublicProperties(Type type, object obj, Dictionary<Type, object> createdObjectReferences)
         {
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             ObjectGenerator objectGenerator = new ObjectGenerator();
@@ -382,7 +382,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static void SetPublicFields(Type type, object obj, Dictionary<Type, object> createdObjectReferences)
+        public static void SetPublicFields(Type type, object obj, Dictionary<Type, object> createdObjectReferences)
         {
             FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
             ObjectGenerator objectGenerator = new ObjectGenerator();
@@ -393,13 +393,13 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private class SimpleTypeObjectGenerator
+        public class SimpleTypeObjectGenerator
         {
-            private long _index = 0;
-            private static readonly Dictionary<Type, Func<long, object>> DefaultGenerators = InitializeGenerators();
+            public long _index = 0;
+            public static readonly Dictionary<Type, Func<long, object>> DefaultGenerators = InitializeGenerators();
 
             [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "These are simple type factories and cannot be split up.")]
-            private static Dictionary<Type, Func<long, object>> InitializeGenerators()
+            public static Dictionary<Type, Func<long, object>> InitializeGenerators()
             {
                 return new Dictionary<Type, Func<long, object>>
                 {

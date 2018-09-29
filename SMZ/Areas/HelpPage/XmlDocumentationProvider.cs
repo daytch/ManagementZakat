@@ -14,12 +14,12 @@ namespace SMZ.Areas.HelpPage
     /// </summary>
     public class XmlDocumentationProvider : IDocumentationProvider, IModelDocumentationProvider
     {
-        private XPathNavigator _documentNavigator;
-        private const string TypeExpression = "/doc/members/member[@name='T:{0}']";
-        private const string MethodExpression = "/doc/members/member[@name='M:{0}']";
-        private const string PropertyExpression = "/doc/members/member[@name='P:{0}']";
-        private const string FieldExpression = "/doc/members/member[@name='F:{0}']";
-        private const string ParameterExpression = "param[@name='{0}']";
+        public XPathNavigator _documentNavigator;
+        public const string TypeExpression = "/doc/members/member[@name='T:{0}']";
+        public const string MethodExpression = "/doc/members/member[@name='M:{0}']";
+        public const string PropertyExpression = "/doc/members/member[@name='P:{0}']";
+        public const string FieldExpression = "/doc/members/member[@name='F:{0}']";
+        public const string ParameterExpression = "param[@name='{0}']";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlDocumentationProvider"/> class.
@@ -88,7 +88,7 @@ namespace SMZ.Areas.HelpPage
             return GetTagValue(typeNode, "summary");
         }
 
-        private XPathNavigator GetMethodNode(HttpActionDescriptor actionDescriptor)
+        public XPathNavigator GetMethodNode(HttpActionDescriptor actionDescriptor)
         {
             ReflectedHttpActionDescriptor reflectedActionDescriptor = actionDescriptor as ReflectedHttpActionDescriptor;
             if (reflectedActionDescriptor != null)
@@ -100,7 +100,7 @@ namespace SMZ.Areas.HelpPage
             return null;
         }
 
-        private static string GetMemberName(MethodInfo method)
+        public static string GetMemberName(MethodInfo method)
         {
             string name = String.Format(CultureInfo.InvariantCulture, "{0}.{1}", GetTypeName(method.DeclaringType), method.Name);
             ParameterInfo[] parameters = method.GetParameters();
@@ -113,7 +113,7 @@ namespace SMZ.Areas.HelpPage
             return name;
         }
 
-        private static string GetTagValue(XPathNavigator parentNode, string tagName)
+        public static string GetTagValue(XPathNavigator parentNode, string tagName)
         {
             if (parentNode != null)
             {
@@ -127,14 +127,14 @@ namespace SMZ.Areas.HelpPage
             return null;
         }
 
-        private XPathNavigator GetTypeNode(Type type)
+        public XPathNavigator GetTypeNode(Type type)
         {
             string controllerTypeName = GetTypeName(type);
             string selectExpression = String.Format(CultureInfo.InvariantCulture, TypeExpression, controllerTypeName);
             return _documentNavigator.SelectSingleNode(selectExpression);
         }
 
-        private static string GetTypeName(Type type)
+        public static string GetTypeName(Type type)
         {
             string name = type.FullName;
             if (type.IsGenericType)

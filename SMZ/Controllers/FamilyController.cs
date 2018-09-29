@@ -1,4 +1,5 @@
-﻿using SMZ.Models.Request;
+﻿using SMZ.Core;
+using SMZ.Models.Request;
 using SMZ.Models.Response;
 using SMZEntities;
 using System;
@@ -12,28 +13,39 @@ namespace SMZ.Controllers
 {
     public class FamilyController : ApiController
     {
-        public FamilyResponse GetAll(string GetAll)
+        public FamilyResponse GetAll(string GetAll,[FromUri] FamilyRequest request)
         {
             FamilyResponse response = new FamilyResponse();
             try
             {
-                using (var ctx = new SMZEntities.SMZEntities())
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
                 {
-                    List<CustomerFamily> listFamzCust = new List<CustomerFamily>();
-                    List<Customer> ListCust = ctx.Customers.Where(x => x.Rowstatus == true).ToList();
-                    foreach (Customer item in ListCust)
+                    response.Token = Security.GenerateToken(username);
+                    using (var ctx = new SMZEntities.SMZEntities())
                     {
-                        CustomerFamily cf = new CustomerFamily();
-                        List<Family> fam = ctx.Families.Where(x => x.Rowstatus == true && x.CustomerID == item.ID).ToList();
-                        cf.Name = item.Name;
-                        cf.ListFamily = fam.Select(x => new Famz() { ID = x.ID, FamilyName = x.Name }).ToList();
-                        listFamzCust.Add(cf);
+                        List<CustomerFamily> listFamzCust = new List<CustomerFamily>();
+                        List<Customer> ListCust = ctx.Customers.Where(x => x.Rowstatus == true).ToList();
+                        foreach (Customer item in ListCust)
+                        {
+                            CustomerFamily cf = new CustomerFamily();
+                            List<Family> fam = ctx.Families.Where(x => x.Rowstatus == true && x.CustomerID == item.ID).ToList();
+                            cf.Name = item.Name;
+                            cf.ListFamily = fam.Select(x => new Famz() { ID = x.ID, FamilyName = x.Name }).ToList();
+                            listFamzCust.Add(cf);
+                        }
+                        response.data = listFamzCust;
+                        response.IsSuccess = true;
                     }
-                    response.data = listFamzCust;
-                    response.IsSuccess = true;
+                    return response;
                 }
-                return response;
-
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Token = "";
+                    response.Message = "Sorry your session is expired, please re-login to access this page";
+                    return response;
+                }
             }
             catch (Exception ex)
             {
@@ -44,26 +56,38 @@ namespace SMZ.Controllers
         }
 
         [HttpPost]
-        public FamilyResponse Get(string GetCust, [FromBody] FamilyRequest customer)
+        public FamilyResponse Get(string GetCust, [FromBody] FamilyRequest request)
         {
             FamilyResponse response = new FamilyResponse();
-            using (var ctx = new SMZEntities.SMZEntities())
+            string username = Security.ValidateToken(request.Token);
+            if (username != null)
             {
-                Customer result = ctx.Customers.Where(x => x.Rowstatus == true && x.ID == customer.ID).FirstOrDefault();
-                if (result != null)
+                response.Token = Security.GenerateToken(username);
+                using (var ctx = new SMZEntities.SMZEntities())
                 {
-                    response.ID = result.ID;
-                    response.Name = result.Name;
-                    response.IsSuccess = true;
+                    Customer result = ctx.Customers.Where(x => x.Rowstatus == true && x.ID == request.ID).FirstOrDefault();
+                    if (result != null)
+                    {
+                        response.ID = result.ID;
+                        response.Name = result.Name;
+                        response.IsSuccess = true;
+                    }
+                    else
+                    {
+                        response.Message = "Customer does not exist in our database.";
+                        response.IsSuccess = false;
+                        return response;
+                    }
                 }
-                else
-                {
-                    response.Message = "Customer does not exist in our database.";
-                    response.IsSuccess = false;
-                    return response;
-                }
+                return response;
             }
-            return response;
+            else
+            {
+                response.IsSuccess = false;
+                response.Token = "";
+                response.Message = "Sorry your session is expired, please re-login to access this page";
+                return response;
+            }
         }
 
         [HttpPost]
@@ -72,37 +96,49 @@ namespace SMZ.Controllers
             FamilyResponse response = new FamilyResponse();
             try
             {
-                using (var ctx = new SMZEntities.SMZEntities())
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
                 {
-                    if (request.Action.ToLower() == "add")
+                    response.Token = Security.GenerateToken(username);
+                    using (var ctx = new SMZEntities.SMZEntities())
                     {
-                        Customer cust = new Customer();
-                        cust.Name = request.Name;
-                        cust.Address = request.Address;
-                        cust.Telp = request.Telp;
-                        cust.Rowstatus = true;
-                        cust.CreatedBy = "admin";
-                        cust.CreatedOn = DateTime.Now;
-                        ctx.Customers.Add(cust);
+                        if (request.Action.ToLower() == "add")
+                        {
+                            Customer cust = new Customer();
+                            cust.Name = request.Name;
+                            cust.Address = request.Address;
+                            cust.Telp = request.Telp;
+                            cust.Rowstatus = true;
+                            cust.CreatedBy = "admin";
+                            cust.CreatedOn = DateTime.Now;
+                            ctx.Customers.Add(cust);
 
-                        response.Message = "Your data has been save.";
-                        response.IsSuccess = true;
-                    }
-                    else
-                    {
-                        Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
-                        cust.Name = request.Name;
-                        cust.Address = request.Address;
-                        cust.Telp = request.Telp;
-                        cust.ModifiedBy = "admin";
-                        cust.ModifiedOn = DateTime.Now;
+                            response.Message = "Your data has been save.";
+                            response.IsSuccess = true;
+                        }
+                        else
+                        {
+                            Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
+                            cust.Name = request.Name;
+                            cust.Address = request.Address;
+                            cust.Telp = request.Telp;
+                            cust.ModifiedBy = "admin";
+                            cust.ModifiedOn = DateTime.Now;
 
-                        response.Message = "Your data has been save.";
-                        response.IsSuccess = true;
+                            response.Message = "Your data has been save.";
+                            response.IsSuccess = true;
+                        }
+                        ctx.SaveChanges();
                     }
-                    ctx.SaveChanges();
+                    return response;
                 }
-                return response;
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Token = "";
+                    response.Message = "Sorry your session is expired, please re-login to access this page";
+                    return response;
+                }
             }
             catch (Exception ex)
             {
@@ -118,19 +154,31 @@ namespace SMZ.Controllers
             FamilyResponse response = new FamilyResponse();
             try
             {
-                using (var ctx = new SMZEntities.SMZEntities())
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
                 {
-                    Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
-                    cust.Rowstatus = false;
-                    cust.ModifiedBy = "admin";
-                    cust.ModifiedOn = DateTime.Now;
+                    response.Token = Security.GenerateToken(username);
+                    using (var ctx = new SMZEntities.SMZEntities())
+                    {
+                        Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
+                        cust.Rowstatus = false;
+                        cust.ModifiedBy = "admin";
+                        cust.ModifiedOn = DateTime.Now;
 
-                    response.Message = "Your data has been deleted.";
-                    response.IsSuccess = true;
+                        response.Message = "Your data has been deleted.";
+                        response.IsSuccess = true;
 
-                    ctx.SaveChanges();
+                        ctx.SaveChanges();
+                    }
+                    return response;
                 }
-                return response;
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Token = "";
+                    response.Message = "Sorry your session is expired, please re-login to access this page";
+                    return response;
+                }
             }
             catch (Exception ex)
             {

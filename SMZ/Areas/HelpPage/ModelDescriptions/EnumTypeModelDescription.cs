@@ -10,6 +10,6 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             Values = new Collection<EnumValueDescription>();
         }
 
-        public Collection<EnumValueDescription> Values { get; private set; }
+        public Collection<EnumValueDescription> Values { get; set; }
     }
 }

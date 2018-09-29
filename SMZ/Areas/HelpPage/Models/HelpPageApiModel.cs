@@ -30,7 +30,7 @@ namespace SMZ.Areas.HelpPage.Models
         /// <summary>
         /// Gets or sets the <see cref="ParameterDescription"/> collection that describes the URI parameters for the API.
         /// </summary>
-        public Collection<ParameterDescription> UriParameters { get; private set; }
+        public Collection<ParameterDescription> UriParameters { get; set; }
 
         /// <summary>
         /// Gets or sets the documentation for the request.
@@ -72,19 +72,19 @@ namespace SMZ.Areas.HelpPage.Models
         /// <summary>
         /// Gets the sample requests associated with the API.
         /// </summary>
-        public IDictionary<MediaTypeHeaderValue, object> SampleRequests { get; private set; }
+        public IDictionary<MediaTypeHeaderValue, object> SampleRequests { get; set; }
 
         /// <summary>
         /// Gets the sample responses associated with the API.
         /// </summary>
-        public IDictionary<MediaTypeHeaderValue, object> SampleResponses { get; private set; }
+        public IDictionary<MediaTypeHeaderValue, object> SampleResponses { get; set; }
 
         /// <summary>
         /// Gets the error messages associated with this model.
         /// </summary>
-        public Collection<string> ErrorMessages { get; private set; }
+        public Collection<string> ErrorMessages { get; set; }
 
-        private static IList<ParameterDescription> GetParameterDescriptions(ModelDescription modelDescription)
+        public static IList<ParameterDescription> GetParameterDescriptions(ModelDescription modelDescription)
         {
             ComplexTypeModelDescription complexTypeModelDescription = modelDescription as ComplexTypeModelDescription;
             if (complexTypeModelDescription != null)

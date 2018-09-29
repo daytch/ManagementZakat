@@ -1,7 +1,10 @@
 ﻿$(function () {
     var title = "";
     $('#ReportTable').DataTable({
-        "ajax": API + "Report?load=true",
+        "ajax": {
+            "url": API + "Report?load=true",
+            "data": { Token: Token.get() }
+        },
         "columns": [
             { "data": "TransactionDate", "width": "10%" },
             { "data": "NotaCode", "width": "15%" },

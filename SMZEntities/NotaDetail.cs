@@ -26,7 +26,7 @@ namespace SMZEntities
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool RowStatus { get; set; }
     
-        public virtual Nota Nota { get; set; }
-        public virtual Product Product { get; set; }
+        public Nota Nota { get; set; }
+        public Product Product { get; set; }
     }
 }

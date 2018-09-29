@@ -23,6 +23,6 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public bool Rowstatus { get; set; }
     
-        public virtual Customer Customer { get; set; }
+        public Customer Customer { get; set; }
     }
 }

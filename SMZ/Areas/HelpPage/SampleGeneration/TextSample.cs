@@ -16,7 +16,7 @@ namespace SMZ.Areas.HelpPage
             Text = text;
         }
 
-        public string Text { get; private set; }
+        public string Text { get; set; }
 
         public override bool Equals(object obj)
         {

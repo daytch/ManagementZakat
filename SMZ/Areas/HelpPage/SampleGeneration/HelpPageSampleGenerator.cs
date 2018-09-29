@@ -59,7 +59,7 @@ namespace SMZ.Areas.HelpPage
         /// <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures",
             Justification = "This is an appropriate nesting of generic types")]
-        public IList<Func<HelpPageSampleGenerator, Type, object>> SampleObjectFactories { get; private set; }
+        public IList<Func<HelpPageSampleGenerator, Type, object>> SampleObjectFactories { get; set; }
 
         /// <summary>
         /// Gets the request body samples for a given <see cref="ApiDescription"/>.
@@ -365,7 +365,7 @@ namespace SMZ.Areas.HelpPage
         }
 
         // Default factory for sample objects
-        private static object DefaultSampleObjectFactory(HelpPageSampleGenerator sampleGenerator, Type type)
+        public static object DefaultSampleObjectFactory(HelpPageSampleGenerator sampleGenerator, Type type)
         {
             // Try to create a default sample object
             ObjectGenerator objectGenerator = new ObjectGenerator();
@@ -373,7 +373,7 @@ namespace SMZ.Areas.HelpPage
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Handling the failure by returning the original string.")]
-        private static string TryFormatJson(string str)
+        public static string TryFormatJson(string str)
         {
             try
             {
@@ -388,7 +388,7 @@ namespace SMZ.Areas.HelpPage
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Handling the failure by returning the original string.")]
-        private static string TryFormatXml(string str)
+        public static string TryFormatXml(string str)
         {
             try
             {
@@ -402,7 +402,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static bool IsFormatSupported(SampleDirection sampleDirection, MediaTypeFormatter formatter, Type type)
+        public static bool IsFormatSupported(SampleDirection sampleDirection, MediaTypeFormatter formatter, Type type)
         {
             switch (sampleDirection)
             {
@@ -414,7 +414,7 @@ namespace SMZ.Areas.HelpPage
             return false;
         }
 
-        private IEnumerable<KeyValuePair<HelpPageSampleKey, object>> GetAllActionSamples(string controllerName, string actionName, IEnumerable<string> parameterNames, SampleDirection sampleDirection)
+        public IEnumerable<KeyValuePair<HelpPageSampleKey, object>> GetAllActionSamples(string controllerName, string actionName, IEnumerable<string> parameterNames, SampleDirection sampleDirection)
         {
             HashSet<string> parameterNamesSet = new HashSet<string>(parameterNames, StringComparer.OrdinalIgnoreCase);
             foreach (var sample in ActionSamples)
@@ -430,7 +430,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static object WrapSampleIfString(object sample)
+        public static object WrapSampleIfString(object sample)
         {
             string stringSample = sample as string;
             if (stringSample != null)

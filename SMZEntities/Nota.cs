@@ -32,7 +32,7 @@ namespace SMZEntities
         public bool RowStatus { get; set; }
         public Nullable<int> CareDays { get; set; }
     
-        public virtual Customer Customer { get; set; }
-        public virtual ICollection<NotaDetail> NotaDetails { get; set; }
+        public Customer Customer { get; set; }
+        public ICollection<NotaDetail> NotaDetails { get; set; }
     }
 }

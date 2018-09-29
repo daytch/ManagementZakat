@@ -13,6 +13,7 @@ namespace SMZ.Models.Request
         public int CustomerID { get; set; }
         public int VendorID { get; set; }
         public int NotaID { get; set; }
+        public Cust Customer { get; set; }
 
         public string Action { get; set; }
     }

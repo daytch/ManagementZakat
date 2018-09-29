@@ -10,7 +10,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             Annotations = new Collection<ParameterAnnotation>();
         }
 
-        public Collection<ParameterAnnotation> Annotations { get; private set; }
+        public Collection<ParameterAnnotation> Annotations { get; set; }
 
         public string Documentation { get; set; }
 

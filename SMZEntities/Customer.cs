@@ -30,7 +30,7 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public bool Rowstatus { get; set; }
     
-        public virtual ICollection<Family> Families { get; set; }
-        public virtual ICollection<Nota> Notas { get; set; }
+        public ICollection<Family> Families { get; set; }
+        public ICollection<Nota> Notas { get; set; }
     }
 }

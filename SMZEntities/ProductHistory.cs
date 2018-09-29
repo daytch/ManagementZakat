@@ -27,6 +27,6 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public bool Rowstatus { get; set; }
     
-        public virtual Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

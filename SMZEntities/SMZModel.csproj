@@ -83,6 +83,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SMZModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>SMZModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Vendor.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>

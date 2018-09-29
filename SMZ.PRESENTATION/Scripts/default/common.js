@@ -22,3 +22,90 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+function DisableInput(obj, state) {
+    if (Array.isArray(obj)) {
+        $.each(obj, function (index, value) {
+            if (state) {
+                $('#' + value + '').attr("readonly", "readonly");
+            } else {
+                $('#' + value + '').removeAttr("readonly");
+            }
+        })
+    } else {
+        if (state) {
+            $('#' + obj + '').attr("readonly", "readonly");
+        } else {
+            $('#' + obj + '').removeAttr("readonly");
+        }
+    }
+}
+
+function HideAll(obj, state) {
+    if (Array.isArray(obj)) {
+        $.each(obj, function (index, value) {
+            if (state) {
+                $('#' + value + '').hide();
+            } else {
+                $('#' + value + '').show();
+            }
+        })
+    } else {
+        if (state) {
+            $('#' + obj + '').hide();
+        } else {
+            $('#' + obj + '').show();
+        }
+    }
+}
+
+
+/*--------------------------------------------------*/
+/*                 Loading Mask                     */
+/*--------------------------------------------------*/
+LoadingMask = {
+    show: function () {
+        $('#dloader').show();
+    },
+    hide: function () {
+        $('#dloader').hide();
+    }
+}
+
+function Logout() {    
+    Token.delete();
+    Redirect.toLoginPage();
+}
+
+/*--------------------------------------------------*/
+/*                      Token                       */
+/*--------------------------------------------------*/
+Token = {
+    get: function () {
+        let token = window.localStorage.getItem('token');
+        return token;
+    },
+    save: function (token) {
+        window.localStorage.setItem('token', token);
+    },
+    isAny: function () {
+        let token = window.localStorage.getItem('token') ? true : false;
+        return token;
+    },
+    delete: function () {
+        window.localStorage.removeItem('token');
+    }
+}
+
+
+/*--------------------------------------------------*/
+/*                   Redirect                       */
+/*--------------------------------------------------*/
+Redirect = {
+    toLoginPage: function () {
+        window.location = UI + "Login/index";
+    },
+    toHomePage: function () {
+        window.location.href = UI + "Transaksi/";
+    }
+}

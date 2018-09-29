@@ -19,7 +19,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
     public class ModelDescriptionGenerator
     {
         // Modify this to support more data annotation attributes.
-        private readonly IDictionary<Type, Func<object, string>> AnnotationTextGenerator = new Dictionary<Type, Func<object, string>>
+        public readonly IDictionary<Type, Func<object, string>> AnnotationTextGenerator = new Dictionary<Type, Func<object, string>>
         {
             { typeof(RequiredAttribute), a => "Required" },
             { typeof(RangeAttribute), a =>
@@ -61,7 +61,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
         };
 
         // Modify this to add more default documentations.
-        private readonly IDictionary<Type, string> DefaultTypeDocumentation = new Dictionary<Type, string>
+        public readonly IDictionary<Type, string> DefaultTypeDocumentation = new Dictionary<Type, string>
         {
             { typeof(Int16), "integer" },
             { typeof(Int32), "integer" },
@@ -84,7 +84,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             { typeof(Boolean), "boolean" },
         };
 
-        private Lazy<IModelDocumentationProvider> _documentationProvider;
+        public Lazy<IModelDocumentationProvider> _documentationProvider;
 
         public ModelDescriptionGenerator(HttpConfiguration config)
         {
@@ -97,9 +97,9 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             GeneratedModels = new Dictionary<string, ModelDescription>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public Dictionary<string, ModelDescription> GeneratedModels { get; private set; }
+        public Dictionary<string, ModelDescription> GeneratedModels { get; set; }
 
-        private IModelDocumentationProvider DocumentationProvider
+        public IModelDocumentationProvider DocumentationProvider
         {
             get
             {
@@ -202,7 +202,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
         }
 
         // Change this to provide different name for the member.
-        private static string GetMemberName(MemberInfo member, bool hasDataContractAttribute)
+        public static string GetMemberName(MemberInfo member, bool hasDataContractAttribute)
         {
             JsonPropertyAttribute jsonProperty = member.GetCustomAttribute<JsonPropertyAttribute>();
             if (jsonProperty != null && !String.IsNullOrEmpty(jsonProperty.PropertyName))
@@ -222,7 +222,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             return member.Name;
         }
 
-        private static bool ShouldDisplayMember(MemberInfo member, bool hasDataContractAttribute)
+        public static bool ShouldDisplayMember(MemberInfo member, bool hasDataContractAttribute)
         {
             JsonIgnoreAttribute jsonIgnore = member.GetCustomAttribute<JsonIgnoreAttribute>();
             XmlIgnoreAttribute xmlIgnore = member.GetCustomAttribute<XmlIgnoreAttribute>();
@@ -249,7 +249,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
                 (!hasDataContractAttribute || hasMemberAttribute);
         }
 
-        private string CreateDefaultDocumentation(Type type)
+        public string CreateDefaultDocumentation(Type type)
         {
             string documentation;
             if (DefaultTypeDocumentation.TryGetValue(type, out documentation))
@@ -264,7 +264,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             return documentation;
         }
 
-        private void GenerateAnnotations(MemberInfo property, ParameterDescription propertyModel)
+        public void GenerateAnnotations(MemberInfo property, ParameterDescription propertyModel)
         {
             List<ParameterAnnotation> annotations = new List<ParameterAnnotation>();
 
@@ -306,7 +306,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             }
         }
 
-        private CollectionModelDescription GenerateCollectionModelDescription(Type modelType, Type elementType)
+        public CollectionModelDescription GenerateCollectionModelDescription(Type modelType, Type elementType)
         {
             ModelDescription collectionModelDescription = GetOrCreateModelDescription(elementType);
             if (collectionModelDescription != null)
@@ -322,7 +322,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             return null;
         }
 
-        private ModelDescription GenerateComplexTypeModelDescription(Type modelType)
+        public ModelDescription GenerateComplexTypeModelDescription(Type modelType)
         {
             ComplexTypeModelDescription complexModelDescription = new ComplexTypeModelDescription
             {
@@ -377,7 +377,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             return complexModelDescription;
         }
 
-        private DictionaryModelDescription GenerateDictionaryModelDescription(Type modelType, Type keyType, Type valueType)
+        public DictionaryModelDescription GenerateDictionaryModelDescription(Type modelType, Type keyType, Type valueType)
         {
             ModelDescription keyModelDescription = GetOrCreateModelDescription(keyType);
             ModelDescription valueModelDescription = GetOrCreateModelDescription(valueType);
@@ -391,7 +391,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             };
         }
 
-        private EnumTypeModelDescription GenerateEnumTypeModelDescription(Type modelType)
+        public EnumTypeModelDescription GenerateEnumTypeModelDescription(Type modelType)
         {
             EnumTypeModelDescription enumDescription = new EnumTypeModelDescription
             {
@@ -421,7 +421,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             return enumDescription;
         }
 
-        private KeyValuePairModelDescription GenerateKeyValuePairModelDescription(Type modelType, Type keyType, Type valueType)
+        public KeyValuePairModelDescription GenerateKeyValuePairModelDescription(Type modelType, Type keyType, Type valueType)
         {
             ModelDescription keyModelDescription = GetOrCreateModelDescription(keyType);
             ModelDescription valueModelDescription = GetOrCreateModelDescription(valueType);
@@ -435,7 +435,7 @@ namespace SMZ.Areas.HelpPage.ModelDescriptions
             };
         }
 
-        private ModelDescription GenerateSimpleTypeModelDescription(Type modelType)
+        public ModelDescription GenerateSimpleTypeModelDescription(Type modelType)
         {
             SimpleTypeModelDescription simpleModelDescription = new SimpleTypeModelDescription
             {

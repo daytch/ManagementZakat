@@ -32,8 +32,8 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public bool Rowstatus { get; set; }
     
-        public virtual ICollection<NotaDetail> NotaDetails { get; set; }
-        public virtual Vendor Vendor { get; set; }
-        public virtual ICollection<ProductHistory> ProductHistories { get; set; }
+        public ICollection<NotaDetail> NotaDetails { get; set; }
+        public Vendor Vendor { get; set; }
+        public ICollection<ProductHistory> ProductHistories { get; set; }
     }
 }

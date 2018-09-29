@@ -6,7 +6,7 @@
             { "data": "Name", "width": "25%" },
             {
                 mRender: function (data, type, row) {
-                    debugger;
+                    
                     var listdata = '';
                     for (var i = 0; i < row.ListFamily.length; i++) {
                         listdata = '<li>' + row.ListFamily[i].FamilyName + '</li>' + listdata;

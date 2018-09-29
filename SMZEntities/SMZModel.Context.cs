@@ -29,8 +29,9 @@ namespace SMZEntities
         public DbSet<Family> Families { get; set; }
         public DbSet<Nota> Notas { get; set; }
         public DbSet<NotaDetail> NotaDetails { get; set; }
-        public DbSet<Product> Products { get; set; }
         public DbSet<ProductHistory> ProductHistories { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
     }
 }

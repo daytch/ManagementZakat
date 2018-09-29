@@ -18,6 +18,8 @@ namespace SMZ.Models.Response
         public int LastNumber { get; set; }
         public string NotaCode{ get; set; }
 
+        public decimal Price { get; set; }
+        public int? CareDays { get; set; }
         public int? NoHewan { get; set; }
         public DateTime TransactionDate { get; set; }
         public int ProductID { get; set; }

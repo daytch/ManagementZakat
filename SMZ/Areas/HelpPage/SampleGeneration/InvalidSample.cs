@@ -16,7 +16,7 @@ namespace SMZ.Areas.HelpPage
             ErrorMessage = errorMessage;
         }
 
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage { get; set; }
 
         public override bool Equals(object obj)
         {

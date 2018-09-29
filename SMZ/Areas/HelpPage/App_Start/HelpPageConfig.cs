@@ -81,7 +81,7 @@ namespace SMZ.Areas.HelpPage
         }
 
 #if Handle_PageResultOfT
-        private static object GeneratePageResult(HelpPageSampleGenerator sampleGenerator, Type type)
+        public static object GeneratePageResult(HelpPageSampleGenerator sampleGenerator, Type type)
         {
             if (type.IsGenericType)
             {

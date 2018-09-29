@@ -18,7 +18,7 @@ namespace SMZ.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {
-        private const string ApiModelPrefix = "MS_HelpPageApiModel_";
+        public const string ApiModelPrefix = "MS_HelpPageApiModel_";
 
         /// <summary>
         /// Sets the documentation provider for help page.
@@ -234,7 +234,7 @@ namespace SMZ.Areas.HelpPage
             return (HelpPageApiModel)model;
         }
 
-        private static HelpPageApiModel GenerateApiModel(ApiDescription apiDescription, HttpConfiguration config)
+        public static HelpPageApiModel GenerateApiModel(ApiDescription apiDescription, HttpConfiguration config)
         {
             HelpPageApiModel apiModel = new HelpPageApiModel()
             {
@@ -251,7 +251,7 @@ namespace SMZ.Areas.HelpPage
             return apiModel;
         }
 
-        private static void GenerateUriParameters(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator)
+        public static void GenerateUriParameters(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator)
         {
             ApiDescription apiDescription = apiModel.ApiDescription;
             foreach (ApiParameterDescription apiParameter in apiDescription.ParameterDescriptions)
@@ -327,7 +327,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static bool IsBindableWithTypeConverter(Type parameterType)
+        public static bool IsBindableWithTypeConverter(Type parameterType)
         {
             if (parameterType == null)
             {
@@ -337,7 +337,7 @@ namespace SMZ.Areas.HelpPage
             return TypeDescriptor.GetConverter(parameterType).CanConvertFrom(typeof(string));
         }
 
-        private static ParameterDescription AddParameterDescription(HelpPageApiModel apiModel,
+        public static ParameterDescription AddParameterDescription(HelpPageApiModel apiModel,
             ApiParameterDescription apiParameter, ModelDescription typeDescription)
         {
             ParameterDescription parameterDescription = new ParameterDescription
@@ -351,7 +351,7 @@ namespace SMZ.Areas.HelpPage
             return parameterDescription;
         }
 
-        private static void GenerateRequestModelDescription(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator, HelpPageSampleGenerator sampleGenerator)
+        public static void GenerateRequestModelDescription(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator, HelpPageSampleGenerator sampleGenerator)
         {
             ApiDescription apiDescription = apiModel.ApiDescription;
             foreach (ApiParameterDescription apiParameter in apiDescription.ParameterDescriptions)
@@ -375,7 +375,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static void GenerateResourceDescription(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator)
+        public static void GenerateResourceDescription(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator)
         {
             ResponseDescription response = apiModel.ApiDescription.ResponseDescription;
             Type responseType = response.ResponseType ?? response.DeclaredType;
@@ -386,7 +386,7 @@ namespace SMZ.Areas.HelpPage
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "The exception is recorded as ErrorMessages.")]
-        private static void GenerateSamples(HelpPageApiModel apiModel, HelpPageSampleGenerator sampleGenerator)
+        public static void GenerateSamples(HelpPageApiModel apiModel, HelpPageSampleGenerator sampleGenerator)
         {
             try
             {
@@ -410,7 +410,7 @@ namespace SMZ.Areas.HelpPage
             }
         }
 
-        private static bool TryGetResourceParameter(ApiDescription apiDescription, HttpConfiguration config, out ApiParameterDescription parameterDescription, out Type resourceType)
+        public static bool TryGetResourceParameter(ApiDescription apiDescription, HttpConfiguration config, out ApiParameterDescription parameterDescription, out Type resourceType)
         {
             parameterDescription = apiDescription.ParameterDescriptions.FirstOrDefault(
                 p => p.Source == ApiParameterSource.FromBody ||
@@ -439,7 +439,7 @@ namespace SMZ.Areas.HelpPage
             return true;
         }
 
-        private static ModelDescriptionGenerator InitializeModelDescriptionGenerator(HttpConfiguration config)
+        public static ModelDescriptionGenerator InitializeModelDescriptionGenerator(HttpConfiguration config)
         {
             ModelDescriptionGenerator modelGenerator = new ModelDescriptionGenerator(config);
             Collection<ApiDescription> apis = config.Services.GetApiExplorer().ApiDescriptions;
@@ -455,7 +455,7 @@ namespace SMZ.Areas.HelpPage
             return modelGenerator;
         }
 
-        private static void LogInvalidSampleAsError(HelpPageApiModel apiModel, object sample)
+        public static void LogInvalidSampleAsError(HelpPageApiModel apiModel, object sample)
         {
             InvalidSample invalidSample = sample as InvalidSample;
             if (invalidSample != null)

@@ -100,7 +100,7 @@ if (!String.IsNullOrEmpty(codeNamespace))
 #>
 <#+
 
-private void WriteFunctionImport(TypeMapper typeMapper, CodeStringGenerator codeStringGenerator, EdmFunction edmFunction, string modelNamespace, bool includeMergeOption)
+public void WriteFunctionImport(TypeMapper typeMapper, CodeStringGenerator codeStringGenerator, EdmFunction edmFunction, string modelNamespace, bool includeMergeOption)
 {
     if (typeMapper.IsComposable(edmFunction))
     {
@@ -149,9 +149,9 @@ public const string TemplateId = "CSharp_DbContext_Context_EF5";
 
 public class CodeStringGenerator
 {
-    private readonly CodeGenerationTools _code;
-    private readonly TypeMapper _typeMapper;
-    private readonly MetadataTools _ef;
+    public readonly CodeGenerationTools _code;
+    public readonly TypeMapper _typeMapper;
+    public readonly MetadataTools _ef;
 
     public CodeStringGenerator(CodeGenerationTools code, TypeMapper typeMapper, MetadataTools ef)
     {
@@ -191,7 +191,7 @@ public class CodeStringGenerator
     
     public string AccessibilityAndVirtual(string accessibility)
     {
-        return accessibility + (accessibility != "private" ? " virtual" : "");
+        return accessibility + (accessibility != "public" ? " virtual" : "");
     }
     
     public string EntityClassOpening(EntityType entity)
@@ -319,11 +319,11 @@ public class CodeStringGenerator
 
 public class TypeMapper
 {
-    private const string ExternalTypeNameAttributeName = @"http://schemas.microsoft.com/ado/2006/04/codegeneration:ExternalTypeName";
+    public const string ExternalTypeNameAttributeName = @"http://schemas.microsoft.com/ado/2006/04/codegeneration:ExternalTypeName";
 
-    private readonly System.Collections.IList _errors;
-    private readonly CodeGenerationTools _code;
-    private readonly MetadataTools _ef;
+    public readonly System.Collections.IList _errors;
+    public readonly CodeGenerationTools _code;
+    public readonly MetadataTools _ef;
 
     public TypeMapper(CodeGenerationTools code, MetadataTools ef, System.Collections.IList errors)
     {
@@ -601,8 +601,8 @@ public class TypeMapper
 
 public class EdmMetadataLoader
 {
-    private readonly IDynamicHost _host;
-    private readonly System.Collections.IList _errors;
+    public readonly IDynamicHost _host;
+    public readonly System.Collections.IList _errors;
 
     public EdmMetadataLoader(IDynamicHost host, System.Collections.IList errors)
     {
@@ -657,7 +657,7 @@ public class EdmMetadataLoader
         return attribute != null ? attribute.Value : "";
     }
 
-    private bool ValidateInputPath(string sourcePath)
+    public bool ValidateInputPath(string sourcePath)
     {
         if (sourcePath == "$" + "edmxInputFile" + "$")
         {
@@ -685,7 +685,7 @@ public class EdmMetadataLoader
                 ?? root;
     }
 
-    private void ProcessErrors(IEnumerable<EdmSchemaError> errors, string sourceFilePath)
+    public void ProcessErrors(IEnumerable<EdmSchemaError> errors, string sourceFilePath)
     {
         foreach (var error in errors)
         {
@@ -721,7 +721,7 @@ public static void ArgumentNotNull<T>(T arg, string name) where T : class
     }
 }
     
-private static readonly Lazy<System.Resources.ResourceManager> ResourceManager =
+public static readonly Lazy<System.Resources.ResourceManager> ResourceManager =
     new Lazy<System.Resources.ResourceManager>(
         () => new System.Resources.ResourceManager("System.Data.Entity.Design", typeof(MetadataItemCollectionFactory).Assembly), isThreadSafe: true);
 

@@ -36,7 +36,7 @@
                         <label for="Vendor">Vendor</label>
                     </div>
                     <div class="col-xs-8">
-                        <select name="vendor" class="form-control"><option class="form-control">--Select--</option></select>
+                        <select id="vendor" class="form-control"><option class="form-control">--Select--</option></select>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         <label for="Telp">Telp</label>
                     </div>
                     <div class="col-xs-8">
-                        <input type="text" class="form-control" placeholder="No Telp" readonly="readonly" id="Telp">
+                        <input type="text" class="form-control" placeholder="No Telp" @*readonly="readonly"*@ id="Telp">
                     </div>
                 </div>
             </div>
@@ -92,20 +92,34 @@
                         <label for="Alamat">Alamat</label>
                     </div>
                     <div class="col-xs-8">
-                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" readonly="readonly" id="Address" required></textarea>
+                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" @*readonly="readonly"*@ id="Address" required></textarea>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <div class="row">
+                <div class="row" name="oldFamz">
                     <div class="col-xs-3">
                         <label for="Family">Pahala Qurban</label>
                     </div>
-                    <div class="col-xs-8" id="listFamily">
+                    <div class="col-xs-8">
                         <div class="row" id="1">
                             <div class="col-xs-8">
                                 <span id="family"></span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" name="newFamz">
+                    <div class="col-xs-3">
+                        <label for="Family">Pahala Qurban</label>
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <span id="newFamily"></span>
+                        <div class="row hidden-print" id="1">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="Family" id="Family1" data-id="">
+                            </div>
+                            <div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button></div>
                         </div>
                     </div>
                 </div>
@@ -118,7 +132,7 @@
                         <label for="Hewan">Hewan</label>
                     </div>
                     <div class="col-xs-8">
-                        <select class="form-control" name="product">
+                        <select class="form-control" id="product">
                             <option value="value">-- Select --</option>
                         </select>
                     </div>
@@ -187,6 +201,64 @@
     </div>
 </fieldset>
 
+@*<table class="table table-bordered">
+    <tr>
+        <td colspan="2">Sudah Terima Dari :</td>
+        <td rowspan="2">Jenis Hewan Qurban</td>
+        <td rowspan="2">Sapi / Kambing /Domba</td>
+    </tr>
+    <tr>
+        <td>Nama Pengqurban</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Alamat</td>
+        <td>Biaya Pemeliharaan</td>
+        <td>Kelas</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>No. Telp / HP</td>
+        <td></td>
+        <td>Biaya Pemotongan</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Pahala Qurban</td>
+        <td></td>
+        <td>Biaya Pemeliharaan</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2">1</td>
+        <td>Infaq</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2">2</td>
+        <td>Total</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2">3</td>
+        <td colspan="2">Bagian Hewan Qurban yang diinginkan :</td>
+    </tr>
+    <tr>
+        <td colspan="2">4</td>
+        <td colspan="2" rowspan="2"></td>
+    </tr>
+    <tr>
+        <td colspan="2">5</td>
+    </tr>
+    <tr>
+        <td colspan="2">6</td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td colspan="2">7</td>
+        <td colspan="2"></td>
+    </tr>
+</table>*@
 
 @section Scripts
 {
