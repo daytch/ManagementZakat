@@ -13,6 +13,8 @@ namespace SMZ.Controllers
 {
     public class ReportController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [HttpGet,HttpPost]
         public ReportResponse LoadPage(string load, [FromUri] ReportRequest request)
         {
@@ -67,6 +69,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("ReportController.LoadPage :" + ex.ToString());
                 response.IsSuccess = false;
                 response.Message = "Gagal load data. Error : " + ex.ToString();
                 return response;

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SMZ.PRESENTATION.Models.User
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <link rel="icon" type="image/png" href="~/Content/images/favicon-16x16.png" />
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/Content/login/vendor/bootstrap/css/bootstrap-grid.min.css">
     <!--===============================================================================================-->
@@ -28,7 +29,9 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/Content/login/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/Content/login/css/main.css">
+    @Styles.Render("~/Content/sweetalert2")
     <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Content/login/css/loading.min.css">
 </head>
 <body>
 
@@ -48,54 +51,18 @@
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
                         <span class="label-input100">Password</span>
-                        <input class="input100" type="password" name="pass" placeholder="Type your password">
+                        <input class="input100" type="password" name="password" placeholder="Type your password">
                         <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
-
-                    <!--<div class="text-right p-t-8 p-b-31">
-                        <a href="#">
-                            Forgot password?
-                        </a>
-                    </div>-->
 
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn">
+                            <button class="login100-form-btn" id="login">
                                 Login
                             </button>
                         </div>
                     </div>
-
-                    <!--<div class="txt1 text-center p-t-54 p-b-20">
-                        <span>
-                            Or Sign Up Using
-                        </span>
-                    </div>
-
-                    <div class="flex-c-m">
-                        <a href="#" class="login100-social-item bg1">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-
-                        <a href="#" class="login100-social-item bg2">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-
-                        <a href="#" class="login100-social-item bg3">
-                            <i class="fa fa-google"></i>
-                        </a>
-                    </div>
-
-                    <div class="flex-col-c p-t-155">
-                        <span class="txt1 p-b-17">
-                            Or Sign Up Using
-                        </span>
-
-                        <a href="#" class="txt2">
-                            Sign Up
-                        </a>
-                    </div>-->
                 </form>
             </div>
         </div>
@@ -122,6 +89,8 @@
     <script src="~/Scripts/default/constant.js"></script>
     <!--===============================================================================================-->
     <script src="~/Scripts/default/common.js"></script>
+    <script src="~/Content/login/js/loading.min.js"></script>
+    @Scripts.Render("~/bundles/sweetalert2")
     <!--===============================================================================================-->
     <script src="~/Content/login/js/main.js"></script>
 

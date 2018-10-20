@@ -155,12 +155,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\images\favicon-16x16.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\logo-alittihad.png" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
@@ -170,6 +173,8 @@
     <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\login\css\loading.min.css" />
+    <Content Include="Content\login\js\loading.min.js" />
     <Content Include="Content\login\css\main.css" />
     <Content Include="Content\login\css\util.css" />
     <Content Include="Content\login\fonts\font-awesome-4.7.0\css\font-awesome.css" />
@@ -182,6 +187,7 @@
     <Content Include="Content\login\images\bg-01.jpg" />
     <Content Include="Content\login\images\icons\favicon.ico" />
     <Content Include="Content\login\js\main.js" />
+    <Content Include="Content\login\login.html" />
     <Content Include="Content\login\vendor\animate\animate.css" />
     <Content Include="Content\login\vendor\animsition\css\animsition.css" />
     <Content Include="Content\login\vendor\animsition\css\animsition.min.css" />
@@ -283,6 +289,7 @@
     <Content Include="Content\login\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
     <Content Include="Content\login\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Content\login\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\smzui - Web Deploy.pubxml" />
     <None Include="Scripts\jquery\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\default\common.js" />
@@ -337,7 +344,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

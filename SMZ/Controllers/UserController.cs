@@ -23,29 +23,33 @@ namespace SMZ.Controllers
             UserResponse response = new UserResponse();
             try
             {
-                using (var ctx = new SMZEntities.SMZEntities())
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
                 {
-                    User user = new User();
-                    if (ctx.Users.Any(o => o.Email == request.Email && o.RowStatus == true))
+                    using (var ctx = new SMZEntities.SMZEntities())
                     {
-                        user = ctx.Users.Where(o => o.Email == request.Email).First();
-                        user.Password = Security.GetSHA1(request.Email, request.Password);
-                        user.ModifiedBy = "system";
-                        user.ModifiedOn = NOW;
-                        response.Message = "Your data has been changed";
+                        User user = new User();
+                        if (ctx.Users.Any(o => o.Email == request.Email && o.RowStatus == true))
+                        {
+                            user = ctx.Users.Where(o => o.Email == request.Email).First();
+                            user.Password = Security.GetSHA1(request.Email, request.Password);
+                            user.ModifiedBy = username;
+                            user.ModifiedOn = NOW;
+                            response.Message = "Your data has been changed";
+                        }
+                        else
+                        {
+                            user.Email = request.Email;
+                            user.Password = Security.GetSHA1(request.Email, request.Password);
+                            user.CreatedBy = username;
+                            user.CreatedOn = NOW;
+                            user.RowStatus = true;
+                            ctx.Users.Add(user);
+                            response.Message = "Your data has been saved";
+                        }
+                        ctx.SaveChanges();
+                        response.IsSuccess = true;
                     }
-                    else
-                    {
-                        user.Email = request.Email; 
-                        user.Password = Security.GetSHA1(request.Email, request.Password);
-                        user.CreatedBy = "System";
-                        user.CreatedOn = NOW;
-                        user.RowStatus = true;
-                        ctx.Users.Add(user);
-                        response.Message = "Your data has been saved";
-                    }
-                    ctx.SaveChanges();
-                    response.IsSuccess = true;
                 }
             }
             catch (Exception ex)
@@ -61,11 +65,15 @@ namespace SMZ.Controllers
             UserResponse response = new UserResponse();
             try
             {
-                using (var ctx = new SMZEntities.SMZEntities())
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
                 {
-                    List<User> ListUser = ctx.Users.Where(x => x.RowStatus == true).ToList();
-                    response.data = ListUser;
-                    response.IsSuccess = true;
+                    using (var ctx = new SMZEntities.SMZEntities())
+                    {
+                        List<User> ListUser = ctx.Users.Where(x => x.RowStatus == true).ToList();
+                        response.data = ListUser;
+                        response.IsSuccess = true;
+                    }
                 }
             }
             catch (Exception ex)

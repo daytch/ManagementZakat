@@ -14,6 +14,7 @@ namespace SMZ.Controllers
 {
     public class LoginController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         [HttpPost]
         public LoginResponse LogMeIn(string login, [FromBody] LoginRequest request)
         {
@@ -38,6 +39,10 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("LoginController :" + ex.ToString());
+                response.Message = "Oops sorry something went wrong in our system, please contact your administrator.";
+                response.IsSuccess = false;
+                return response;
                 throw ex;
             }
             return response;

@@ -13,6 +13,8 @@ namespace SMZ.Controllers
 {
     public class FamilyController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public FamilyResponse GetAll(string GetAll,[FromUri] FamilyRequest request)
         {
             FamilyResponse response = new FamilyResponse();
@@ -49,6 +51,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("FamilyController.GetAll :"+ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -109,7 +112,7 @@ namespace SMZ.Controllers
                             cust.Address = request.Address;
                             cust.Telp = request.Telp;
                             cust.Rowstatus = true;
-                            cust.CreatedBy = "admin";
+                            cust.CreatedBy = username;
                             cust.CreatedOn = DateTime.Now;
                             ctx.Customers.Add(cust);
 
@@ -122,7 +125,7 @@ namespace SMZ.Controllers
                             cust.Name = request.Name;
                             cust.Address = request.Address;
                             cust.Telp = request.Telp;
-                            cust.ModifiedBy = "admin";
+                            cust.ModifiedBy = username;
                             cust.ModifiedOn = DateTime.Now;
 
                             response.Message = "Your data has been save.";
@@ -142,6 +145,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("FamilyController.Save :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -162,7 +166,7 @@ namespace SMZ.Controllers
                     {
                         Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
                         cust.Rowstatus = false;
-                        cust.ModifiedBy = "admin";
+                        cust.ModifiedBy = username;
                         cust.ModifiedOn = DateTime.Now;
 
                         response.Message = "Your data has been deleted.";
@@ -182,6 +186,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("FamilyController.Delete :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;

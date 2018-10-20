@@ -15,6 +15,8 @@ namespace SMZ.Controllers
 {
     public class VendorController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public VendorResponse GetAll(string GetAll,[FromUri] VendorRequest request)
         {
             VendorResponse response = new VendorResponse();
@@ -55,6 +57,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("VendorController.GetAll :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -119,7 +122,7 @@ namespace SMZ.Controllers
                             vendor.Address = request.Address;
                             vendor.Telp = Convert.ToInt32(request.Telp);
                             vendor.Rowstatus = true;
-                            vendor.CreatedBy = "admin";
+                            vendor.CreatedBy = username;
                             vendor.CreatedOn = DateTime.Now;
                             ctx.Vendors.Add(vendor);
 
@@ -130,7 +133,7 @@ namespace SMZ.Controllers
                                 prod.VendorID = vendor.ID;
                                 prod.Name = item.Name;
                                 prod.Price = item.Price;
-                                prod.CreatedBy = "admin";
+                                prod.CreatedBy = username;
                                 prod.CreatedOn = DateTime.Now;
                                 prod.Rowstatus = true;
                                 ctx.Products.Add(prod);
@@ -145,7 +148,7 @@ namespace SMZ.Controllers
                             vendor.Name = request.Name;
                             vendor.Address = request.Address;
                             vendor.Telp = Convert.ToInt32(request.Telp);
-                            vendor.ModifiedBy = "admin";
+                            vendor.ModifiedBy = username;
                             vendor.ModifiedOn = DateTime.Now;
 
                             foreach (Prod item in request.ListProduct)
@@ -156,14 +159,14 @@ namespace SMZ.Controllers
                                     if (string.IsNullOrEmpty(item.Name))
                                     {
                                         prods.Rowstatus = false;
-                                        prods.ModifiedBy = "admin";
+                                        prods.ModifiedBy = username;
                                         prods.ModifiedOn = DateTime.Now;
                                     }
                                     else
                                     {
                                         prods.Price = item.Price;
                                         prods.Name = item.Name;
-                                        prods.ModifiedBy = "admin";
+                                        prods.ModifiedBy = username;
                                         prods.ModifiedOn = DateTime.Now;
                                     }
                                 }
@@ -173,7 +176,7 @@ namespace SMZ.Controllers
                                     Prods.Name = item.Name;
                                     Prods.VendorID = vendor.ID;
                                     Prods.Price = item.Price;
-                                    Prods.CreatedBy = "admin";
+                                    Prods.CreatedBy = username;
                                     Prods.CreatedOn = DateTime.Now;
                                     Prods.Rowstatus = true;
                                     ctx.Products.Add(Prods);
@@ -197,6 +200,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("VendorController.Save :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -217,7 +221,7 @@ namespace SMZ.Controllers
                     {
                         SMZEntities.Vendor vend = ctx.Vendors.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
                         vend.Rowstatus = false;
-                        vend.ModifiedBy = "admin";
+                        vend.ModifiedBy = username;
                         vend.ModifiedOn = DateTime.Now;
 
                         response.Message = "Your data has been deleted.";
@@ -237,6 +241,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("VendorController.Delete :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;

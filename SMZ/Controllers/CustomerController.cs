@@ -15,6 +15,8 @@ namespace SMZ.Controllers
 {
     public class CustomerController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public CustomerResponse GetAll(string GetAll,[FromUri] CustomerRequest request)
         {
             CustomerResponse response = new CustomerResponse();
@@ -55,6 +57,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("CustomerController.GetAll :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -85,6 +88,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("CustomerController.GetCustomerForAutocomplete :" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -150,7 +154,7 @@ namespace SMZ.Controllers
                             cust.Address = request.Address;
                             cust.Telp = request.Telp;
                             cust.Rowstatus = true;
-                            cust.CreatedBy = "admin";
+                            cust.CreatedBy = username;
                             cust.CreatedOn = DateTime.Now;
                             ctx.Customers.Add(cust);
 
@@ -160,7 +164,7 @@ namespace SMZ.Controllers
                                 famz.Customer = cust;
                                 famz.CustomerID = cust.ID;
                                 famz.Name = item.FamilyName;
-                                famz.CreatedBy = "admin";
+                                famz.CreatedBy = username;
                                 famz.CreatedOn = DateTime.Now;
                                 famz.Rowstatus = true;
                                 ctx.Families.Add(famz);
@@ -175,7 +179,7 @@ namespace SMZ.Controllers
                             cust.Name = request.Name;
                             cust.Address = request.Address;
                             cust.Telp = request.Telp;
-                            cust.ModifiedBy = "admin";
+                            cust.ModifiedBy = username;
                             cust.ModifiedOn = DateTime.Now;
 
                             foreach (Famz item in request.ListFamily)
@@ -186,13 +190,13 @@ namespace SMZ.Controllers
                                     if (string.IsNullOrEmpty(item.FamilyName))
                                     {
                                         famz.Rowstatus = false;
-                                        famz.ModifiedBy = "admin";
+                                        famz.ModifiedBy = username;
                                         famz.ModifiedOn = DateTime.Now;
                                     }
                                     else
                                     {
                                         famz.Name = item.FamilyName;
-                                        famz.ModifiedBy = "admin";
+                                        famz.ModifiedBy = username;
                                         famz.ModifiedOn = DateTime.Now;
                                     }
                                 }
@@ -201,7 +205,7 @@ namespace SMZ.Controllers
                                     Family Famz = new Family();
                                     Famz.Name = item.FamilyName;
                                     Famz.CustomerID = cust.ID;
-                                    Famz.CreatedBy = "admin";
+                                    Famz.CreatedBy = username;
                                     Famz.CreatedOn = DateTime.Now;
                                     Famz.Rowstatus = true;
                                     ctx.Families.Add(Famz);
@@ -225,6 +229,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("CustomerController.Save" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;
@@ -245,7 +250,7 @@ namespace SMZ.Controllers
                     {
                         Customer cust = ctx.Customers.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
                         cust.Rowstatus = false;
-                        cust.ModifiedBy = "admin";
+                        cust.ModifiedBy = username;
                         cust.ModifiedOn = DateTime.Now;
 
                         response.Message = "Your data has been deleted.";
@@ -265,6 +270,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("CustomerController.Delete" + ex.ToString());
                 response.Message = ex.ToString();
                 response.IsSuccess = false;
                 return response;

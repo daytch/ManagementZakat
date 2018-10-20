@@ -13,6 +13,8 @@ namespace SMZ.Controllers
 {
     public class TransaksiController : ApiController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         [HttpGet, HttpPost]
         public TransaksiResponse LoadPage(string load, [FromBody] TransaksiRequest request)
         {
@@ -42,6 +44,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("TransaksiController.LoadPage :" + ex.ToString());
                 response.IsSuccess = false;
                 response.Message = "Gagal load data. Error : " + ex.ToString();
                 return response;
@@ -66,7 +69,6 @@ namespace SMZ.Controllers
             TransaksiResponse response = new TransaksiResponse();
             try
             {
-
                 string username = Security.ValidateToken(request.Token);
                 if (username != null)
                 {
@@ -133,6 +135,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("TransaksiController.LoadNotaActive :" + ex.ToString());
                 response.IsSuccess = false;
                 response.Message = "Gagal load data. Error : " + ex.ToString();
                 return response;
@@ -166,6 +169,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("TransaksiController.LoadCustomer :" + ex.ToString());
                 response.IsSuccess = false;
                 response.Message = "Gagal load data. Error : " + ex.ToString();
                 return response;
@@ -200,6 +204,7 @@ namespace SMZ.Controllers
             }
             catch (Exception ex)
             {
+                log.Error("TransaksiController.LoadProduct :" + ex.ToString());
                 response.IsSuccess = false;
                 response.Message = "Gagal load data. Error : " + ex.ToString();
                 return response;
@@ -267,7 +272,7 @@ namespace SMZ.Controllers
                                 return response;
                             }
                             product.LastNumber = (product.LastNumber == null) ? 0 + 1 : product.LastNumber + 1;
-                            product.ModifiedBy = "admin";
+                            product.ModifiedBy = username;
                             product.ModifiedOn = DateTime.Now;
 
                             ph.ProductID = product.ID;
@@ -277,7 +282,7 @@ namespace SMZ.Controllers
                             ph.Product = product;
                             ph.Stok = product.Stok;
                             ph.LastNumber = product.LastNumber;
-                            ph.CreatedBy = "admin";
+                            ph.CreatedBy = username;
                             ph.CreatedOn = DateTime.Now;
                             ctx.ProductHistories.Add(ph);
                             #endregion
@@ -297,7 +302,7 @@ namespace SMZ.Controllers
                             nota.Note = request.Transaksi.Note;
                             nota.CareDays = request.Transaksi.CareDays;
                             nota.NotaCode = GenerateCode(lastNotaID);
-                            nota.CreatedBy = "admin";
+                            nota.CreatedBy = username;
                             nota.CreatedOn = DateTime.Now;
                             nota.RowStatus = true;
                             ctx.Notas.Add(nota);
@@ -319,7 +324,7 @@ namespace SMZ.Controllers
                                 nd.Nota = nota;
                                 nd.Price = request.Transaksi.BiayaPemeliharaan;
                                 nd.Total = 1;
-                                nd.CreatedBy = "admin";
+                                nd.CreatedBy = username;
                                 nd.CreatedOn = DateTime.Now;
                                 nd.RowStatus = true;
                                 ctx.NotaDetails.Add(nd);
@@ -333,7 +338,7 @@ namespace SMZ.Controllers
                                 ndPtong.Price = request.Transaksi.BiayaPemotongan;
                                 ndPtong.Total = 1;
                                 ndPtong.ProductID = PanitiaProd.PotongID;
-                                ndPtong.CreatedBy = "admin";
+                                ndPtong.CreatedBy = username;
                                 ndPtong.CreatedOn = DateTime.Now;
                                 ndPtong.RowStatus = true;
                                 ctx.NotaDetails.Add(ndPtong);
@@ -348,7 +353,7 @@ namespace SMZ.Controllers
                                 ndInfaq.Price = request.Transaksi.Infaq;
                                 ndInfaq.Total = 1;
                                 ndInfaq.ProductID = PanitiaProd.InfaqID;
-                                ndInfaq.CreatedBy = "admin";
+                                ndInfaq.CreatedBy = username;
                                 ndInfaq.CreatedOn = DateTime.Now;
                                 ndInfaq.RowStatus = true;
                                 ctx.NotaDetails.Add(ndInfaq);
@@ -361,7 +366,7 @@ namespace SMZ.Controllers
                             notaDetail.Total = 1;
                             notaDetail.ProductID = request.Transaksi.ProductID;
                             notaDetail.ProductNo = product.LastNumber;
-                            notaDetail.CreatedBy = "admin";
+                            notaDetail.CreatedBy = username;
                             notaDetail.CreatedOn = DateTime.Now;
                             notaDetail.RowStatus = true;
                             ctx.NotaDetails.Add(notaDetail);
@@ -377,7 +382,7 @@ namespace SMZ.Controllers
                             c.Address = request.Customer.Address;
                             c.Telp = request.Customer.Telp;
                             c.Rowstatus = true;
-                            c.CreatedBy = "admin";
+                            c.CreatedBy = username;
                             c.CreatedOn = DateTime.Now;
                             ctx.Customers.Add(c);
 
@@ -387,7 +392,7 @@ namespace SMZ.Controllers
                                 famz.Customer = c;
                                 famz.CustomerID = c.ID;
                                 famz.Name = item.FamilyName;
-                                famz.CreatedBy = "admin";
+                                famz.CreatedBy = username;
                                 famz.CreatedOn = DateTime.Now;
                                 famz.Rowstatus = true;
                                 ctx.Families.Add(famz);
@@ -406,7 +411,7 @@ namespace SMZ.Controllers
                                 return response;
                             }
                             product.LastNumber = (product.LastNumber == null) ? 0 + 1 : product.LastNumber + 1;
-                            product.ModifiedBy = "admin";
+                            product.ModifiedBy = username;
                             product.ModifiedOn = DateTime.Now;
 
                             ph.ProductID = product.ID;
@@ -416,7 +421,7 @@ namespace SMZ.Controllers
                             ph.Product = product;
                             ph.Stok = product.Stok;
                             ph.LastNumber = product.LastNumber;
-                            ph.CreatedBy = "admin";
+                            ph.CreatedBy = username;
                             ph.CreatedOn = DateTime.Now;
                             ctx.ProductHistories.Add(ph);
                             #endregion
@@ -437,7 +442,7 @@ namespace SMZ.Controllers
                             nota.Note = request.Transaksi.Note;
                             nota.CareDays = request.Transaksi.CareDays;
                             nota.NotaCode = GenerateCode(lastNotaID);
-                            nota.CreatedBy = "admin";
+                            nota.CreatedBy = username;
                             nota.CreatedOn = DateTime.Now;
                             nota.RowStatus = true;
                             ctx.Notas.Add(nota);
@@ -461,7 +466,7 @@ namespace SMZ.Controllers
                                 nd.Nota = nota;
                                 nd.Price = request.Transaksi.BiayaPemeliharaan;
                                 nd.Total = 1;
-                                nd.CreatedBy = "admin";
+                                nd.CreatedBy = username;
                                 nd.CreatedOn = DateTime.Now;
                                 nd.RowStatus = true;
                                 ctx.NotaDetails.Add(nd);
@@ -475,7 +480,7 @@ namespace SMZ.Controllers
                                 ndPtong.Price = request.Transaksi.BiayaPemotongan;
                                 ndPtong.Total = 1;
                                 ndPtong.ProductID = PanitiaProd.PotongID;
-                                ndPtong.CreatedBy = "admin";
+                                ndPtong.CreatedBy = username;
                                 ndPtong.CreatedOn = DateTime.Now;
                                 ndPtong.RowStatus = true;
                                 ctx.NotaDetails.Add(ndPtong);
@@ -490,7 +495,7 @@ namespace SMZ.Controllers
                                 ndInfaq.Price = request.Transaksi.Infaq;
                                 ndInfaq.Total = 1;
                                 ndInfaq.ProductID = PanitiaProd.InfaqID;
-                                ndInfaq.CreatedBy = "admin";
+                                ndInfaq.CreatedBy = username;
                                 ndInfaq.CreatedOn = DateTime.Now;
                                 ndInfaq.RowStatus = true;
                                 ctx.NotaDetails.Add(ndInfaq);
@@ -503,7 +508,7 @@ namespace SMZ.Controllers
                             notaDetail.Total = 1;
                             notaDetail.ProductID = request.Transaksi.ProductID;
                             notaDetail.ProductNo = product.LastNumber;
-                            notaDetail.CreatedBy = "admin";
+                            notaDetail.CreatedBy = username;
                             notaDetail.CreatedOn = DateTime.Now;
                             notaDetail.RowStatus = true;
                             ctx.NotaDetails.Add(notaDetail);

@@ -1,99 +1,67 @@
 
-(function ($) {
-    //"use strict";
+$(document).ready(function () {
+    // Code that uses jQuery's $ can follow here.
 
-    if (Token.isAny()) {
-        Redirect.toHomePage();
-    }
-
-    /*==================================================================
-   [ Focus input ]*/
-    $('.input100').each(function () {
-        $(this).on('blur', function () {
-            if ($(this).val().trim() != "") {
-                $(this).addClass('has-val');
-            }
-            else {
-                $(this).removeClass('has-val');
-            }
-        })
-    })
-
-
-    /*==================================================================
-    [ Validate ]*/
-    var input = $('.validate-input .input100');
-
-    $('.login100-form-btn').on('click', function () {
-        
-        var check = true;
-
-        for (var i = 0; i < input.length; i++) {
-            if (validate(input[i]) == false) {
-                showValidate(input[i]);
-                check = false;
-            }
-        }
-
-        if (check) {
+    $('#login').click(function (e) {
+        var user = $('[name="username"]').val();
+        var pass = $('[name="password"]').val();
+        if (user != "" && pass != "") {
+            e.preventDefault();
+            $.busyLoadFull("show", {
+                spinner: "cube-grid", // pump, accordion, pulsar, cube, cubes, circle-line, circles, cube-<a href="https://www.jqueryscript.net/tags.php?/grid/">grid</a>
+                image: false,
+                fontawesome: false, // "fa fa-refresh fa-spin fa-2x fa-fw"
+                custom: false, // jQuery Object
+                color: "#fff",
+                background: "rgba(0, 0, 0, 0.21)",
+                maxSize: "50px", // Integer/String only for spinners & images, not fontawesome & custom
+                minSize: "20px", // Integer/String only for spinners & images, not fontawesome & custom
+                text: false,
+                textColor: false, // default is color
+                textMargin: ".5rem",
+                textPosition: "right", // left, right, top, bottom
+                fontSize: "1rem",
+                fullScreen: false,
+                animation: false, // fade, slide
+                animationDuration: "fast",  // String, Integer
+                containerClass: "busy-load-container",
+                containerItemClass: "busy-load-container-item",
+                spinnerClass: "busy-load-spinner",
+                textClass: "busy-load-text"
+            });
             $.ajax({
                 url: API + "Login?login=true",
-                type: "POST",
-                dataType: "JSON",
+                method: "POST",
+                contentType: "application/x-www-form-urlencoded",
                 data: {
-                    username: $('[name="username"]').val(),
-                    password: $('[name="pass"]').val()
+                    username: user,
+                    password: pass
                 },
                 success: function (response) {
                     if (response.IsSuccess) {
+                        $.busyLoadFull("hide", {});
                         Token.save(response.Token);
                         window.location = UI + "Transaksi";
+                        return false;
                     } else {
+                        $.busyLoadFull("hide", {});
                         swal(
                             'Failed',
                             response.Message,
                             'error'
                         );
+                        return false;
                     }
                 }
             });
+            return false;
+        } else {
+            swal(
+                'Failed',
+                "Username and Password cannot be empty",
+                'error'
+            );
+            return false;
         }
-
-        return check;
-    });
-
-
-    $('.validate-form .input100').each(function () {
-        $(this).focus(function () {
-            hideValidate(this);
-        });
-    });
-
-    function validate(input) {
-        if ($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
-            if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        }
-        else {
-            if ($(input).val().trim() == '') {
-                return false;
-            }
-        }
-    }
-
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
-    }
-
-    function hideValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).removeClass('alert-validate');
-    }
-
-
-
-})(jQuery);
+    })
+});
