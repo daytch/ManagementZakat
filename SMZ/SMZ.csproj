@@ -220,11 +220,13 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
+    <Compile Include="Controllers\ZakatController.cs" />
     <Compile Include="Core\Security.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\RequestBase.cs" />
+    <Compile Include="Models\Request\ZakatRequesst.cs" />
     <Compile Include="Models\Request\LoginRequest.cs" />
     <Compile Include="Models\Request\ReportRequest.cs" />
     <Compile Include="Models\Request\UserRequest.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="Models\Request\FamilyRequest.cs" />
     <Compile Include="Models\Request\CustomerRequesst.cs" />
     <Compile Include="Models\ResponseBase.cs" />
+    <Compile Include="Models\Response\ZakatResponse.cs" />
     <Compile Include="Models\Response\LoginResponse.cs" />
     <Compile Include="Models\Response\ReportResponse.cs" />
     <Compile Include="Models\Response\UserResponse.cs" />

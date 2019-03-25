@@ -386,16 +386,19 @@ namespace SMZ.Controllers
                             c.CreatedOn = DateTime.Now;
                             ctx.Customers.Add(c);
 
-                            foreach (Famz item in request.Customer.ListFamily)
+                            if (request.Customer.ListFamily != null)
                             {
-                                Family famz = new Family();
-                                famz.Customer = c;
-                                famz.CustomerID = c.ID;
-                                famz.Name = item.FamilyName;
-                                famz.CreatedBy = username;
-                                famz.CreatedOn = DateTime.Now;
-                                famz.Rowstatus = true;
-                                ctx.Families.Add(famz);
+                                foreach (Famz item in request.Customer.ListFamily)
+                                {
+                                    Family famz = new Family();
+                                    famz.Customer = c;
+                                    famz.CustomerID = c.ID;
+                                    famz.Name = item.FamilyName;
+                                    famz.CreatedBy = username;
+                                    famz.CreatedOn = DateTime.Now;
+                                    famz.Rowstatus = true;
+                                    ctx.Families.Add(famz);
+                                }
                             }
                             #endregion
 

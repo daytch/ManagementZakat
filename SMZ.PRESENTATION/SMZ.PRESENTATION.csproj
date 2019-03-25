@@ -152,6 +152,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TransaksiController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
+    <Compile Include="Controllers\ZakatController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,6 +175,7 @@
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\login\css\loading.min.css" />
+    <Content Include="Content\login\css\print.css" />
     <Content Include="Content\login\js\loading.min.js" />
     <Content Include="Content\login\css\main.css" />
     <Content Include="Content\login\css\util.css" />
@@ -187,7 +189,6 @@
     <Content Include="Content\login\images\bg-01.jpg" />
     <Content Include="Content\login\images\icons\favicon.ico" />
     <Content Include="Content\login\js\main.js" />
-    <Content Include="Content\login\login.html" />
     <Content Include="Content\login\vendor\animate\animate.css" />
     <Content Include="Content\login\vendor\animsition\css\animsition.css" />
     <Content Include="Content\login\vendor\animsition\css\animsition.min.css" />
@@ -310,6 +311,7 @@
     <Content Include="Scripts\bootstrap\respond.min.js" />
     <Content Include="Scripts\moment\moment-with-locales.min.js" />
     <Content Include="Scripts\moment\moment.min.js" />
+    <Content Include="Scripts\pages\typeofzakat.js" />
     <Content Include="Scripts\pages\report.js" />
     <Content Include="Scripts\pages\user.js" />
     <Content Include="Scripts\pages\vendor.js" />
@@ -341,6 +343,8 @@
     <Content Include="Views\Vendor\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Zakat\Master.cshtml" />
+    <Content Include="Views\Zakat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

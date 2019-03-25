@@ -19,6 +19,7 @@
         <AssociationConnector Association="SMZModel.FK_NotaDetail_Product" />
         <AssociationConnector Association="SMZModel.FK_Product_Vendor" />
         <AssociationConnector Association="SMZModel.FK_ProductHistory_ProductHistory" />
+        <EntityTypeShape EntityType="SMZModel.TypeOfZakat" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

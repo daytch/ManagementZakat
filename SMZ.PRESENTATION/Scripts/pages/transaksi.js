@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
     if (!Token.isAny()) {
         Redirect.toLoginPage();
     } else {
@@ -9,7 +9,7 @@
         var mYear = new Date().getFullYear();
         var local = moment();
         local.locale('id');
-        
+
         var now = local.format('LL');
         $('#hijriyear').html(hYear);
         $('#masehiyear').html(mYear);
@@ -75,7 +75,7 @@
 function initializeTagsTypeahead(typeaheadInputBox, dataSource) {
     var tags = new Bloodhound({
         datumTokenizer: function (datum) {
-            
+
             return Bloodhound.tokenizers.whitespace(datum.name);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -194,7 +194,7 @@ function InitData() {
                     $('#Total').val(convertToRupiah(total));
                     $('#family').append(tagFamz + '</ol>');
 
-                    DisableInput(['Infaq', 'product', 'vendor', 'Nama', 'Req', 'qtydays','Telp','Address'], true);
+                    DisableInput(['Infaq', 'product', 'vendor', 'Nama', 'Req', 'qtydays', 'Telp', 'Address'], true);
                     HideAll(['noProduct', 'nota', 'backbutton'], false);
                     HideAll('submit', true);
 
@@ -377,26 +377,27 @@ function Submit() {
     Data.Transaksi.BiayaPemotongan = convertToAngka(bPotong);
     Data.Transaksi.Note = $('#Req').val();
 
-    if (Data.Transaksi.FamilyID.length == 0) {
-        Data.Customer.Name = $('#Nama').val();
-        Data.Customer.Address = $('#Address').val();
-        Data.Customer.Telp = $('#Telp').val();
+    //if (Data.Transaksi.FamilyID.length == 0) {
+    debugger;
+    Data.Customer.Name = $('#Nama').val();
+    Data.Customer.Address = $('#Address').val();
+    Data.Customer.Telp = $('#Telp').val();
 
-        var lastNumber = $('#listFamily input').length;
-        for (var i = 1; i <= lastNumber; i++) {
-            var input = $('#Family' + i + '');
-            var list = { ID: input.attr('data-id'), FamilyName: input.val() };
-            if (typeof (input.val()) != 'undefined') {
-                Data.Customer.ListFamily.push(list);
-            }
+    var lastNumber = $('#listFamily input').length;
+    for (var i = 1; i <= lastNumber; i++) {
+        var input = $('#Family' + i + '');
+        var list = { ID: input.attr('data-id'), FamilyName: input.val() };
+        if (typeof (input.val()) != 'undefined') {
+            Data.Customer.ListFamily.push(list);
         }
-        var tagFamz = '';
-        for (var i = 0; i < Data.Customer.ListFamily.length; i++) {
-            tagFamz = tagFamz + '<li>' + Data.Customer.ListFamily[i].FamilyName + '</li>';
-        }
-        $('#newFamily').html('');
-        $('#newFamily').append(tagFamz + '</ol>');
     }
+    var tagFamz = '';
+    for (var i = 0; i < Data.Customer.ListFamily.length; i++) {
+        tagFamz = tagFamz + '<li>' + Data.Customer.ListFamily[i].FamilyName + '</li>';
+    }
+    $('#newFamily').html('');
+    $('#newFamily').append(tagFamz + '</ol>');
+    //}
 
     if (ValidateOnSubmit()) {
         $.ajax({

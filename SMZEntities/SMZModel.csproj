@@ -83,6 +83,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SMZModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="TypeOfZakat.cs">
+      <DependentUpon>SMZModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>
