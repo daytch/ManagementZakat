@@ -37,11 +37,12 @@
                     </li>
                     <li>@Html.ActionLink("Qurban", "Index", "Transaksi")</li>
                     <li>@Html.ActionLink("Zakat / Infaq", "Index", "Zakat")</li>
+                    <li>@Html.ActionLink("Kalkulator Zakat", "Index", "Kalkulator")</li>
                     <li>@Html.ActionLink("Laporan", "Index", "Report")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Master Data<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logout <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("User", "Index", "User")</li>
                             <li>@Html.ActionLink("Logout", "Index", null, null, new { onclick = "Logout()" })</li>

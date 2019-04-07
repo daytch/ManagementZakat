@@ -147,6 +147,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\FamilyController.cs" />
+    <Compile Include="Controllers\KalkulatorController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -164,6 +165,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\images\bismillah.png" />
     <Content Include="Content\images\favicon-16x16.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\logo-alittihad.png" />
@@ -311,6 +313,8 @@
     <Content Include="Scripts\bootstrap\respond.min.js" />
     <Content Include="Scripts\moment\moment-with-locales.min.js" />
     <Content Include="Scripts\moment\moment.min.js" />
+    <Content Include="Scripts\pages\kalkulator.js" />
+    <Content Include="Scripts\pages\transaksizakat.js" />
     <Content Include="Scripts\pages\typeofzakat.js" />
     <Content Include="Scripts\pages\report.js" />
     <Content Include="Scripts\pages\user.js" />
@@ -345,6 +349,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Zakat\Master.cshtml" />
     <Content Include="Views\Zakat\Index.cshtml" />
+    <Content Include="Views\Kalkulator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

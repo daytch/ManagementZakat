@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "Kalkulator Zakat";
+}
+
+<div class="row">
+    <p>
+        <label>Zakat Fitrah</label>
+        <blockquote>
+            zakat jiwa yang diwajibkan atas setiap diri muslim yang hidup pada bulan ramadhan. Syarat zakat fitrah sebagai berikut : beragama islam, hidup pada saat bulan ramadhan,
+            memiliki kelebihan kebutuhan pokok untuk malam dan hari raya isul fitri. Zakat fitrah dapat berupa beras (makanan pokok) atau dapat diganti dengan uang yang senilai dengan beras (makanan pokok) tersebut.
+            Zakat fitrah ditunaikan dalam bentuk beras atau makanan pokok seberat 2,5 kg atau 3,5 liter per jiwa. Zakat fitrah ditunaikan sejak awal Ramadhan dan paling lambat sebelum pelaksanaan Shalat Idul Fitri.
+        </blockquote>
+    </p>
+    <p>
+        <label>Zakat Maal</label>
+        <blockquote>
+            zakat harta yang dikeluarkan oleh muzaki melalui amil zakat resmi untuk diserahkan kepada mustahik. Zakat mal meliputi :
+            <hr />
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#emasperak" aria-controls="emas" role="tab" data-toggle="tab">Emas & Perak</a></li>
+                    <li role="presentation"><a href="#uang" aria-controls="uang" role="tab" data-toggle="tab">Uang</a></li>
+                    <li role="presentation"><a href="#perniagaan" aria-controls="perniagaan" role="tab" data-toggle="tab">Perniagaan</a></li>
+                    <li role="presentation"><a href="#pertanian" aria-controls="pertanian" role="tab" data-toggle="tab">Pertanian</a></li>
+                    <li role="presentation"><a href="#peternakan" aria-controls="peternakan" role="tab" data-toggle="tab">Peternakan</a></li>
+                    <li role="presentation"><a href="#perniagaan" aria-controls="perniagaan" role="tab" data-toggle="tab">Perniagaan</a></li>
+                    <li role="presentation"><a href="#pendapatan" aria-controls="pendapatan" role="tab" data-toggle="tab">Pendapatan & Jasa</a></li>
+                    <li role="presentation"><a href="#temuan" aria-controls="temuan" role="tab" data-toggle="tab">Rikaz(Temuan)</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="emasperak">
+                        <div>
+                            <label>Zakat Emas dan Perak</label>
+                            <blockquote>
+                                zakat yang dikenakan atas emas atau perak yang telah mencapai nisab dan haul. Zakat emas wajib dikenakan atas kepemilikan emas yang telah mencapai nisab 85 gram emas.
+                                Zakat perak wajib dikenakan atas kepemilikan perak yang telah mencapai nisab 595 gram perak. Kadar zakat atas emas ataupun perak sebesar 2,5%.
+                            </blockquote>
+                            <table class="table table-bordered table-info">
+                                <tbody>
+                                    <tr>
+                                        <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat Emas dan Perak</strong></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="label_zakat">Emas</th>
+                                        <th class="value_zakat"><input type="number" id="emas" style="width:60px" onchange="zc_emas_perak();"> gram</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="label_zakat">Perak</th>
+                                        <th class="value_zakat"><input type="number" id="perak" style="width:60px" onchange="zc_emas_perak();"> gram</th>
+                                    </tr>
+                                    <tr class="total_zakat">
+                                        <th class="label_zakat">Jumlah zakat emas</th>
+                                        <th class="value_zakat"><input type="number" id="zakat_emas" style="width:60px" disabled="disabled"> gram</th>
+                                    </tr>
+                                    <tr class="total_zakat">
+                                        <th class="label_zakat">Jumlah zakat perak</th>
+                                        <th class="value_zakat"><input type="number" id="zakat_perak" style="width:60px" disabled="disabled"> gram</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat Emas dan Perak (jika dibayar dengan uang)</strong></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="label_zakat">Harga 1 gram emas</th>
+                                        <th class="value_zakat"> <input type="text" id="harga_emas" onchange="validasiAngka(this); zc_emas_perak();"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="label_zakat">Harga 1 gram perak</th>
+                                        <th class="value_zakat"> <input type="text" id="harga_perak" onchange="validasiAngka(this); zc_emas_perak();"></th>
+                                    </tr>
+                                    <tr class="total_zakat">
+                                        <th class="label_zakat">Jumlah zakat emas yang dikeluarkan</th>
+                                        <th class="value_zakat"> <input type="text" id="zakat_emas_uang" disabled="disabled"></th>
+                                    </tr>
+                                    <tr class="total_zakat">
+                                        <th class="label_zakat">Jumlah zakat perak yang dikeluarkan</th>
+                                        <th class="value_zakat"> <input type="text" id="zakat_perak_uang" disabled="disabled"></th>
+                                    </tr>
+                                    <tr class="total_zakat">
+                                        <th class="label_zakat">Total zakat emas dan perak yang dikeluarkan</th>
+                                        <th class="value_zakat"> <input type="text" id="zakat_total_uang" disabled="disabled"></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" class="header" id="keterangan">&nbsp;</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <div id="ket_zakat">
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="uang">
+                        <label>Zakat Uang dan Surat berharga lainnya</label>
+                        <blockquote>
+                            zakat yang dikenakan atas uang, harta yang disetarakan dengan uang, dan surat berharga lainnya yang telah mencapai <strong>nisab dan haul</strong>.
+                            Zakat uang surat berharga wajib dikenakan atas kepemilikan emas yang telah mencapai nisab <strong>85 gram emas</strong>.
+                            Kadar zakat atas uang dan surat berharga sebesar <strong>2,5%</strong>.
+                        </blockquote>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header"  style="background-color:antiquewhite"><strong>Nishab</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Harga 1 gram emas</th>
+                                    <th class="value_zakat"><input type="text" id="harga_emas_uang" class="input_angka"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Nishab</strong></th>
+                                    <th class="value_zakat"><input type="text" id="nisab_emas_uang" class="input_angka" disabled="disabled"> <input type="hidden" id="nisab_emas_uang_float" value="42670000.00"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Harta</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Uang tunai dan tabungan</th>
+                                    <th class="value_zakat"><input type="text" id="uang_tabungan" class="input_angka" onchange="zc_mal_total_harta();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Saham dan surat berharga lainnya</th>
+                                    <th class="value_zakat"><input type="text" id="saham" class="input_angka" onchange="zc_mal_total_harta();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Piutang</th>
+                                    <th class="value_zakat"><input type="text" id="piutang" class="input_angka" onchange="zc_mal_total_harta();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Total Harta</strong></th>
+                                    <th class="value_zakat"><input type="text" id="total_harta" class="input_angka" disabled="disabled"> <input type="hidden" id="total_harta_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Kewajiban</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Hutang</th>
+                                    <th class="value_zakat"><input type="text" id="hutang" class="input_angka" onchange="zc_mal_total_kewajiban();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Total Kewajiban</strong></th>
+                                    <th class="value_zakat"><input type="text" id="total_kewajiban" class="input_angka" disabled="disabled"> <input type="hidden" id="total_kewajiban_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Selisih harta dan kewajiban</th>
+                                    <th class="value_zakat"><input type="text" id="selisih_harta" class="input_angka" disabled="disabled"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_harta" class="input_angka" disabled="disabled"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="ket_mal">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="perniagaan">perniagaan</div>
+                    <div role="tabpanel" class="tab-pane" id="pertanian">pertanian</div>
+                    <div role="tabpanel" class="tab-pane" id="peternakan">peternakan</div>
+                    <div role="tabpanel" class="tab-pane" id="perniagaan">perniagaan</div>
+                    <div role="tabpanel" class="tab-pane" id="pendapatan">pendapatan</div>
+                    <div role="tabpanel" class="tab-pane" id="temuan">temuan</div>
+                </div>
+            </div>
+        </blockquote>
+    </p>
+</div>
+
+@section Scripts{
+    @*<script type="text/javascript" src="~/Scripts/pages/kalkulator.js" asp-append-version="true"></script>*@
+    <script>
+        document.write("<script type='text/javascript' src='/Scripts/pages/kalkulator.js?v=' " + Date.now() + "'><\/script>");
+    </script>
+}
+

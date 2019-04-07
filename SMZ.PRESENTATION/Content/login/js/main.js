@@ -41,7 +41,8 @@ $(document).ready(function () {
                     if (response.IsSuccess) {
                         $.busyLoadFull("hide", {});
                         Token.save(response.Token);
-                        window.location = UI + "Transaksi";
+                        debugger;
+                        window.location = UI + "Kalkulator";
                         return false;
                     } else {
                         $.busyLoadFull("hide", {});

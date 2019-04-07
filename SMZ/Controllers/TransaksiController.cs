@@ -51,6 +51,7 @@ namespace SMZ.Controllers
             }
             return response;
         }
+
         [HttpPost, HttpGet]
         public TransaksiResponse GetListCustomer(string getCustomer)
         {
@@ -63,6 +64,7 @@ namespace SMZ.Controllers
             }
             return response;
         }
+
         [HttpPost]
         public TransaksiResponse LoadNotaActive(string loadNota, [FromBody] TransaksiRequest request)
         {
