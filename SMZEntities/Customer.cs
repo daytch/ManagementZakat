@@ -18,6 +18,7 @@ namespace SMZEntities
         {
             this.Families = new HashSet<Family>();
             this.Notas = new HashSet<Nota>();
+            this.NotaZakats = new HashSet<NotaZakat>();
         }
     
         public int ID { get; set; }
@@ -32,5 +33,6 @@ namespace SMZEntities
     
         public ICollection<Family> Families { get; set; }
         public ICollection<Nota> Notas { get; set; }
+        public ICollection<NotaZakat> NotaZakats { get; set; }
     }
 }

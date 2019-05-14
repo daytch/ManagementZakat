@@ -33,6 +33,8 @@ namespace SMZ.Controllers
                         {
                             user = ctx.Users.Where(o => o.Email == request.Email).First();
                             user.Password = Security.GetSHA1(request.Email, request.Password);
+                            user.Name = request.Name;
+                            user.Telp = request.Telp;
                             user.ModifiedBy = username;
                             user.ModifiedOn = NOW;
                             response.Message = "Your data has been changed";
@@ -41,6 +43,8 @@ namespace SMZ.Controllers
                         {
                             user.Email = request.Email;
                             user.Password = Security.GetSHA1(request.Email, request.Password);
+                            user.Name = request.Name;
+                            user.Telp = request.Telp;
                             user.CreatedBy = username;
                             user.CreatedOn = NOW;
                             user.RowStatus = true;

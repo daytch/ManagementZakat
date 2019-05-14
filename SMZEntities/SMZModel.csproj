@@ -61,6 +61,12 @@
     <Compile Include="NotaDetail.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NotaZakat.cs">
+      <DependentUpon>SMZModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotaZakatDetail.cs">
+      <DependentUpon>SMZModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Product.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>

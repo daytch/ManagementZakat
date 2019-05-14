@@ -22,5 +22,7 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool RowStatus { get; set; }
+        public string Name { get; set; }
+        public string Telp { get; set; }
     }
 }

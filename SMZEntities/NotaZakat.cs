@@ -12,21 +12,25 @@ namespace SMZEntities
     using System;
     using System.Collections.Generic;
     
-    public partial class TypeOfZakat
+    public partial class NotaZakat
     {
-        public TypeOfZakat()
+        public NotaZakat()
         {
             this.NotaZakatDetails = new HashSet<NotaZakatDetail>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
-        public System.DateTime CreatedOn { get; set; }
+        public string Code { get; set; }
+        public int CustomerID { get; set; }
+        public System.DateTime TransactionDate { get; set; }
         public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public System.DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
-        public bool Rowstatus { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public bool RowStatus { get; set; }
+        public string FamilyID { get; set; }
     
+        public Customer Customer { get; set; }
         public ICollection<NotaZakatDetail> NotaZakatDetails { get; set; }
     }
 }

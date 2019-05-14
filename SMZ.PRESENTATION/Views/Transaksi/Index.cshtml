@@ -82,7 +82,7 @@
                         <label for="Telp">Telp</label>
                     </div>
                     <div class="col-xs-8">
-                        <input type="text" class="form-control" placeholder="No Telp" @*readonly="readonly"*@ id="Telp">
+                        <input type="text" class="form-control" placeholder="No Telp"  id="Telp">
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                         <label for="Alamat">Alamat</label>
                     </div>
                     <div class="col-xs-8">
-                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" @*readonly="readonly"*@ id="Address" required></textarea>
+                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat"  id="Address" required></textarea>
                     </div>
                 </div>
             </div>
@@ -246,5 +246,5 @@
                 background-color: #0097cf;
             }
     </style>
-    <script type="text/javascript" src="~/Scripts/pages/transaksi.js?v=@ViewBag.NOW"></script>
+    <script type="text/javascript" src="~/Scripts/pages/transaksi.js?v=@DateTime.Now"></script>
 }

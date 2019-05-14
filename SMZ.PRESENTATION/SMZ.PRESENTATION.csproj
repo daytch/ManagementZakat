@@ -18,7 +18,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -167,6 +168,7 @@
     <Content Include="Content\dataTables.bootstrap.min.css" />
     <Content Include="Content\images\bismillah.png" />
     <Content Include="Content\images\favicon-16x16.png" />
+    <Content Include="Content\images\green-bg.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\logo-alittihad.png" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
@@ -314,6 +316,7 @@
     <Content Include="Scripts\moment\moment-with-locales.min.js" />
     <Content Include="Scripts\moment\moment.min.js" />
     <Content Include="Scripts\pages\kalkulator.js" />
+    <Content Include="Scripts\pages\reportzakat.js" />
     <Content Include="Scripts\pages\transaksizakat.js" />
     <Content Include="Scripts\pages\typeofzakat.js" />
     <Content Include="Scripts\pages\report.js" />
@@ -350,6 +353,7 @@
     <Content Include="Views\Zakat\Master.cshtml" />
     <Content Include="Views\Zakat\Index.cshtml" />
     <Content Include="Views\Kalkulator\Index.cshtml" />
+    <Content Include="Views\Report\Zakat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -383,9 +387,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50715</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:40735/</IISUrl>
+          <IISUrl>http://localhost:20023/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

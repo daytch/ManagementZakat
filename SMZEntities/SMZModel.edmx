@@ -65,6 +65,37 @@
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="RowStatus" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="NotaZakat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="FamilyID" Type="varchar" MaxLength="50" />
+          <Property Name="TransactionDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="RowStatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotaZakatDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotaZakatID" Type="int" Nullable="false" />
+          <Property Name="TypeOfZakatID" Type="int" Nullable="false" />
+          <Property Name="Nominal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Jumlah" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="RowStatus" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ID" />
@@ -115,6 +146,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="150" />
+          <Property Name="Telp" Type="varchar" MaxLength="50" />
           <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Password" Type="varbinary" MaxLength="50" Nullable="false" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
@@ -185,6 +218,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NotaZakat_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="NotaZakat" Type="Self.NotaZakat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakat">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotaZakatDetail_NotaZakatDetail">
+          <End Role="NotaZakat" Type="Self.NotaZakat" Multiplicity="1" />
+          <End Role="NotaZakatDetail" Type="Self.NotaZakatDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotaZakat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakatDetail">
+              <PropertyRef Name="NotaZakatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotaZakatDetail_TypeOfZakat">
+          <End Role="TypeOfZakat" Type="Self.TypeOfZakat" Multiplicity="1" />
+          <End Role="NotaZakatDetail" Type="Self.NotaZakatDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeOfZakat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakatDetail">
+              <PropertyRef Name="TypeOfZakatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Vendor">
           <End Role="Vendor" Type="Self.Vendor" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -214,6 +283,8 @@
           <EntitySet Name="Family" EntityType="Self.Family" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nota" EntityType="Self.Nota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotaDetail" EntityType="Self.NotaDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotaZakat" EntityType="Self.NotaZakat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotaZakatDetail" EntityType="Self.NotaZakatDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductHistory" EntityType="Self.ProductHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypeOfZakat" EntityType="Self.TypeOfZakat" Schema="dbo" store:Type="Tables" />
@@ -234,6 +305,18 @@
           <AssociationSet Name="FK_NotaDetail_Product" Association="Self.FK_NotaDetail_Product">
             <End Role="Product" EntitySet="Product" />
             <End Role="NotaDetail" EntitySet="NotaDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotaZakat_Customer" Association="Self.FK_NotaZakat_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="NotaZakat" EntitySet="NotaZakat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotaZakatDetail_NotaZakatDetail" Association="Self.FK_NotaZakatDetail_NotaZakatDetail">
+            <End Role="NotaZakat" EntitySet="NotaZakat" />
+            <End Role="NotaZakatDetail" EntitySet="NotaZakatDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotaZakatDetail_TypeOfZakat" Association="Self.FK_NotaZakatDetail_TypeOfZakat">
+            <End Role="TypeOfZakat" EntitySet="TypeOfZakat" />
+            <End Role="NotaZakatDetail" EntitySet="NotaZakatDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Vendor" Association="Self.FK_Product_Vendor">
             <End Role="Vendor" EntitySet="Vendor" />
@@ -281,7 +364,21 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductHistory" EntitySet="ProductHistories" />
           </AssociationSet>
+          <EntitySet Name="NotaZakats" EntityType="SMZModel.NotaZakat" />
           <EntitySet Name="TypeOfZakats" EntityType="SMZModel.TypeOfZakat" />
+          <AssociationSet Name="FK_NotaZakat_Customer" Association="SMZModel.FK_NotaZakat_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="NotaZakat" EntitySet="NotaZakats" />
+          </AssociationSet>
+          <EntitySet Name="NotaZakatDetails" EntityType="SMZModel.NotaZakatDetail" />
+          <AssociationSet Name="FK_NotaZakatDetail_NotaZakatDetail" Association="SMZModel.FK_NotaZakatDetail_NotaZakatDetail">
+            <End Role="NotaZakat" EntitySet="NotaZakats" />
+            <End Role="NotaZakatDetail" EntitySet="NotaZakatDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotaZakatDetail_TypeOfZakat" Association="SMZModel.FK_NotaZakatDetail_TypeOfZakat">
+            <End Role="TypeOfZakat" EntitySet="TypeOfZakats" />
+            <End Role="NotaZakatDetail" EntitySet="NotaZakatDetails" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Customer">
           <Key>
@@ -298,6 +395,7 @@
           <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Families" Relationship="SMZModel.FK_Family_Customer" FromRole="Customer" ToRole="Family" />
           <NavigationProperty Name="Notas" Relationship="SMZModel.FK_Nota_Customer" FromRole="Customer" ToRole="Nota" />
+          <NavigationProperty Name="NotaZakats" Relationship="SMZModel.FK_NotaZakat_Customer" FromRole="Customer" ToRole="NotaZakat" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -416,6 +514,8 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="RowStatus" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Telp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -487,6 +587,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="NotaZakat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="RowStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="SMZModel.FK_NotaZakat_Customer" FromRole="NotaZakat" ToRole="Customer" />
+          <Property Name="FamilyID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="NotaZakatDetails" Relationship="SMZModel.FK_NotaZakatDetail_NotaZakatDetail" FromRole="NotaZakat" ToRole="NotaZakatDetail" />
+        </EntityType>
         <EntityType Name="TypeOfZakat">
           <Key>
             <PropertyRef Name="ID" />
@@ -498,7 +615,62 @@
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="NotaZakatDetails" Relationship="SMZModel.FK_NotaZakatDetail_TypeOfZakat" FromRole="TypeOfZakat" ToRole="NotaZakatDetail" />
         </EntityType>
+        <Association Name="FK_NotaZakat_Customer">
+          <End Type="SMZModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="SMZModel.NotaZakat" Role="NotaZakat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakat">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="NotaZakatDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotaZakatID" Type="Int32" Nullable="false" />
+          <Property Name="TypeOfZakatID" Type="Int32" Nullable="false" />
+          <Property Name="Nominal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Jumlah" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="RowStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="NotaZakat" Relationship="SMZModel.FK_NotaZakatDetail_NotaZakatDetail" FromRole="NotaZakatDetail" ToRole="NotaZakat" />
+          <NavigationProperty Name="TypeOfZakat" Relationship="SMZModel.FK_NotaZakatDetail_TypeOfZakat" FromRole="NotaZakatDetail" ToRole="TypeOfZakat" />
+        </EntityType>
+        <Association Name="FK_NotaZakatDetail_NotaZakatDetail">
+          <End Type="SMZModel.NotaZakat" Role="NotaZakat" Multiplicity="1" />
+          <End Type="SMZModel.NotaZakatDetail" Role="NotaZakatDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NotaZakat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakatDetail">
+              <PropertyRef Name="NotaZakatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotaZakatDetail_TypeOfZakat">
+          <End Type="SMZModel.TypeOfZakat" Role="TypeOfZakat" Multiplicity="1" />
+          <End Type="SMZModel.NotaZakatDetail" Role="NotaZakatDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeOfZakat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaZakatDetail">
+              <PropertyRef Name="TypeOfZakatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -590,6 +762,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SMZModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Telp" ColumnName="Telp" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -633,6 +807,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="NotaZakats">
+            <EntityTypeMapping TypeName="SMZModel.NotaZakat">
+              <MappingFragment StoreEntitySet="NotaZakat">
+                <ScalarProperty Name="FamilyID" ColumnName="FamilyID" />
+                <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TypeOfZakats">
             <EntityTypeMapping TypeName="SMZModel.TypeOfZakat">
               <MappingFragment StoreEntitySet="TypeOfZakat">
@@ -646,7 +836,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="NotaZakatDetails">
+            <EntityTypeMapping TypeName="SMZModel.NotaZakatDetail">
+              <MappingFragment StoreEntitySet="NotaZakatDetail">
+                <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Jumlah" ColumnName="Jumlah" />
+                <ScalarProperty Name="Nominal" ColumnName="Nominal" />
+                <ScalarProperty Name="TypeOfZakatID" ColumnName="TypeOfZakatID" />
+                <ScalarProperty Name="NotaZakatID" ColumnName="NotaZakatID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -37,10 +37,10 @@
 
     <div class="limiter">
         <div class="container-login100" style="background-image: url('@Url.Content("~/Content/login/images/bg-01.jpg")');">
-            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-54">
                 <form class="login100-form validate-form">
-                    <span class="login100-form-title p-b-49">
-                        Login
+                    <span class="login100-form-title p-b-10">
+                        <img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="img-responsive center-block" style="margin-left: auto !important;margin-right: auto !important;" height="200" width="300" />
                     </span>
 
                     <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
@@ -54,7 +54,7 @@
                         <input class="input100" type="password" name="password" placeholder="Type your password">
                         <span class="focus-input100" data-symbol="&#xf190;"></span>
                     </div>
-
+                    <br />
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
@@ -92,7 +92,7 @@
     <script src="~/Content/login/js/loading.min.js"></script>
     @Scripts.Render("~/bundles/sweetalert2")
     <!--===============================================================================================-->
-    <script src="~/Content/login/js/main.js"></script>
+    <script src="~/Content/login/js/main.js?v=@DateTime.Now" asp-append-version="true"></script>
 
 </body>
 </html>

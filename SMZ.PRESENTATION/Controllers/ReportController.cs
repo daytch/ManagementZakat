@@ -13,5 +13,9 @@ namespace SMZ.PRESENTATION.Controllers
         {
             return View();
         }
+        public ActionResult Zakat()
+        {
+            return View();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace SMZ.Core
 {
     public class Security
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static string Secret = ConfigurationManager.AppSettings["Token"].ToString(); 
         /// <summary>
@@ -44,7 +45,7 @@ namespace SMZ.Core
         /// <summary>
         /// Returns the SHA1 hash of the combined userID and password.
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
         public static byte[] GetSHA1(string email, string password)
@@ -125,8 +126,9 @@ namespace SMZ.Core
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, out securityToken);
                 return principal;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                log.Error("Security.GetPrincipal :" + ex.ToString());
                 return null;
             }
         }

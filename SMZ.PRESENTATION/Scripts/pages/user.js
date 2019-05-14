@@ -10,18 +10,22 @@
                 "data": { Token: Token.get() }
             },
             "columns": [
-                { "data": "Email", "width": "80%" },
+                { "data": "Name", "width": "30%" },
+                { "data": "Telp", "width": "30%" },
+                { "data": "Email", "width": "30%" },
                 {
                     mRender: function (data, type, row) {
                         var elem = '';
                         if (row.Email != 'admin') {
                             elem = '<a data-id="' + row.ID + '" data-toggle="modal" data-target="#myModal">Edit</a> |' +
                                 '<a data-id="' + row.ID + '" onclick="deleteData(this)" > Delete</a > ';
+                                '<a data-id="' + row.ID + '" onclick="deleteData(this)" > Delete</a > ';
                         }
                         return elem;
                     }, "width": "10%"
                 }
-            ]
+            ],
+            "searching": false
         });
 
         $('#save').on('click', function (e) {
@@ -29,6 +33,8 @@
             var custData = {
                 email: $('#UserEmail').val(),
                 password: $('#Password').val(),
+                name: $('#Name').val(),
+                telp: $('#Telp').val(),
                 Token: Token.get()
             }
 

@@ -10,6 +10,7 @@ namespace SMZ.Models
 {
     public class TokenManager
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static string Secret = "XCAP05H6LoKvbRRa/QkqLNMI7cOHguaRyHzyg7n5qEkGjQmtBhz4SzYh4Fqwjyi3KJHlSXKPwVu2+bXr6CtpgQ==";
 
         public static string GenerateToken(string username)
@@ -84,8 +85,9 @@ namespace SMZ.Models
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, out securityToken);
                 return principal;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                log.Error("TokenManager.GetPrincipal :" + ex.ToString());
                 return null;
             }
         }

@@ -19,8 +19,13 @@
         <AssociationConnector Association="SMZModel.FK_NotaDetail_Product" />
         <AssociationConnector Association="SMZModel.FK_Product_Vendor" />
         <AssociationConnector Association="SMZModel.FK_ProductHistory_ProductHistory" />
-        <EntityTypeShape EntityType="SMZModel.TypeOfZakat" Width="1.5" PointX="7.375" PointY="0.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="SMZModel.NotaZakat" Width="1.5" PointX="7.375" PointY="15.125" />
+        <EntityTypeShape EntityType="SMZModel.TypeOfZakat" Width="1.5" PointX="7.375" PointY="1.375" />
+        <AssociationConnector Association="SMZModel.FK_NotaZakat_Customer" />
+        <EntityTypeShape EntityType="SMZModel.NotaZakatDetail" Width="1.5" PointX="9.625" PointY="8.125" />
+        <AssociationConnector Association="SMZModel.FK_NotaZakatDetail_NotaZakatDetail" />
+        <AssociationConnector Association="SMZModel.FK_NotaZakatDetail_TypeOfZakat" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

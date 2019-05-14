@@ -1,17 +1,11 @@
-﻿<div class="row hidden-print" id="backbutton">
-    <div class="col-xs-3">
-        <a class="btn btn-block btn-default" onclick="back();">Back</a>
-    </div>
-    <div class="col-xs-6"></div>
-    <div class="col-xs-3">
-        <a class="btn btn-block btn-info" onclick="printAll()">Print</a>
-    </div>
-    <hr />
-</div>
-<fieldset>
-    <div class="row">
-        <div class="col-md-3 col-sm-3 col-xs-12"><img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="img-responsive center-block" style="margin-left: auto !important;margin-right: auto !important;" height="100" width="200" /></div>
-        <div class="col-md-6 col-sm-6 col-xs-12">
+﻿<div class="hidden-print" id="backbutton">
+    <button onclick="back();">Back</button>
+    <button class="pull-right" onclick="printAll();">Print</button>
+</div><br />
+<fieldset id="content_area" class="hidden-print">
+    <div class="row hide-mobile">
+        <div class="col-md-3 col-xs-3 col-xs-12"><img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="img-responsive center-block" style="margin-left: auto !important;margin-right: auto !important;" height="100" width="200" /></div>
+        <div class="col-md-6 col-xs-6 col-xs-12">
             <h4 class="text-center">
                 YAYASAN MASJID AL ITTIHAD <br />
                 LEGENDA WISATA
@@ -24,13 +18,15 @@
         <div class="col-xs-3 hidden-print"></div>
     </div>
     <hr />
-    <div class="row">
-        <div class="col-sm-12">
-            <p>Panitia Zakat (Zakat Fitrah / Zakat Maal / Zakat Perniagaan / Infaq / Shadaqah / Fidyah / Infaq Pembangunan) <br />
-            Masjid Al-Ittihad Legenda Wisata. Tahun <span id="hijriyear"></span> M / <span id="masehiyear"></span> M </p>
+    <div class="row hide-mobile">
+        <div class="col-xs-12">
+            <p>
+                Panitia Zakat (Zakat Fitrah / Zakat Maal / Zakat Perniagaan / Infaq / Shadaqah / Fidyah / Infaq Pembangunan) <br />
+                Masjid Al-Ittihad Legenda Wisata. Tahun <span id="hijriyear"></span> M / <span id="masehiyear"></span> M
+            </p>
             <div class="pull-right"><b>No. Reg. : </b></div>
             <br />
-            <img class="text-middle" src="~/Content/images/bismillah.png" alt="Bismillah" style="width:30%; height:30%;"/>
+            <img class="text-middle" src="~/Content/images/bismillah.png" alt="Bismillah" style="width:30%; height:30%;" />
             <p>Saya berniat mengeluarkan Zakat (Zakat Fitrah / Zakat Maal / Zakat Perniagaan / Infaq / Shadaqah / Fidyah / Infaq Pembangunan)</p>
             <p>Atas nama saya sendiri (beserta orang yang menjadi tanggungan saya sebagaimana disebut dibawah ini) karena Allah  ta'ala.</p>
 
@@ -38,14 +34,40 @@
     </div>
     <hr />
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xs-12">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="col-md-3 col-xs-3 col-xs-3">
                         <label for="Nama">Nama</label>
                     </div>
-                    <div class="col-md-8 col-sm-8 col-xs-8">
-                        <input type="text" class="form-control" placeholder="Nama PengQurban" id="Nama">
+                    <div class="col-md-8 col-xs-8 col-xs-8">
+                        <input type="text" class="form-control" placeholder="Nama Muzaki" style="width:100%" id="Nama">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row" name="oldFamz">
+                    <div class="col-xs-3">
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="row" id="1">
+                            <div class="col-xs-8">
+                                <span id="family"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" name="newFamz">
+                    <div class="col-xs-3">
+                    </div>
+                    <div class="col-xs-8" id="listFamily">
+                        <span id="newFamily"></span>
+                        <div class="row hidden-print" id="1">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="Nama Muzaki" id="Family1" data-id="">
+                            </div>
+                            <div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,66 +86,270 @@
                     <div class="col-xs-3">
                         <label for="Alamat">Alamat</label>
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-9">
                         <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" id="Address" required></textarea>
                     </div>
                 </div>
             </div>
+            <!-- Zakat -Start- -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label>
+                            Zakat : <br />
+                            a. Uang
+                        </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input id="zakat_uang_id" hidden />
+                                <input id="zakat_uang" class="form-control" type="number" style="width:100%" placeholder="Nominal" />
+                            </div>
+                            <div class="form-group">
+                                <input id="jml_zakat_uang" class="form-control" type="number" style="width:30%;display: inline-block;" placeholder="Jumlah Jiwa" />
+                                <span class="show-mobile">Jiwa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label> b. Beras </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input id="zakat_beras_id" hidden />
+                                <input id="zakat_beras" class="form-control" type="number" style="width:100%" placeholder="Total dalam kg" />
+                            </div>
+                            <div class="form-group">
+                                <input id="jml_zakat_beras" class="form-control" type="number" style="width:30%;display: inline-block;" placeholder="Jumlah Jiwa" />
+                                <span class="show-mobile">Jiwa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Zakat -End- -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="zakat_maal">Zakat Maal</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input hidden id="zakat_maal_id" />
+                        <input type="number" class="form-control" placeholder="Nominal Zakat Maal" id="zakat_maal" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="zakat_niaga">Zakat Perniagaan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input hidden id="zakat_niaga_id" />
+                        <input type="number" class="form-control" placeholder="Nominal Zakat Perniagaan" id="zakat_niaga" />
+                    </div>
+                </div>
+            </div>
+            <!-- Fidyah -Start- -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label>
+                            Fidyah : <br />
+                            a. Uang
+                        </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input id="fidyah_uang_id" hidden />
+                                <input id="fidyah_uang" class="form-control" type="number" style="width:100%" placeholder="Nominal" />
+                            </div>
+                            <div class="form-group">
+                                <input id="jml_fidyah_uang" class="form-control" type="number" style="width:30%;display: inline-block;" placeholder="Jumlah jiwa" />
+                                <span class="show-mobile">Jiwa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label> b. Beras </label>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input id="fidyah_beras_id" hidden />
+                                <input id="fidyah_beras" class="form-control" type="number" style="width:100%" placeholder="Total dalam kg" />
+                            </div>
+                            <div class="form-group">
+                                <input id="jml_fidyah_beras" class="form-control" type="number" style="width:30%;display: inline-block;" placeholder="Jumlah Jiwa" />
+                                <span class="show-mobile">Jiwa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fidyah -End- -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="infaq">Infaq / Shadaqah</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input hidden id="infaq_id" />
+                        <input type="number" class="form-control" placeholder="Nominal Infaq" id="infaq" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="infaq_bangunan">Infaq Pembangunan</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input hidden id="infaq_bangunan_id" />
+                        <input type="number" class="form-control" placeholder="Nominal Infaq Pembangunan" id="infaq_bangunan" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pull-left">
+            <button class="btn btn-primary" onclick="Submit()">Save</button>
+            <button class="btn btn-default">Clear</button>
         </div>
     </div>
-    <hr />
-    <table class="table table-bordered">
-        <tr>
-            <td><center><label>Jenis Donasi</label></center></td>
-            <td><center><label>Keterangan</label></center></td>
-            <td><center><label>Jumlah</label></center></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Zakat Fitrah :<br /><span style="padding-left:3em">a. Uang</span></td>
-            <td style="font-size:11px">@@ Rp. <input /> untuk <input /> Jiwa </td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px"><span style="padding-left:3em">b. Beras</span></td>
-            <td style="font-size:11px">@@ <input /> kg/liter untuk <input /> Jiwa </td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Zakat Maal</td>
-            <td style="font-size:11px"></td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Zakat Perniagaan</td>
-            <td style="font-size:11px"></td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Fidyah :<br /><span style="padding-left:3em">a. Uang</span></td>
-            <td style="font-size:11px">@@ Rp. <input /> untuk <input /> Jiwa </td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px"><span style="padding-left:3em">b. Beras</span></td>
-            <td style="font-size:11px">@@ <input /> kg/liter untuk <input /> Jiwa </td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Infaq / Shadaqah</td>
-            <td style="font-size:11px"></td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-        <tr>
-            <td style="font-size:11px">Infaq Pembangunan</td>
-            <td style="font-size:11px"></td>
-            <td style="font-size:11px">Rp. <input /></td>
-        </tr>
-    </table>
 </fieldset>
+
+<div id="print_area" class="visible-print">
+    <div class="col-sm-8 col-sm-offset-2" id="print_area_content" style="position: relative; margin-top: -50px;">
+        <img class="green-bg" src="~/Content/images/green-bg.png" style="width: 100%; height: 107px;">
+        <div class="row" style="position: absolute; top: 0px; left: 0px;">
+            <div class="col-md-3 col-xs-3"><img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="center-block logo-alittihad" style="margin-left: 20px !important;margin-right: auto !important;" height="100" width="200" /></div>
+            <div class="col-md-9 col-xs-9" style="margin-top:-17px;">
+                <h3 class="text-center title-nota">
+                    <b>
+                        YAYASAN MASJID AL ITTIHAD <br />
+                        LEGENDA WISATA
+                    </b>
+                </h3>
+                <address class="text-center address-nota">
+                    Alamat : Jl. Raya Boulevard Legenda Wisata Wanaherang <br />
+                    Kec. Gunung Putri, Kab. Bogor 16965 Telp/Fax : (021) 82498368
+                </address>
+            </div>
+        </div>
+        <br />
+        <br />
+        <p style="font-size:11px">
+            &nbsp;&nbsp;&nbsp;
+            Panitia Zakat (Zakat Fitrah / Zakat Maal / Zakat Perniagaan / Infaq / Shadaqah / Fidyah / Infaq Pembangunan) <br />
+            Masjid Al-Ittihad Legenda Wisata. Tahun <span id="hijriyear"></span> M / <span id="masehiyear"></span> M <br />
+            <b class="pull-right" style="font-size:11px">No. Reg. : <span id="NoNota"></span></b><br />
+            &nbsp;&nbsp;&nbsp;
+            Bismillahirrohmaanirrohim <br />
+            Saya berniat mengeluarkan Zakat (Zakat Fitrah / Zakat Maal / Zakat Perniagaan / Infaq / Shadaqah / Fidyah / Infaq Pembangunan)
+            Atas nama saya sendiri (beserta orang yang menjadi tanggungan saya sebagaimana disebut dibawah ini) karena Allah  ta'ala.
+        </p>
+        <p style="font-size:11px">Nama<span style="padding-left: 32px;"></span>: <span id="i_nama"></span></p>
+        <p style="font-size:11px">Alamat<span style="padding-left: 27px;"></span>: <span id="i_alamat"></span></p>
+        <p style="font-size:11px">No.HP/Telp<span style="padding-left: 5px;"></span>: <span id="i_tlp"></span></p>
+        <table class="table-zakat">
+            <tr>
+                <td class="bg"><center><label>Jenis Donasi</label></center></td>
+                <td class="bg"><center><label>Uraian Donasi</label></center></td>
+                <td class="bg"><center><label>Jumlah</label></center></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Zakat Fitrah :<br /><span style="padding-left:3em">a. Uang</span></td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;@@ <b id="z_uang_nominal"></b> untuk <b id="z_uang_jumlah"></b> Jiwa </td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="z_uang_total"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px"><span style="padding-left:3em">b. Beras</span></td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;@@ <b id="z_beras_nominal"></b> untuk <b id="z_beras_jumlah"></b> Jiwa </td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp; <b id="z_beras_total"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Zakat Maal</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="z_maal"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Zakat Perniagaan</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="z_niaga"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Fidyah :<br /><span style="padding-left:3em">a. Uang</span></td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;@@ <b id="f_uang_nominal"></b> untuk <b id="f_uang_jumlah"></b> Jiwa </td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="f_uang_total"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px"><span style="padding-left:3em">b. Beras</span></td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;@@ <b id="f_beras_nominal"></b> untuk <b id="f_beras_jumlah"></b> Jiwa </td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="f_beras_total"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Infaq / Shadaqah</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="i_infaq"></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;Infaq Pembangunan</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;</td>
+                <td style="font-size:11px">&nbsp;&nbsp;&nbsp;<b id="i_pembangunan"></b></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="font-size:11px" class="bg">Terbilang : <b id="terbilang"></b></td>
+            </tr>
+        </table>
+
+        <div>
+            <div class="col-md-3 col-xs-6">
+                <br />
+                <b class="center-block" style="font-size:11px;">Yang Menerima,</b>
+                <br /><br /><br />
+                <b class="center-block" style="font-size:11px;">(<span id="i_admin" style="font-size:11px;"></span>)</b>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-3 col-xs-6">
+                <p class="center-block">
+                    <b style="font-size:11px">
+                        Legenda Wisata, <span id="now"></span>
+                    </b><br />
+                    <b style="font-size:11px;">Yang Menyerahkan,</b>   <br /><br /><br />
+                    <b style="font-size:11px;">(<span id="i_user" style="font-size:11px;"></span>)</b>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts
 {
     <style>
+        .table-zakat, th, td {
+            border: 1px solid black;
+        }
+
+        .table-zakat, tr {
+            width: 100%
+        }
+
+        .bg {
+            -webkit-print-color-adjust: exact;
+            background-image: url('/Content/images/green-bg.png') !important;
+        }
+
         .tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
         .tt-hint {
             /*width: 396px;
@@ -166,5 +392,6 @@
                 background-color: #0097cf;
             }
     </style>
-    <script type="text/javascript" src="~/Scripts/pages/transaksizakat.js?v=@ViewBag.NOW"></script>
+
+    <script type="text/javascript" src="~/Scripts/pages/transaksizakat.js?v=@DateTime.Now"></script>
 }

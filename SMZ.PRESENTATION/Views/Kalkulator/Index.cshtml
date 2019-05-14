@@ -25,8 +25,7 @@
                     <li role="presentation"><a href="#perniagaan" aria-controls="perniagaan" role="tab" data-toggle="tab">Perniagaan</a></li>
                     <li role="presentation"><a href="#pertanian" aria-controls="pertanian" role="tab" data-toggle="tab">Pertanian</a></li>
                     <li role="presentation"><a href="#peternakan" aria-controls="peternakan" role="tab" data-toggle="tab">Peternakan</a></li>
-                    <li role="presentation"><a href="#perniagaan" aria-controls="perniagaan" role="tab" data-toggle="tab">Perniagaan</a></li>
-                    <li role="presentation"><a href="#pendapatan" aria-controls="pendapatan" role="tab" data-toggle="tab">Pendapatan & Jasa</a></li>
+                    <li role="presentation"><a href="#pendapatandanjasa" aria-controls="pendapatandanjasa" role="tab" data-toggle="tab">Pendapatan & Jasa</a></li>
                     <li role="presentation"><a href="#temuan" aria-controls="temuan" role="tab" data-toggle="tab">Rikaz(Temuan)</a></li>
                 </ul>
                 <!-- Tab panes -->
@@ -102,7 +101,7 @@
                         <table class="table table-bordered table-info">
                             <tbody>
                                 <tr>
-                                    <th colspan="2" class="header"  style="background-color:antiquewhite"><strong>Nishab</strong></th>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Nishab</strong></th>
                                 </tr>
                                 <tr>
                                     <th class="label_zakat">Harga 1 gram emas</th>
@@ -110,7 +109,7 @@
                                 </tr>
                                 <tr class="total_zakat">
                                     <th class="label_zakat"><strong>Nishab</strong></th>
-                                    <th class="value_zakat"><input type="text" id="nisab_emas_uang" class="input_angka" disabled="disabled"> <input type="hidden" id="nisab_emas_uang_float" value="42670000.00"></th>
+                                    <th class="value_zakat"><input type="text" id="nisab_emas_uang" class="input_angka" disabled="disabled"></th>
                                 </tr>
 
                                 <tr>
@@ -163,22 +162,300 @@
                             </tbody>
                         </table>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="perniagaan">perniagaan</div>
-                    <div role="tabpanel" class="tab-pane" id="pertanian">pertanian</div>
-                    <div role="tabpanel" class="tab-pane" id="peternakan">peternakan</div>
-                    <div role="tabpanel" class="tab-pane" id="perniagaan">perniagaan</div>
-                    <div role="tabpanel" class="tab-pane" id="pendapatan">pendapatan</div>
-                    <div role="tabpanel" class="tab-pane" id="temuan">temuan</div>
+                    <div role="tabpanel" class="tab-pane" id="perniagaan">
+                        <div id="content">
+                            <div class="desc_calczakat">
+                                <h4><strong>Zakat Perniagaan</strong></h4>
+                                <blockquote> zakat yang dikenakan atas usaha perniagaan yang telah mencapai <strong>nisab dan haul</strong>. Nisab zakat perniagaan senilai dengan <strong>85 gram emas</strong>. Kadar zakat perniagaan sebesar <strong>2,5%</strong>.</blockquote><br>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Nishab</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Harga 1 gram emas</th>
+                                    <th class="value_zakat"><input type="text" id="harga_emas_niaga" class="input_angka" onkeyup="validasiAngka(this); nisab_emas_niaga(); zc_mal_hitung();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Nishab</strong></th>
+                                    <th class="value_zakat"><input type="text" id="nisab_emas_niaga" class="input_angka" disabled="disabled"> <input type="hidden" id="nisab_emas_niaga_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Harta</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Uang (Cash, Tabungan, dkk)</th>
+                                    <th class="value_zakat"><input type="text" id="uang_dagang" class="input_angka" onkeyup="validasiAngka(this); zc_dagang_total_harta();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Stok Barang Dagangan</th>
+                                    <th class="value_zakat"><input type="text" id="stok_dagang" class="input_angka" onkeyup="validasiAngka(this); zc_dagang_total_harta();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Piutang</th>
+                                    <th class="value_zakat"><input type="text" id="piutang_dagang" class="input_angka" onkeyup="validasiAngka(this); zc_dagang_total_harta();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Total Harta Kena Zakat</strong></th>
+                                    <th class="value_zakat"><input type="text" id="total_harta_dagang" class="input_angka" disabled="disabled"> <input type="hidden" id="total_harta_dagang_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Kewajiban</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Hutang </th>
+                                    <th class="value_zakat"><input type="text" id="hutang_dagang" class="input_angka" onkeyup="validasiAngka(this); zc_dagang_total_kewajiban();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Biaya Lain</th>
+                                    <th class="value_zakat"><input type="text" id="biaya_dagang" class="input_angka" onkeyup="validasiAngka(this); zc_dagang_total_kewajiban();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Total Kewajiban</strong></th>
+                                    <th class="value_zakat"><input type="text" id="total_kewajiban_dagang" class="input_angka" disabled="disabled"> <input type="hidden" id="total_kewajiban_dagang_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Selisih harta dan kewajiban</th>
+                                    <th class="value_zakat"><input type="text" id="selisih_harta_dagang" class="input_angka" disabled="disabled"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_dagang" class="input_angka" disabled="disabled"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="ket_dagang">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div id="ket_zakat">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="pertanian">
+                        <div id="content">
+                            <div class="desc_calczakat">
+                                <h4><strong>Zakat Pertanian, Perkebunan, dan Kehutanan</strong></h4>
+                                <blockquote> zakat yang dikenakan atas hasil pertanian, perkebunan, dan hasil hutan pada saat panen. Nisab zakat pertanian, perkebunan, dan kehutanan senilai <strong>653 kg gabah</strong>. Kadar zakat pertanian, perkebunan, dan kehutanan sebesar <strong>10% jika tadah hujan</strong> atau <strong>5% jika menggunakan irigasi dan perawatan lainnya</strong>.</blockquote><br>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Hasil pertanian, perkebunan, dan kehutanan</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Hasil Panen</th>
+                                    <th class="value_zakat"><input type="text" id="panen" class="input_angka" style="width:60px" onkeyup="validasiAngka(this); zc_pertanian();"> kg</th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Jenis Pengairan</th>
+                                    <th class="value_zakat">
+                                        <select id="persen_zakat" onchange="zc_pertanian();" class="form-control">
+                                            <option value="0.1">tanpa biaya</option>
+                                            <option value="0.05">dengan biaya</option>
+                                        </select>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat" class="input_angka" style="width:60px" disabled="disabled"> kg</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="keterangan">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div id="ket_zakat">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="peternakan">
+                        <div id="content">
+                            <div class="desc_calczakat">
+                                <h4><strong>Zakat Peternakan</strong></h4>
+                                <blockquote> zakat yang dikenakan atas hasil binatang ternak yang telah mencapai <strong>nisab dan haul</strong>. Zakat peternakan dikenakan pada hewan ternak yang digembalakan ditempat penggembalaan umum. Dalam hal hewan ternak dipelihara di dalam kandang dikategorikan sebagai <strong>zakat perniagaan</strong>.</blockquote><br>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Kambing</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Jumlah Kambing</th>
+                                    <th class="value_zakat"><input type="text" id="kambing" class="input_angka" onkeyup="validasiAngka(this); zc_ternak_kambing();" style="width:40px;"> ekor</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat Kambing</strong></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_kambing" class="input_angka" style="width:40px;" disabled="disabled"> ekor</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="keterangan_kambing">&nbsp;</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Sapi</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Jumlah Sapi Jantan</th>
+                                    <th class="value_zakat"><input type="text" id="sapi_jantan" class="input_angka" onkeyup="validasiAngka(this); zc_ternak_sapi();" style="width:40px;"> ekor</th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Jumlah Sapi Betina</th>
+                                    <th class="value_zakat"><input type="text" id="sapi_betina" class="input_angka" onkeyup="validasiAngka(this); zc_ternak_sapi();" style="width:40px;"> ekor</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat Anak Sapi Betina yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_sapi_betina" class="input_angka" style="width:40px;" disabled="disabled"> ekor</th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat" id="label_sapi_jantan"><strong>Zakat Anak Sapi Jantan yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_sapi_jantan" class="input_angka" style="width:40px;" disabled="disabled"> ekor</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="keterangan_sapi">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="ket_zakat">
+                            <strong>Keterangan :</strong><br>
+                            <strong>1. Nisab dan kadar zakat atas ternak kambing :</strong><br>
+                            - Nisab 5 - 9, zakat yang wajib dikeluarkan 1 ekor.<br>
+                            - Nisab 10 - 14, zakat yang wajib dikeluarkan 2 ekor.<br>
+                            - Nisab 15 - 19, zakat yang wajib dikeluarkan 3 ekor.<br>
+                            - Nisab 20 - 24, zakat yang wajib dikeluarkan 4 ekor.<br><br>
+                            <strong>2. Nisab dan kadar zakat atas ternak sapi :</strong><br>
+                            - Nisab 30 - 59, zakat yang wajib dikeluarkan 1 ekor anak sapi betina.<br>
+                            - Nisab 60 - 69, zakat yang wajib dikeluarkan 2 ekor anak sapi jantan.<br>
+                            - Nisab 70 - 79, zakat yang wajib dikeluarkan 1 ekor anak sapi betina dan 1 ekor anak sapi jantan.<br>
+                            - Nisab 80 - 89, zakat yang wajib dikeluarkan 2 ekor anak sapi batina.<br>
+                            - Nisab 90 - 99, zakat yang wajib dikeluarkan 3 ekor anak sapi jantan.<br>
+                            - Nisab 110 - 119, zakat yang wajib dikeluarkan 2 ekor anak sapi betina dan 1 ekor anak sapi jantan.<br>
+                            - Nisab &gt;= 120, zakat yang wajib dikeluarkan 3 ekor anak sapi betina <strong>atau</strong> 3 ekor anak sapi jantan.<br>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="pendapatandanjasa">
+                        <div id="content">
+                            <div class="desc_calczakat">
+                                <h4><strong>Zakat Pendapatan dan Jasa</strong></h4>
+                                <blockquote> zakat yang dikeluarkan dari penghasilan yang diperoleh dari hasil profesi pada saat menerima pembayaran. Nisab zakat pendapatan senilai <strong>653 kg gabah atau 524 kg beras</strong>. Kadar zakat pendapatan dan jasa senilai <strong>2,5%</strong>.</blockquote><br>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Nishab</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Harga 1 kg beras</th>
+                                    <th class="value_zakat"><input type="text" id="harga_beras" class="input_angka" onkeyup="validasiAngka(this); nisab_beras(); zc_mal_hitung();" value="11.000"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Nishab</strong></th>
+                                    <th class="value_zakat"><input type="text" id="nisab_beras" class="input_angka" disabled="disabled" value="5.764.000,00"> <input type="hidden" id="nisab_beras_float" value="5764000.00"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Pendapatan dan Jasa</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Pendapatan</th>
+                                    <th class="value_zakat"><input type="text" id="pendapatan" class="input_angka" onkeyup="validasiAngka(this); zc_mal_total_pendapatan_jasa();"></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Jasa</th>
+                                    <th class="value_zakat"><input type="text" id="jasa" class="input_angka" onkeyup="validasiAngka(this); zc_mal_total_pendapatan_jasa();"></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Total Pendapatan dan Jasa</strong></th>
+                                    <th class="value_zakat"><input type="text" id="total_pendapatan_jasa" class="input_angka" disabled="disabled"> <input type="hidden" id="total_pendapatan_jasa_float"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_pendapatan_jasa" class="input_angka" disabled="disabled"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="ket_pendapatan_jasa">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div id="ket_zakat">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="temuan">
+                        <div id="content">
+                            <div class="desc_calczakat">
+                                <h4><strong>Zakat Rikaz(Harta temuan)</strong></h4>
+                                <blockquote> zakat yang dikenakan atas harta temuan. <strong>Zakat rikaz tidak disyaratkan adanya nisab</strong>. Kadar zakat rikaz sebesar <strong>1/5 atau 20%</strong>. Zakat Rikaz ditunaikan pada saat rikaz didapat dan dibayarkan melalui amil zakat resmi.</blockquote><br>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-info">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Rikaz(Temuan)</strong></th>
+                                </tr>
+                                <tr>
+                                    <th class="label_zakat">Nilai Harta</th>
+                                    <th class="value_zakat"><input type="text" id="harta" class="input_angka" onkeyup="validasiAngka(this); zc_harta_temuan();" onblur="validasi_numstring(this);"></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="header" style="background-color:antiquewhite"><strong>Zakat</strong></th>
+                                </tr>
+                                <tr class="total_zakat">
+                                    <th class="label_zakat"><strong>Zakat yang dikeluarkan</strong></th>
+                                    <th class="value_zakat"><input type="text" id="zakat_temuan" class="input_angka" disabled="disabled"></th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="header" id="keterangan">&nbsp;</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
                 </div>
             </div>
         </blockquote>
+        <div class="alert alert-success">
+            1. Perhitungan Zakat ini didasarkan pada : <blockquote>
+                <a href="http://simbi.kemenag.go.id/simzat/download/files/syarat_dan_tata_cara_penghitungan_zakat.pdf">
+                    <strong>PERATURAN MENTERI AGAMA (PMA) NOMOR 52 TAHUN 2014 </strong> <em>tentang</em> "SYARAT DAN TATA CARA PERHITUNGAN ZAKAT MAL DAN ZAKAT FITRAH SERTA PENDAYAGUNAAN ZAKAT UNTUK USAHA PRODUKTIF".
+                </a>
+            </blockquote>2. <strong>Nisab</strong> <em>adalah</em> batasan minimal harta yang wajib dikenakan zakat.<br />
+            3.<strong>Haul</strong> <em>adalah</em> batasan waktu satu tahun hijriyah atau 12(dua belas) bulan qomariyah kepemilikan harta yang wajib dikeluarkan zakat.
+        </div>
     </p>
 </div>
 
 @section Scripts{
-    @*<script type="text/javascript" src="~/Scripts/pages/kalkulator.js" asp-append-version="true"></script>*@
-    <script>
-        document.write("<script type='text/javascript' src='/Scripts/pages/kalkulator.js?v=' " + Date.now() + "'><\/script>");
-    </script>
+    <script type="text/javascript" src="~/Scripts/pages/kalkulator.js?v=@DateTime.Now" asp-append-version="true"></script>
 }
 

@@ -8,6 +8,7 @@ namespace SMZ.Models.Request
 {
     public class ReportRequest : RequestBase
     {
+        public int ID { get; set; }
 
         public string Action { get; set; }
     }

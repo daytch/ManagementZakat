@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Laporan";
+    ViewBag.Title = "Laporan Qurban";
 }
 
 <div class="row">
@@ -8,7 +8,7 @@
             <div class="panel-heading list-panel-heading">
                 <h1 class="panel-title list-panel-title" id="titleBig">Laporan</h1>
             </div>
-            <div class="panel-body">
+            <div class="panel-body datatable-cover">
                 <table border="0" cellspacing="5" cellpadding="5">
                     <tbody>
                         <tr>
@@ -72,5 +72,5 @@
             border-radius: 0;
         }
     </style>
-    <script type="text/javascript" src="~/Scripts/pages/report.js?@DateTime.Now" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/Scripts/pages/report.js?v=@DateTime.Now" asp-append-version="true"></script>
 }

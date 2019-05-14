@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title Management Qurban - Masjid Al Ittihad</title>
+    <title class="hidden-print">@ViewBag.Title Management Qurban - Masjid Al Ittihad</title>
     <link rel="icon" type="image/png" sizes="32x32" href="~/Content/images/logo-alittihad.png">
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/datatable")
@@ -32,22 +32,28 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Pengqurban", "Index", "Customer")</li>
                             <li>@Html.ActionLink("Vendor", "Index", "Vendor")</li>
-                            <li>@Html.ActionLink("Zakat", "Master", "Zakat")</li>
+                            <li>@Html.ActionLink("User", "Index", "User")</li>
+                            @*<li>@Html.ActionLink("Zakat", "Master", "Zakat")</li>*@
                         </ul>
                     </li>
                     <li>@Html.ActionLink("Qurban", "Index", "Transaksi")</li>
                     <li>@Html.ActionLink("Zakat / Infaq", "Index", "Zakat")</li>
                     <li>@Html.ActionLink("Kalkulator Zakat", "Index", "Kalkulator")</li>
-                    <li>@Html.ActionLink("Laporan", "Index", "Report")</li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logout <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Laporan<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("User", "Index", "User")</li>
-                            <li>@Html.ActionLink("Logout", "Index", null, null, new { onclick = "Logout()" })</li>
+                            <li>@Html.ActionLink("Laporan Qurban", "Index", "Report")</li>
+                            <li>@Html.ActionLink("Laporan Zakat", "Zakat", "Report")</li>
                         </ul>
                     </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logout <b class="caret"></b></a>
+                        <ul class="dropdown-menu">*@
+                    <li>@Html.ActionLink("Logout", "Index", null, null, new { onclick = "Logout()" })</li>
+                    @*</ul>
+                        </li>*@
                 </ul>
             </div>
         </div>
@@ -55,8 +61,8 @@
     <div class="container body-content">
         <br />
         @RenderBody()
-        <hr />
-        <footer>
+        <hr class="hidden-print" />
+        <footer class="hidden-print">
             <p>&copy; @DateTime.Now.Year - Masjid Al Ittihad</p>
         </footer>
     </div>
@@ -65,6 +71,8 @@
     @Scripts.Render("~/bundles/bootstrap")
     @*@Scripts.Render("~/bundles/jquery.datatable")*@
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    @*<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>*@
+
     @Scripts.Render("~/bundles/datatable")
     @Scripts.Render("~/bundles/sweetalert2")
     @Scripts.Render("~/bundles/constant")

@@ -49,3 +49,54 @@ textarea {
     width: 128px;
     height: 128px;
 }
+
+@media only screen and (max-width: 600px) {
+    .hide-mobile {
+        visibility: hidden;
+        display: none;
+    }
+
+    .dataTable {
+        font-size: 8px !important;
+    }
+
+    table > tbody > tr > td > span {
+        font-size: 8px !important;
+    }
+
+        table > tbody > tr > td > ol > li {
+            margin-left: -31px;
+            font-size: 8px !important;
+        }
+
+    .datatable-cover {
+        overflow-x: auto;
+    }
+
+    .title-nota {
+        font-size: 15px;
+        margin-top: 38px;
+    }
+
+    .logo-alittihad {
+        height: 20%;
+        width: 133%;
+    }
+
+    .address-nota {
+        font-size: 10px;
+        margin-left: -90px;
+    }
+
+    .green-bg {
+        width: 100% !important;
+        height: 93px !important;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .show-mobile {
+        visibility: hidden;
+        display: none;
+    }
+}
