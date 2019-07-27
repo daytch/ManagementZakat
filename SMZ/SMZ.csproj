@@ -244,10 +244,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KalkulatorController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProductClassController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TransaksiController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\ZakatController.cs" />
     <Compile Include="Core\Currency.cs" />
@@ -257,6 +259,8 @@
     </Compile>
     <Compile Include="Models\RequestBase.cs" />
     <Compile Include="Models\Request\KalkulatorRequest.cs" />
+    <Compile Include="Models\Request\ProductClassRequest.cs" />
+    <Compile Include="Models\Request\ProductRequest.cs" />
     <Compile Include="Models\Request\ZakatRequest.cs" />
     <Compile Include="Models\Request\LoginRequest.cs" />
     <Compile Include="Models\Request\ReportRequest.cs" />
@@ -267,6 +271,8 @@
     <Compile Include="Models\Request\CustomerRequesst.cs" />
     <Compile Include="Models\ResponseBase.cs" />
     <Compile Include="Models\Response\KalkulatorResponse.cs" />
+    <Compile Include="Models\Response\ProductClassResponse .cs" />
+    <Compile Include="Models\Response\ProductResponse.cs" />
     <Compile Include="Models\Response\ZakatResponse.cs" />
     <Compile Include="Models\Response\LoginResponse.cs" />
     <Compile Include="Models\Response\ReportResponse.cs" />

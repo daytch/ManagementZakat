@@ -70,6 +70,9 @@
     <Compile Include="Product.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProductClass.cs">
+      <DependentUpon>SMZModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ProductHistory.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>
@@ -88,6 +91,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SMZModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SMZModel1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SMZModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TypeOfZakat.cs">
       <DependentUpon>SMZModel.tt</DependentUpon>
@@ -122,7 +130,7 @@
     <Content Include="SMZModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SMZModel.edmx</DependentUpon>
-      <LastGenOutput>SMZModel.cs</LastGenOutput>
+      <LastGenOutput>SMZModel1.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

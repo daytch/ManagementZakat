@@ -11,6 +11,9 @@ namespace SMZ.PRESENTATION
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery/jquery-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery-form").Include(
+                        "~/Scripts/jquery/jquery.form.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate/jquery.validate*"));
 

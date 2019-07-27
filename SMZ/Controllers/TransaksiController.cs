@@ -27,9 +27,24 @@ namespace SMZ.Controllers
                     response.Token = Security.GenerateToken(username);
                     using (var ctx = new SMZEntities.SMZEntities())
                     {
+                        List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true).ToList();
                         List<Customer> ListCustomer = ctx.Customers.Where(x => x.Rowstatus == true).ToList();
                         List<SMZEntities.Vendor> ListVendor = ctx.Vendors.Where(x => x.Rowstatus == true && !"panitia".Contains(x.Name)).ToList();
-                        response.ListVendor = ListVendor.Select(x => new Models.Response.Vendor() { ID = x.ID, Name = x.Name }).ToList();
+
+                        List<Models.Response.Vendor> ListVendorWithStok = new List<Models.Response.Vendor>();
+                        foreach (SMZEntities.Vendor item in ListVendor)
+                        {
+                            Models.Response.Vendor v = new Models.Response.Vendor();
+                            v.ID = item.ID;
+                            v.Name = item.Name;
+                            v.StokKambing = ListProduct.Where(x => x.VendorID == item.ID && (x.Name.ToLower().Contains("kambing") || x.Name.ToLower().Contains("domba"))).Select(c => c.Stok).DefaultIfEmpty(0).Sum();
+                            v.PartOfCow = ListProduct.Where(x => x.VendorID == item.ID && x.Name.ToLower().Contains("sapi")).Select(c => c.PartOfCow).DefaultIfEmpty(0).Sum();
+                            v.StokSapi = ListProduct.Where(x => x.VendorID == item.ID && x.Name.ToLower().Contains("sapi")).Select(c => c.Stok).DefaultIfEmpty(0).Sum();
+                            ListVendorWithStok.Add(v);
+                        }
+
+                        response.ListVendor = ListVendorWithStok;
+
                         response.IsSuccess = true;
                         response.Message = "Sukses load data.";
                     }
@@ -81,8 +96,7 @@ namespace SMZ.Controllers
                         NotaDetail nd = new NotaDetail();
 
                         int productVendorID = 0;
-                        List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true && x.VendorID == 1).ToList();
-                        List<Product> ListProductPanitia = ctx.Products.Where(x => x.Rowstatus == true).ToList();
+                        List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true).ToList();
 
                         Panitia p = GetPanitiaProduct();
                         List<int> ListPanitiaID = new List<int>() { p.PotongID, p.TitipKambingID, p.TitipSapiID, p.InfaqID };
@@ -109,14 +123,39 @@ namespace SMZ.Controllers
                         nd = ListDetail.Where(x => x.ProductID == p.InfaqID).FirstOrDefault();
                         response.Infaq = (nd == null) ? 0 : nd.Price;
 
-                        response.NoHewan = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().ProductNo;
+                        response.NoUrut = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().ProductNo;
                         productVendorID = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().ProductID;
-                        response.VendorID = ListProductPanitia.Where(x => x.Rowstatus == true && x.ID == productVendorID).First().VendorID;
-                        response.ProductID = ListProductPanitia.Where(x => x.ID == productVendorID).FirstOrDefault().ID;
+                        Product product = ListProduct.Where(x => x.ID == productVendorID).FirstOrDefault();
+                        response.VendorName = ctx.Vendors.Where(x => x.Rowstatus == true && x.ID == product.VendorID).First().Name;
+                        response.ClassName = ctx.ProductClasses.Where(x => x.Rowstatus == true && x.ID == product.ClassID).First().Name;
+                        response.VendorID = product.VendorID;
+                        response.ProductID = product.ID;
+                        response.ClassID = product.ClassID;
 
-                        response.ListVendor = ctx.Vendors.Where(x => x.Rowstatus == true).Select(x => new Models.Response.Vendor() { ID = x.ID, Name = x.Name }).ToList();
-                        response.ListProduct = ListProductPanitia.Where(x => x.Rowstatus == true && x.VendorID == response.VendorID).Select(x => new Prod() { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
+                        #region Old Code
+                        List<SMZEntities.Vendor> ListVendor = ctx.Vendors.Where(x => x.Rowstatus == true).ToList();
+                        response.ListProduct = ListProduct.Where(x => x.Rowstatus == true && x.VendorID == response.VendorID).Select(x => new Prod() { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
 
+                        List<Models.Response.Vendor> ListVendorWithStok = new List<Models.Response.Vendor>();
+                        foreach (SMZEntities.Vendor item in ListVendor)
+                        {
+                            Models.Response.Vendor v = new Models.Response.Vendor();
+                            v.ID = item.ID;
+                            v.Name = item.Name;
+                            v.StokKambing = ListProduct.Where(x => x.VendorID == item.ID && (x.Name.Contains("kambing") || x.Name.Contains("domba"))).Sum(x => x.Stok);
+                            v.StokSapi = ListProduct.Where(x => x.VendorID == item.ID && x.Name.Contains("sapi")).Sum(x => x.Stok);
+                            ListVendorWithStok.Add(v);
+                        }
+                        List<SMZEntities.ProductClass> ListProd = ctx.ProductClasses.Where(x => x.Rowstatus == true).ToList();
+                        List<Prod_Class> lp = ListProd.Select(x => new Prod_Class() { ID = x.ID, Name = x.Name, Description = x.Description, Price = x.Price }).ToList();
+                        response.ListVendor = ListVendorWithStok;
+                        response.ListProductClass = lp;
+                        #endregion
+
+                        User user = ctx.Users.Where(x => x.RowStatus == true && x.Email == nota.CreatedBy).FirstOrDefault();
+                        response.CreatedBy = (user == null) ? "" : user.Name;
+
+                        response.PartOfCow = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().Total;
                         response.CareDays = nota.CareDays;
                         response.Price = ListDetail.Where(x => x.RowStatus == true && !ListPanitiaID.Contains(x.ProductID)).First().Price;
                         response.NotaCode = nota.NotaCode;
@@ -179,6 +218,33 @@ namespace SMZ.Controllers
             return response;
         }
 
+        public TransaksiResponse LoadProductClass(string loadProductClassAndFee, [FromBody] TransaksiRequest request)
+        {
+            TransaksiResponse response = new TransaksiResponse();
+            try
+            {
+                using (var ctx = new SMZEntities.SMZEntities())
+                {
+                    List<SMZEntities.ProductClass> ListProd = ctx.ProductClasses.Where(x => x.Rowstatus == true).ToList();
+                    List<Prod_Class> lp = ListProd.Select(x => new Prod_Class() { ID = x.ID, Name = x.Name, Description = x.Description, Price = x.Price }).ToList();
+                    response.ListProductClass = lp;
+                    response.BiayaTitipKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("kambing") && x.VendorID == 1).First().Price;
+                    response.BiayaTitipSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("sapi") && x.VendorID == 1).First().Price;
+                    response.BPemotongan = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan").First().Price;
+                    response.IsSuccess = true;
+                    response.Message = "Sukses load data.";
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("TransaksiController.LoadProduct :" + ex.ToString());
+                response.IsSuccess = false;
+                response.Message = "Gagal load data. Error : " + ex.ToString();
+                return response;
+            }
+            return response;
+        }
+
         public TransaksiResponse LoadProduct(string loadProduct, [FromBody] TransaksiRequest request)
         {
             TransaksiResponse response = new TransaksiResponse();
@@ -186,7 +252,21 @@ namespace SMZ.Controllers
             {
                 using (var ctx = new SMZEntities.SMZEntities())
                 {
-                    List<Product> ListProd = ctx.Products.Where(x => x.Rowstatus == true && x.VendorID == request.VendorID).ToList();
+                    List<Product> ListProd = new List<Product>();
+                    string hewan = (request.isSapi) ? "sapi" : "kambing";
+                    if (request.isCustom)
+                    {
+                        ListProd = (from p in ctx.Products
+                                    join pc in ctx.ProductClasses on p.ClassID equals pc.ID
+                                    where p.Rowstatus == true && pc.Rowstatus == true &&
+                                    p.VendorID == request.VendorID && pc.Name.ToLower().Contains(hewan)
+                                    select p).ToList();
+                    }
+                    else
+                    {
+                        ListProd = ctx.Products.Where(x => x.Rowstatus == true && x.VendorID == request.VendorID && x.ClassID == request.ClassID).ToList();
+                    }
+
                     List<Prod> lp = new List<Prod>();
                     foreach (Product item in ListProd)
                     {
@@ -264,7 +344,18 @@ namespace SMZ.Controllers
                             #region Customer already exist
                             #region Insert in Product and Product history
                             product = ctx.Products.Where(x => x.Rowstatus == true && x.ID == request.Transaksi.ProductID).First();
-                            product.Stok = (product.Stok == null) ? 0 - 1 : product.Stok - 1;
+                            if (!product.Name.ToLower().Contains("kambing") && !product.Name.ToLower().Contains("domba"))
+                            {
+                                product.PartOfCow = (product.PartOfCow == null) ? 0 + request.Transaksi.PartOfCow : product.PartOfCow + request.Transaksi.PartOfCow;
+                                if (product.PartOfCow == 1)
+                                {
+                                    product.Stok = product.Stok - 1;
+                                }
+                            }
+                            else
+                            {
+                                product.Stok = (product.Stok == null) ? 0 - 1 : product.Stok - 1;
+                            }
                             if (product.Stok < 0)
                             {
                                 Product p = ctx.Products.Where(x => x.Rowstatus == true && x.ID == request.Transaksi.ProductID).First();
@@ -365,7 +456,7 @@ namespace SMZ.Controllers
                             notaDetail.NotaID = nota.ID;
                             notaDetail.Nota = nota;
                             notaDetail.Price = request.Transaksi.Price;
-                            notaDetail.Total = 1;
+                            notaDetail.Total = (product.Name.ToLower().Contains("sapi")) ? request.Transaksi.PartOfCow : 1;
                             notaDetail.ProductID = request.Transaksi.ProductID;
                             notaDetail.ProductNo = product.LastNumber;
                             notaDetail.CreatedBy = username;
@@ -521,7 +612,7 @@ namespace SMZ.Controllers
                             #endregion
                         }
                         ctx.SaveChanges();
-                        response.NotaCode = nota.NotaCode;
+                        response.NotaID = nota.ID;
                         response.LastNumber = product.LastNumber.Value;
                         response.IsSuccess = true;
                         response.Message = "Transaksi berhasil.";

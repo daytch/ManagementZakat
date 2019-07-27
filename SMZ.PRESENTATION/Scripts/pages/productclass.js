@@ -4,26 +4,25 @@
     } else {
         LoadingMask.show();
         var title = "";
-        $('#VendorTable').DataTable({
+        $('#ProductClassTable').DataTable({
             "ajax": {
-                "url": API + "Vendor?GetAll=true",
+                "url": API + "ProductClass?GetAll=true",
                 "data": { Token: Token.get() }
             },
             "columns": [
-                { "data": "Name", "width": "20%" },
-                { "data": "Address", "width": "30%" },
-                { "data": "Telp", "width": "10%" },
+                { "data": "Name", "width": "30%" },
                 {
                     mRender: function (data, type, row) {
-                        var response = '';
-                        if (row.Name.toLowerCase() != 'panitia') {
-                            response = '<a data-id="' + row.ID + '" data-toggle="modal" data-target="#myModal">Edit</a> |' +
+                        return convertToRupiah(row.Price);
+                    }, "width": "20%"
+                },
+                { "data": "Description", "width": "40%" },
+                {
+                    mRender: function (data, type, row) {
+                        var response = '<a data-id="' + row.ID + '" data-toggle="modal" data-target="#myModal">Edit</a> |' +
                                 '<a data-id="' + row.ID + '" onclick="deleteData(this)" > Delete</a > '
-                        } else {
-                            response = '<a data-name="' + row.Name + '" data-id="' + row.ID + '" data-toggle="modal" data-target="#myModal">Edit</a>';
-                        }
                         return response;
-                    }, "width": "10%"
+                    }, "width": "20%"
                 }
             ],
             "processing": true,
@@ -31,28 +30,18 @@
 
         $('#save').on('click', function (e) {
             LoadingMask.show();
-            var listFamz = [];
-            var lastNumber = $('#ListProduct input').length / 2;
-            for (var i = 1; i <= lastNumber; i++) {
-                var input = $('#Product' + i + '');
-                var harga = $('#Price' + i + '');
-                var list = { ID: input.attr('data-id'), Name: input.val(), Price: harga.val() };
-                if (list.Name != '') {
-                    listFamz.push(list);
-                }
-            }
+
             var custData = {
                 Action: title,
-                ID: $("#VendorID").val(),
-                Name: $("#VendorName").val(),
-                Telp: $("#Phone").val(),
-                Address: $("#Address").val(),
-                ListProduct: listFamz,
+                ID: $("#ID").val(),
+                Name: $("#Name").val(),
+                Description: $("#Description").val(),
+                Price: convertToAngka($("#Price").val()),
                 Token: Token.get()
             }
 
             $.ajax({
-                url: API + "Vendor?Save=true",
+                url: API + "ProductClass?Save=true",
                 type: "POST",
                 data: custData,
                 success: function (response) {
@@ -67,7 +56,7 @@
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'OK'
                         }).then(() => {
-                            $('#VendorTable').DataTable().ajax.reload();
+                            $('#ProductClassTable').DataTable().ajax.reload();
                             $("#myModal").modal('hide');
                             resetModal();
                         })
@@ -87,17 +76,13 @@
             var mainTitle = $('#titleBig').html();
             title = e.relatedTarget.innerText;
             $("#modalTitle").html(title + " " + mainTitle);
-            
-            if (CheckObj.isEmptyNullOrUndefined(e.relatedTarget.dataset.name)) {
-                $(".family").hide();
-            }
 
             LoadingMask.show();
             if (title.toLowerCase() == 'edit') {
                 var custID = e.relatedTarget.getAttribute('data-id');
 
                 $.ajax({
-                    url: API + "Vendor?GetCust=true",
+                    url: API + "ProductClass?Load=true",
                     type: "POST",
                     data: {
                         ID: custID,
@@ -105,24 +90,11 @@
                     },
                     success: function (response) {
                         if (response.IsSuccess) {
-                            $("#VendorID").val(response.ID);
-                            $("#VendorName").val(response.Name);
-                            $("#Phone").val(response.Telp);
-                            $("#Address").val(response.Address);
+                            $("#ID").val(response.ID);
+                            $("#Name").val(response.Name);
+                            $("#Price").val(convertToRupiah(response.Price));
+                            $("#Description").val(response.Description);
 
-                            //jika ada list Product
-                            if (response.ListProduct.length > 0) {
-                                $("#1").remove();
-                            }
-
-                            var tagInput = '';
-                            for (var i = 0; i < response.ListProduct.length; i++) {
-                                tagInput = tagInput + '<div class="row" id="' + (i + 1) + '">' +
-                                    '<input type="text" class="col-xs-5" value="' + response.ListProduct[i].Name + '" placeholder="Product" data-id="' + response.ListProduct[i].ID + '" id="Product' + (i + 1) + '">' +
-                                    '<input type="text" class="col-xs-2" value="' + response.ListProduct[i].Price + '" placeholder="Harga" id="Price' + (i + 1) + '">' +
-                                    '<button onclick="add();"> <i class="glyphicon-plus"></i></button><button onclick="remove(' + (i + 1) + ');"> <i class="glyphicon-minus"></i></button></div></div>';
-                            }
-                            $('#ListProduct').append(tagInput);
                             LoadingMask.hide();
                         } else {
                             LoadingMask.hide();
@@ -167,6 +139,16 @@ function resetModal() {
     $('#ListProduct').append(newList);
 }
 
+$('#Price').keyup(function () {
+
+    var angka = Number(this.value.replace(/[^0-9]/g, ''));
+    var rupiah = '';
+    var angkarev = angka.toString().split('').reverse().join('');
+    for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+    this.value = 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+
+});
+
 function deleteData(e) {
     var custID = e.getAttribute('data-id');
     swal({
@@ -180,7 +162,7 @@ function deleteData(e) {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: API + "Vendor?Delete=true",
+                url: API + "ProductClass?Delete=true",
                 type: "POST",
                 data: {
                     ID: custID,
@@ -188,7 +170,7 @@ function deleteData(e) {
                 },
                 success: function (response) {
                     if (response.IsSuccess) {
-                        $('#VendorTable').DataTable().ajax.reload();
+                        $('#ProductClassTable').DataTable().ajax.reload();
                         swal(
                             'Deleted!',
                             response.Message,

@@ -41,7 +41,7 @@ $(document).ready(function () {
                     if (response.IsSuccess) {
                         $.busyLoadFull("hide", {});
                         Token.save(response.Token);
-                        debugger;
+                        
                         window.location = UI + "Kalkulator";
                         return false;
                     } else {

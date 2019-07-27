@@ -54,7 +54,7 @@ namespace SMZ.Controllers
                             r.ListDetail = ListRDetail;
                             ListReport.Add(r);
                         }
-                        response.data = ListReport;
+                        response.data = ListReport.OrderByDescending(x=>x.TransactionDate).ToList();
                         response.IsSuccess = true;
                         response.Message = "Sukses load data.";
                     }

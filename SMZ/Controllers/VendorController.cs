@@ -17,7 +17,7 @@ namespace SMZ.Controllers
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public VendorResponse GetAll(string GetAll,[FromUri] VendorRequest request)
+        public VendorResponse GetAll(string GetAll, [FromUri] VendorRequest request)
         {
             VendorResponse response = new VendorResponse();
             try
@@ -38,7 +38,7 @@ namespace SMZ.Controllers
                             cf.Name = item.Name;
                             cf.Address = item.Address;
                             cf.Telp = item.Telp.ToString();
-                            cf.ListProduct = ven.Select(x => new Prod() { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
+                            //cf.ListProduct = ven.Select(x => new Prod() { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
                             listProduct.Add(cf);
                         }
                         response.data = listProduct;
@@ -126,17 +126,20 @@ namespace SMZ.Controllers
                             vendor.CreatedOn = DateTime.Now;
                             ctx.Vendors.Add(vendor);
 
-                            foreach (Prod item in request.ListProduct)
+                            if (request.ListProduct != null)
                             {
-                                Product prod = new Product();
-                                prod.Vendor = vendor;
-                                prod.VendorID = vendor.ID;
-                                prod.Name = item.Name;
-                                prod.Price = item.Price;
-                                prod.CreatedBy = username;
-                                prod.CreatedOn = DateTime.Now;
-                                prod.Rowstatus = true;
-                                ctx.Products.Add(prod);
+                                foreach (Prod item in request.ListProduct)
+                                {
+                                    Product prod = new Product();
+                                    prod.Vendor = vendor;
+                                    prod.VendorID = vendor.ID;
+                                    prod.Name = item.Name;
+                                    prod.Price = item.Price;
+                                    prod.CreatedBy = username;
+                                    prod.CreatedOn = DateTime.Now;
+                                    prod.Rowstatus = true;
+                                    ctx.Products.Add(prod);
+                                }
                             }
 
                             response.Message = "Your data has been save.";
@@ -151,35 +154,38 @@ namespace SMZ.Controllers
                             vendor.ModifiedBy = username;
                             vendor.ModifiedOn = DateTime.Now;
 
-                            foreach (Prod item in request.ListProduct)
+                            if (request.ListProduct != null)
                             {
-                                if (item.ID > 0)
+                                foreach (Prod item in request.ListProduct)
                                 {
-                                    Product prods = ctx.Products.Where(x => x.Rowstatus == true && x.ID == item.ID).First();
-                                    if (string.IsNullOrEmpty(item.Name))
+                                    if (item.ID > 0)
                                     {
-                                        prods.Rowstatus = false;
-                                        prods.ModifiedBy = username;
-                                        prods.ModifiedOn = DateTime.Now;
+                                        Product prods = ctx.Products.Where(x => x.Rowstatus == true && x.ID == item.ID).First();
+                                        if (string.IsNullOrEmpty(item.Name))
+                                        {
+                                            prods.Rowstatus = false;
+                                            prods.ModifiedBy = username;
+                                            prods.ModifiedOn = DateTime.Now;
+                                        }
+                                        else
+                                        {
+                                            prods.Price = item.Price;
+                                            prods.Name = item.Name;
+                                            prods.ModifiedBy = username;
+                                            prods.ModifiedOn = DateTime.Now;
+                                        }
                                     }
                                     else
                                     {
-                                        prods.Price = item.Price;
-                                        prods.Name = item.Name;
-                                        prods.ModifiedBy = username;
-                                        prods.ModifiedOn = DateTime.Now;
+                                        Product Prods = new Product();
+                                        Prods.Name = item.Name;
+                                        Prods.VendorID = vendor.ID;
+                                        Prods.Price = item.Price;
+                                        Prods.CreatedBy = username;
+                                        Prods.CreatedOn = DateTime.Now;
+                                        Prods.Rowstatus = true;
+                                        ctx.Products.Add(Prods);
                                     }
-                                }
-                                else
-                                {
-                                    Product Prods = new Product();
-                                    Prods.Name = item.Name;
-                                    Prods.VendorID = vendor.ID;
-                                    Prods.Price = item.Price;
-                                    Prods.CreatedBy = username;
-                                    Prods.CreatedOn = DateTime.Now;
-                                    Prods.Rowstatus = true;
-                                    ctx.Products.Add(Prods);
                                 }
                             }
 

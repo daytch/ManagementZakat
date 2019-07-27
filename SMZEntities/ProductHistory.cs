@@ -17,7 +17,7 @@ namespace SMZEntities
         public int ID { get; set; }
         public int ProductID { get; set; }
         public string Name { get; set; }
-        public int Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public int VendorID { get; set; }
         public Nullable<int> LastNumber { get; set; }
         public Nullable<int> Stok { get; set; }

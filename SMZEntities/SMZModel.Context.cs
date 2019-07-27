@@ -28,13 +28,14 @@ namespace SMZEntities
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Family> Families { get; set; }
         public DbSet<Nota> Notas { get; set; }
-        public DbSet<NotaDetail> NotaDetails { get; set; }
-        public DbSet<ProductHistory> ProductHistories { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Product> Products { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<NotaZakat> NotaZakats { get; set; }
         public DbSet<TypeOfZakat> TypeOfZakats { get; set; }
         public DbSet<NotaZakatDetail> NotaZakatDetails { get; set; }
+        public DbSet<ProductClass> ProductClasses { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductHistory> ProductHistories { get; set; }
+        public DbSet<NotaDetail> NotaDetails { get; set; }
     }
 }

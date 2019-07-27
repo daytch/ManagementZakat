@@ -8,7 +8,7 @@
     </div>
     <hr />
 </div>
-<fieldset>
+<fieldset class="hidden-print">
     <div class="row">
         <div class="col-md-3 col-sm-3 col-xs-12"><img src="~/Content/images/logo-alittihad.png" alt="Al Ittihad" class="img-responsive center-block" style="margin-left: auto !important;margin-right: auto !important;" height="100" width="200" /></div>
         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -25,11 +25,11 @@
     </div>
     <hr />
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <p>PANITIA IDUL ADHA DAN QURBAN <span id="hijriyear"></span> M / <span id="masehiyear"></span> M </p>
             <p>Tanggal : <span id="now"></span></p>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="form-group">
                 <div class="row">
                     <div class="col-xs-3">
@@ -37,16 +37,17 @@
                     </div>
                     <div class="col-xs-8">
                         <select id="vendor" class="form-control"><option class="form-control">--Select--</option></select>
+                        <div id="stok_vendor">Stok Kambing :<span id="stok_kambing"></span><br />Stok Sapi : <span id="stok_sapi"></span></div>
                     </div>
                 </div>
             </div>
             <div class="form-group" id="noProduct">
                 <div class="row">
                     <div class="col-xs-3">
-                        <label for="NoHewan">No Hewan</label>
+                        <label for="NoUrut">No Urut</label>
                     </div>
                     <div class="col-xs-8">
-                        <strong style="font-size:larger" id="NoHewan"></strong>
+                        <strong style="font-size:larger" id="NoUrut"></strong>
                     </div>
                 </div>
             </div>
@@ -82,7 +83,7 @@
                         <label for="Telp">Telp</label>
                     </div>
                     <div class="col-xs-8">
-                        <input type="text" class="form-control" placeholder="No Telp"  id="Telp">
+                        <input type="text" class="form-control" placeholder="No Telp" id="Telp">
                     </div>
                 </div>
             </div>
@@ -92,7 +93,7 @@
                         <label for="Alamat">Alamat</label>
                     </div>
                     <div class="col-xs-8">
-                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat"  id="Address" required></textarea>
+                        <textarea type="text" class="form-control" cols="3" rows="5" placeholder="Alamat" id="Address" required></textarea>
                     </div>
                 </div>
             </div>
@@ -129,12 +130,53 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3">
-                        <label for="Hewan">Hewan</label>
+                        <label for="Hewan">Type Hewan</label>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <select class="form-control" id="producttype">
+                            <option value="value">-- Select --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="Hewan">Hewan Qurban</label>
                     </div>
                     <div class="col-md-8 col-sm-8 col-xs-8">
                         <select class="form-control" id="product">
                             <option value="value">-- Select --</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="bagian_sapi">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="Jumlah">Jumlah</label>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <select class="form-control" id="bagian">
+                            <option value="value">-- Select --</option>
+                            <option value="1">1</option>
+                            <option value="6/7">6/7</option>
+                            <option value="5/7">5/7</option>
+                            <option value="4/7">4/7</option>
+                            <option value="3/7">3/7</option>
+                            <option value="2/7">2/7</option>
+                            <option value="1/7">1/7</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group family">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="Harga">Harga</label>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="text" class="form-control" placeholder="Harga Hewan Qurban" id="Harga" disabled>
                     </div>
                 </div>
             </div>
@@ -201,9 +243,175 @@
     </div>
 </fieldset>
 
+
+<div id="print_area" class="visible-print">
+    <div class="col-sm-8 col-sm-offset-2" id="print_area_content">
+        <div class="row" style="border: solid; margin-top: 0px;">
+            <div class="col-md-3 col-xs-3">
+                <img src="/Content/images/logo-alittihad.png" alt="Al Ittihad" class="center-block logo-alittihad" height="85" width="254" style="margin-top: 8px;">
+            </div>
+            <div class="col-md-9 col-xs-9" style="margin-top: 0px;">
+                <h4 class="text-center title-nota">
+                    YAYASAN MASJID AL ITTIHAD <br>
+                    LEGENDA WISATA
+                </h4>
+                <address class="text-center address-nota" style="font-size: 12px;">
+                    Alamat : Jl. Raya Boulevard Legenda Wisata Wanaherang <br>
+                    Kec. Gunung Putri, Kab. Bogor 16965 Telp/Fax : (021) 82498368
+                </address>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6">
+                    <p>PANITIA IDUL ADHA DAN QURBAN </p>
+                    <p>TAHUN <span id="p_hijriyear"></span> H / <span id="p_masehiyear"></span> M </p>
+                    <p>Tanggal : <span id="p_now"></span></p>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <p>No. Nota : <span id="p_no_nota"></span></p>
+                    <p>No. Urut : <span id="p_no_urut"></span></p>
+                    <p>Vendor : <span id="p_vendor"></span> </p>
+                </div>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6">
+                    <p>Sudah Terima Dari : </p>
+                    <p>Nama Pengqurban : <span id="p_nama"></span></p>
+                    <p>Alamat : <span id="p_alamat"></span></p>
+                    <p>No Tlp / Hp : <span id="p_telp"></span></p>
+                    <p>Pahala Qurban :</p>
+                    <span id="p_family"></span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <p>Kelas : <span id="p_kelas"></span></p>
+                    <p>Harga : <span id="p_harga"></span> <span id="p_bagian"></span></p>
+                    <p>Biaya Pemotongan : <span id="p_biayapemotongan"></span></p>
+                    <p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan"></span></p>
+                    <p>Infaq : <span id="p_infaq"></span></p>
+                    <p>Total : <span id="p_total"></span></p>
+                    <p>Bagian Hewan Qurban yang diinginkan :</p>
+                    <p id="p_note"></p>
+                    <br />
+                    <p>Mohon tanda terima ini dibawa ketika Hari Penyembelihan Hewan Qurban</p>
+                </div>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6 text-center">
+                    <p>Yang Menerima :</p>
+                    <br />
+                    <br />
+                    <br />
+                    <p>(<span id="p_penerima"></span>)</p>
+                </div>
+                <div class="col-md-6 col-xs-6 text-center" ">
+                    <p>Yang Menyerahkan :</p>
+                    <br />
+                    <br />
+                    <br />
+                    <p>(<span id="p_customer"></span>)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border-style: dashed; border-width:1px;" />
+
+    <div class="col-sm-8 col-sm-offset-2" id="print_area_content">
+        <div class="row" style="border: solid; margin-top: 0px;">
+            <div class="col-md-3 col-xs-3">
+                <img src="/Content/images/logo-alittihad.png" alt="Al Ittihad" class="center-block logo-alittihad" height="85" width="254" style="margin-top: 8px;">
+            </div>
+            <div class="col-md-9 col-xs-9" style="margin-top: 0px;">
+                <h4 class="text-center title-nota">
+                    YAYASAN MASJID AL ITTIHAD <br>
+                    LEGENDA WISATA
+                </h4>
+                <address class="text-center address-nota" style="font-size: 12px;">
+                    Alamat : Jl. Raya Boulevard Legenda Wisata Wanaherang <br>
+                    Kec. Gunung Putri, Kab. Bogor 16965 Telp/Fax : (021) 82498368
+                </address>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6">
+                    <p>PANITIA IDUL ADHA DAN QURBAN </p>
+                    <p>TAHUN <span id="p_hijriyear1"></span> H / <span id="p_masehiyear1"></span> M </p>
+                    <p>Tanggal : <span id="p_now1"></span></p>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <p>No. Nota : <span id="p_no_nota1"></span></p>
+                    <p>No. Urut : <span id="p_no_urut1"></span></p>
+                    <p>Vendor : <span id="p_vendor1"></span> </p>
+                </div>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6">
+                    <p>Sudah Terima Dari :</p>
+                    <p>Nama Pengqurban : <span id="p_nama1"></span></p>
+                    <p>Alamat : <span id="p_alamat1"></span></p>
+                    <p>No Tlp / Hp : <span id="p_telp1"></span></p>
+                    <p>Pahala Qurban :</p>
+                    <span id="p_family1"></span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <p>Kelas : <span id="p_kelas1"></span></p>
+                    <p>Harga : <span id="p_harga1"></span> <span id="p_bagian1"></span></p>
+                    <p>Biaya Pemotongan : <span id="p_biayapemotongan1"></span></p>
+                    <p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan1"></span></p>
+                    <p>Infaq : <span id="p_infaq1"></span></p>
+                    <p>Total : <span id="p_total1"></span></p>
+                    <p>Bagian Hewan Qurban yang diinginkan :</p>
+                    <p id="p_note1"></p>
+                    <br />
+                    <p>Mohon tanda terima ini dibawa ketika Hari Penyembelihan Hewan Qurban</p>
+                </div>
+            </div>
+            <hr />
+            <div class="row" style="margin-top:-14px;margin-left:2px;margin-bottom: -20px;">
+                <div class="col-md-6 col-xs-6 text-center">
+                    <p>Yang Menerima :</p>
+                    <br />
+                    <br />
+                    <br />
+                    <p>(<span id="p_penerima1"></span>)</p>
+                </div>
+                <div class="col-md-6 col-xs-6 text-center" ">
+                    <p>Yang Menyerahkan :</p>
+                    <br />
+                    <br />
+                    <br />
+                    <p>(<span id="p_customer1"></span>)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <style>
+        @@media print {
+            html, body {
+                height: 297mm;
+                width: 210mm;
+                padding: 0px;
+            }
+
+            p {
+                margin-top: 0px;
+                margin-bottom: 0px;
+                font-size: 12px;
+            }
+
+            hr {
+                border-style: solid;
+                border-width: 2px;
+            }
+        }
+
         .tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
         .tt-hint {
             /*width: 396px;

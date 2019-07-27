@@ -1,8 +1,10 @@
 ﻿function convertToRupiah(angka) {
-    var rupiah = '';
-    var angkarev = angka.toString().split('').reverse().join('');
-    for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
-    return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+    if (!CheckObj.isEmptyNullOrUndefined(angka)) {
+        var rupiah = '';
+        var angkarev = angka.toString().split('').reverse().join('');
+        for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+        return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+    }
 }
 
 function convertToAngka(rupiah) {
@@ -27,18 +29,40 @@ function DisableInput(obj, state) {
     if (Array.isArray(obj)) {
         $.each(obj, function (index, value) {
             if (state) {
-                $('#' + value + '').attr("readonly", "readonly");
+                $('#' + value + '').attr("disabled", "disabled");
             } else {
-                $('#' + value + '').removeAttr("readonly");
+                $('#' + value + '').removeAttr("disabled");
             }
         })
     } else {
         if (state) {
-            $('#' + obj + '').attr("readonly", "readonly");
+            $('#' + obj + '').attr("disabled", "disabled");
         } else {
-            $('#' + obj + '').removeAttr("readonly");
+            $('#' + obj + '').removeAttr("disabled");
         }
     }
+}
+
+post_to_url = function (path, params, method) {
+    method = method || "post";
+
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for (var key in params) {
+        if (params.hasOwnProperty(key) && params[key] != null) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function HideAll(obj, state) {

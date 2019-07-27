@@ -149,10 +149,12 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\FamilyController.cs" />
     <Compile Include="Controllers\KalkulatorController.cs" />
+    <Compile Include="Controllers\ProductClassController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TransaksiController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\ZakatController.cs" />
     <Compile Include="Global.asax.cs">
@@ -300,6 +302,7 @@
     <Content Include="Scripts\default\common.js" />
     <Content Include="Scripts\dataTable\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\default\constant.js" />
+    <Content Include="Scripts\dropzone\dropzone.js" />
     <Content Include="Scripts\hijricalendar.js" />
     <Content Include="Scripts\jquery\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery\jquery-1.10.2.min.js" />
@@ -310,17 +313,20 @@
     <Content Include="Scripts\jquery.validate\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jquery\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery\jquery.form.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\bootstrap\respond.js" />
     <Content Include="Scripts\bootstrap\respond.min.js" />
     <Content Include="Scripts\moment\moment-with-locales.min.js" />
     <Content Include="Scripts\moment\moment.min.js" />
     <Content Include="Scripts\pages\kalkulator.js" />
+    <Content Include="Scripts\pages\productclass.js" />
     <Content Include="Scripts\pages\reportzakat.js" />
     <Content Include="Scripts\pages\transaksizakat.js" />
     <Content Include="Scripts\pages\typeofzakat.js" />
     <Content Include="Scripts\pages\report.js" />
     <Content Include="Scripts\pages\user.js" />
+    <Content Include="Scripts\pages\product.js" />
     <Content Include="Scripts\pages\vendor.js" />
     <Content Include="Scripts\pages\family.js" />
     <Content Include="Scripts\pages\customer.js" />
@@ -354,6 +360,8 @@
     <Content Include="Views\Zakat\Index.cshtml" />
     <Content Include="Views\Kalkulator\Index.cshtml" />
     <Content Include="Views\Report\Zakat.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\ProductClass\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

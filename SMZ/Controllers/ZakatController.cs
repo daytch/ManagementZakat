@@ -252,15 +252,15 @@ namespace SMZ.Controllers
                                 #region Insert table Nota
                                 List<NotaZakat> ListNota = ctx.NotaZakats.Where(x => x.RowStatus == true).ToList();
                                 int lastNotaID = (ListNota.Count == 0) ? 0 : ctx.NotaZakats.Max(x => x.ID);
-                                string famzID = string.Empty;
 
-                                List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
-                                foreach (Family item in listFamz)
-                                {
-                                    string id = (item.ID == 0) ? item.ToString() : item.ID.ToString();
-                                    famzID = famzID + "," + id;
-                                }
-                                nota.FamilyID = famzID + newFamilyID;
+                                //string famzID = string.Empty;
+                                //List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
+                                //foreach (Family item in listFamz)
+                                //{
+                                //    string id = (item.ID == 0) ? item.ToString() : item.ID.ToString();
+                                //    famzID = famzID + "," + id;
+                                //}
+                                nota.FamilyID = newFamilyID;
                                 nota.CustomerID = c.ID;
                                 nota.TransactionDate = DateTime.Now;
                                 nota.Code = GenerateCode(lastNotaID);
@@ -320,15 +320,14 @@ namespace SMZ.Controllers
                                 int lastNotaID = (ListNota.Count == 0) ? 0 : ctx.NotaZakats.Max(x => x.ID);
                                 nota.CustomerID = c.ID;
 
-                                string famzID = string.Empty;
-
-                                List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
-                                foreach (Family item in listFamz)
-                                {
-                                    string id = (item.ID == 0) ? item.ToString() : item.ID.ToString();
-                                    famzID = famzID + "," + id;
-                                }
-                                nota.FamilyID = famzID + newFamilyID;
+                                //string famzID = string.Empty;
+                                //List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
+                                //foreach (Family item in listFamz)
+                                //{
+                                //    string id = (item.ID == 0) ? item.ToString() : item.ID.ToString();
+                                //    famzID = famzID + "," + id;
+                                //}
+                                nota.FamilyID = newFamilyID;
                                 nota.CustomerID = c.ID;
                                 nota.TransactionDate = DateTime.Now;
                                 nota.Code = GenerateCode(lastNotaID);
@@ -499,9 +498,9 @@ namespace SMZ.Controllers
                             r.ListFamily = ListFamz;
                             r.ListDetail = ListRDetail;
                             ListReport.Add(r);
+
+                            response.Name = (user == null) ? "" : user.Name;
                         }
-                        User uLogin = ctx.Users.Where(x => x.RowStatus == true && x.Email == username).FirstOrDefault();
-                        response.Name = (uLogin == null) ? "" : uLogin.Name;
                         response.data = ListReport;
                         response.IsSuccess = true;
                         response.Message = "Sukses load data.";

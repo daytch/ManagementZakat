@@ -144,7 +144,7 @@
         pendapatan = Number(pendapatan);
         jasa = Number(jasa);
 
-        debugger;
+        
         total_pendapatan_jasa = pendapatan + jasa;
         $('#total_pendapatan_jasa_float').val(total_pendapatan_jasa);
 
@@ -268,7 +268,7 @@
 
         selisih_harta = harta - kewajiban;
         $('#selisih_harta_dagang').val(convertToRupiah(selisih_harta));
-        debugger;        
+                
         if (selisih_harta >= nisab) {
             zakat = 0.025 * selisih_harta;
             $('#ket_dagang').html('Harta SUDAH mencapai nishab. Dikenakan KEWAJIBAN ZAKAT.');

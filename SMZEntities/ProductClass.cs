@@ -12,21 +12,23 @@ namespace SMZEntities
     using System;
     using System.Collections.Generic;
     
-    public partial class NotaDetail
+    public partial class ProductClass
     {
-        public int ID { get; set; }
-        public int NotaID { get; set; }
-        public int ProductID { get; set; }
-        public double Total { get; set; }
-        public decimal Price { get; set; }
-        public Nullable<int> ProductNo { get; set; }
-        public string CreatedBy { get; set; }
-        public System.DateTime CreatedOn { get; set; }
-        public string ModifiedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedOn { get; set; }
-        public bool RowStatus { get; set; }
+        public ProductClass()
+        {
+            this.Products = new HashSet<Product>();
+        }
     
-        public Nota Nota { get; set; }
-        public Product Product { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public bool Rowstatus { get; set; }
+        public int Price { get; set; }
+    
+        public ICollection<Product> Products { get; set; }
     }
 }

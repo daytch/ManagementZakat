@@ -285,6 +285,16 @@ $('#Infaq').change(function () {
     PopulateTotal(product.val());
 });
 
+$('#zakat_uang, #zakat_maal, #zakat_niaga, #fidyah_uang, #infaq, #infaq_bangunan').keyup(function () {
+
+    var angka = Number(this.value.replace(/[^0-9]/g, ''));
+    var rupiah = '';
+    var angkarev = angka.toString().split('').reverse().join('');
+    for (var i = 0; i < angkarev.length; i++) if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+    this.value = 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+
+});
+
 function ValidateOnSubmit() {
     var result = true;
     var msg = '';
@@ -319,7 +329,7 @@ function ValidateOnSubmit() {
 }
 
 var Data = {
-    Name:'',
+    Name: '',
     Nota: {},
     NotaDetail: [],
     Customer: {
@@ -328,7 +338,7 @@ var Data = {
         Name: '',
         Address: '',
         Telp: '',
-        CreatedBy:'',
+        CreatedBy: '',
         ListFamily: []
     },
     Action: '',
@@ -354,7 +364,7 @@ var Data = {
 };
 
 function PopulateData() {
-
+    
     Data.Customer.Name = $('#Nama').val();
     Data.Customer.Address = $('#Address').val();
     Data.Customer.Telp = $('#Telp').val();
@@ -363,7 +373,7 @@ function PopulateData() {
     for (var i = 1; i <= lastNumber; i++) {
         var input = $('#Family' + i + '');
         var list = { ID: input.attr('data-id'), FamilyName: input.val() };
-        if (typeof (input.val()) != 'undefined') {
+        if (typeof (input.val()) != 'undefined' && input.val() != "") {
             Data.Customer.ListFamily.push(list);
         }
     }
@@ -384,7 +394,7 @@ function PopulateData() {
     if ($('#zakat_uang').val()) {
         zu.TypeOfZakatID = $('#zakat_uang_id').val();
         zu.Jumlah = ($('#jml_zakat_uang').val() == '' || $('#jml_zakat_uang').val() == 0) ? 1 : $('#jml_zakat_uang').val();
-        zu.Total = $('#zakat_uang').val();
+        zu.Total = convertToAngka($('#zakat_uang').val());
         zu.Nominal = Number(zu.Total) / Number(zu.Jumlah);
         zu.Nominal = zu.Nominal.toFixed(2);
         Data.NotaDetail.push(zu);
@@ -408,7 +418,7 @@ function PopulateData() {
     if ($('#zakat_maal').val()) {
         zm.TypeOfZakatID = $('#zakat_maal_id').val();
         zm.Jumlah = 1;
-        zm.Total = $('#zakat_maal').val();
+        zm.Total = convertToAngka($('#zakat_maal').val());
         zm.Nominal = Number(zm.Total) / Number(zm.Jumlah);
         Data.NotaDetail.push(zm);
         Data.Print.z_maal = zm.Total;
@@ -417,7 +427,7 @@ function PopulateData() {
     if ($('#zakat_niaga').val()) {
         zn.TypeOfZakatID = $('#zakat_niaga_id').val();
         zn.Jumlah = 1;
-        zn.Total = $('#zakat_niaga').val();
+        zn.Total = convertToAngka($('#zakat_niaga').val());
         zn.Nominal = Number(zn.Total) / Number(zn.Jumlah);
         Data.NotaDetail.push(zn);
         Data.Print.z_niaga = zn.Total;
@@ -426,7 +436,7 @@ function PopulateData() {
     if ($('#fidyah_uang').val()) {
         fu.TypeOfZakatID = $('#fidyah_uang_id').val();
         fu.Jumlah = ($('#jml_fidyah_uang').val() == '' || $('#jml_fidyah_uang').val() == 0) ? 1 : $('#jml_fidyah_uang').val();
-        fu.Total = $('#fidyah_uang').val();
+        fu.Total = convertToAngka($('#fidyah_uang').val());
         fu.Nominal = Number(fu.Total) / Number(fu.Jumlah);
         fu.Nominal = fu.Nominal.toFixed(2);
         Data.NotaDetail.push(fu);
@@ -450,7 +460,7 @@ function PopulateData() {
     if ($('#infaq').val()) {
         infaq.TypeOfZakatID = $('#infaq_id').val();
         infaq.Jumlah = 1;
-        infaq.Total = $('#infaq').val();
+        infaq.Total = convertToAngka($('#infaq').val());
         infaq.Nominal = Number(infaq.Total) / Number(infaq.Jumlah);
         Data.NotaDetail.push(infaq);
         Data.Print.infaq = infaq.Total;
@@ -459,7 +469,7 @@ function PopulateData() {
     if ($('#infaq_bangunan').val()) {
         ib.TypeOfZakatID = $('#infaq_bangunan_id').val();
         ib.Jumlah = 1;
-        ib.Total = $('#infaq_bangunan').val();
+        ib.Total = convertToAngka($('#infaq_bangunan').val());
         ib.Nominal = Number(ib.Total) / Number(ib.Jumlah);
         Data.NotaDetail.push(ib);
         Data.Print.i_pembangunan = ib.Total;
@@ -511,7 +521,7 @@ function RenderPrint() {
     var total_nominal = Number(Data.Print.z_uang_total) + Number(Data.Print.f_uang_total) + Number(Data.Print.z_maal) + Number(Data.Print.infaq) + Number(Data.Print.i_pembangunan);
     var ListFamily = Data.Customer.ListFamily;
     var tagFamz = "<ol style='margin-top: -14px; margin-left: 41px;'><li>" + Data.Customer.Name + "</li>";
-    debugger;
+    
     for (var i = 0; i < ListFamily.length; i++) {
         tagFamz += '<li>' + ListFamily[i].FamilyName + '</li>';
     }
@@ -523,7 +533,7 @@ function RenderPrint() {
     $('#i_alamat').append(Data.Customer.Address);
     $('#i_tlp').append(Data.Customer.Telp);
 
-    $('#z_uang_nominal').append(convertToRupiah(Data.Print.z_uang_nominal));
+    $('#z_uang_nominal').append(convertToRupiah(Math.floor(Data.Print.z_uang_nominal)));
     $('#z_uang_jumlah').append(Data.Print.z_uang_jumlah);
     $('#z_uang_total').append(convertToRupiah(Data.Print.z_uang_total));
 
@@ -534,7 +544,7 @@ function RenderPrint() {
     $('#z_maal').append(convertToRupiah(Data.Print.z_maal));
     $('#z_niaga').append(convertToRupiah(Data.Print.z_niaga));
 
-    $('#f_uang_nominal').append(convertToRupiah(Data.Print.f_uang_nominal));
+    $('#f_uang_nominal').append(convertToRupiah(Math.floor(Data.Print.f_uang_nominal)));
     $('#f_uang_jumlah').append(Data.Print.f_uang_jumlah);
     $('#f_uang_total').append(convertToRupiah(Data.Print.f_uang_total));
 

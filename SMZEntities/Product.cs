@@ -16,14 +16,18 @@ namespace SMZEntities
     {
         public Product()
         {
-            this.NotaDetails = new HashSet<NotaDetail>();
             this.ProductHistories = new HashSet<ProductHistory>();
+            this.NotaDetails = new HashSet<NotaDetail>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public int Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public int VendorID { get; set; }
+        public Nullable<int> ClassID { get; set; }
+        public string ProductCode { get; set; }
+        public string Image { get; set; }
+        public Nullable<double> PartOfCow { get; set; }
         public Nullable<int> Stok { get; set; }
         public Nullable<int> LastNumber { get; set; }
         public System.DateTime CreatedOn { get; set; }
@@ -32,8 +36,9 @@ namespace SMZEntities
         public string ModifiedBy { get; set; }
         public bool Rowstatus { get; set; }
     
-        public ICollection<NotaDetail> NotaDetails { get; set; }
+        public ProductClass ProductClass { get; set; }
         public Vendor Vendor { get; set; }
         public ICollection<ProductHistory> ProductHistories { get; set; }
+        public ICollection<NotaDetail> NotaDetails { get; set; }
     }
 }

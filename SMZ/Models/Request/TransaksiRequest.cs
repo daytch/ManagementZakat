@@ -12,6 +12,9 @@ namespace SMZ.Models.Request
         public List<CustomerTrans> ListCustomer { get; set; }
         public int CustomerID { get; set; }
         public int VendorID { get; set; }
+        public int ClassID { get; set; }
+        public bool isCustom { get; set; }
+        public bool isSapi { get; set; }
         public int NotaID { get; set; }
         public Cust Customer { get; set; }
 
@@ -30,6 +33,7 @@ namespace SMZ.Models.Request
         public int BiayaPemeliharaan { get; set; }
         public string Note { get; set; }
         public int? CareDays { get; set; }
+        public double PartOfCow { get; set; }
     }
 
     public class Panitia

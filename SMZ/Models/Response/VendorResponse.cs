@@ -29,13 +29,13 @@ namespace SMZ.Models.Response
         public string Name { get; set; }
         public string Address { get; set; }
         public string Telp { get; set; }
-        public List<Prod> ListProduct { get; set; }
+        //public List<Prod> ListProduct { get; set; }
     }
 
     public class Prod
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }
