@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $("#bagian_sapi").hide();
+    $("#urutan").hide(); 
     if (!Token.isAny()) {
         Redirect.toLoginPage();
     } else {
@@ -33,11 +34,16 @@
 
         $('#Nama').on('change', function (evt, data) {
             var val = $('#Nama').val();
-
+            
             if (typeof (arrCustpmer.find(x => x.Nama.toLowerCase() == val.toLowerCase())) == 'undefined') {
                 $('#Telp').val('');
                 $('#Address').val('');
 
+                $('[name="newFamz"]').show();
+                $('[name="oldFamz"]').hide();
+
+                Data.Transaksi.FamilyID = [];
+            } else {
                 $('[name="newFamz"]').show();
                 $('[name="oldFamz"]').hide();
 
@@ -64,12 +70,16 @@
                         var tagFamz = '<ol>';
                         $('#Telp').val(cust.Telp);
                         $('#Address').val(cust.Address);
-                        for (var i = 0; i < listFamz.length; i++) {
-                            tagFamz = tagFamz + '<li>' + listFamz[i].FamilyName + '</li>';
-                            Data.Transaksi.FamilyID.push(listFamz[i].ID);
-                        }
-                        $('#family').html('');
-                        $('#family').append(tagFamz + '</ol>');
+
+                        $('[name="newFamz"]').show();
+                        $('[name="oldFamz"]').hide();
+
+                        //for (var i = 0; i < listFamz.length; i++) {
+                        //    tagFamz = tagFamz + '<li>' + listFamz[i].FamilyName + '</li>';
+                        //    Data.Transaksi.FamilyID.push(listFamz[i].ID);
+                        //}
+                        //$('#family').html('');
+                        //$('#family').append(tagFamz + '</ol>');
                     } else {
                         swal(
                             'Failed',
@@ -125,11 +135,13 @@ var Data = {
         ProductID: '',
         Infaq: '',
         Price: '',
-        BiayaPemotongan: '',
+        BiayaPemotonganKambing: '',
+        BiayaPemotonganSapi: '',
         BiayaPemeliharaan: '',
         Note: '',
         CareDays: '',
-        PartOfCow: ''
+        PartOfCow: '',
+        NoUrut:''
     },
     Customer: {
         Name: '',
@@ -145,14 +157,17 @@ var stokSapi = 0;
 var bagianDariSapi = 0;
 var BiayaTitipSapi = 0;
 var BiayaTitipKambing = 0;
+var BiayaPotongSapi = 0;
+var BiayaPotongKambing = 0;
 var HargaHewan = 0;
+var isSapi = true;
+var isCustom = true;
 
 var source = API + "Transaksi?getCustomer=true";
 
 function InitData() {
     LoadingMask.show();
     var NotaID = getParameterByName('NotaID');
-
 
     $.ajax({
         type: "POST",
@@ -173,6 +188,8 @@ function InitData() {
                 $('#BiayaPemotongan').val(bPotong);
                 BiayaTitipSapi = response.BiayaTitipSapi;
                 BiayaTitipKambing = response.BiayaTitipKambing;
+                BiayaPotongSapi = response.BPemotonganSapi;
+                BiayaPotongKambing = response.BPemotonganKambing;
                 $('#producttype').append(opt);
             } else {
                 swal(
@@ -247,17 +264,19 @@ function GetNota(NotaID, Callback) {
         success: function (response) {
             if (response.IsSuccess) {
 
-                $('[name="newFamz"]').hide();
-                $('[name="oldFamz"]').show();
                 $('#stok_vendor').hide();
-
+                
                 var listFamz = response.Customer.ListFamily;
                 var tagFamz = '<ul style="font-size:11px;">';
                 var FamNota = '<ol>';
-                for (var i = 0; i < listFamz.length; i++) {
-                    tagFamz += '<li>' + listFamz[i].FamilyName + '</li>';
-                    FamNota += '<li>' + listFamz[i].FamilyName + '</li>';
-                    Data.Transaksi.FamilyID.push(listFamz[i].ID);
+                if (!CheckObj.isEmptyNullOrUndefined(listFamz)) {
+                    for (var i = 0; i < listFamz.length; i++) {
+                        tagFamz += '<li>' + listFamz[i].FamilyName + '</li>';
+                        FamNota += '<li>' + listFamz[i].FamilyName + '</li>';
+                        Data.Transaksi.FamilyID.push(listFamz[i].ID);
+                    }
+                    $('[name="newFamz"]').hide();
+                    $('[name="oldFamz"]').show();
                 }
 
                 var date = moment.utc(response.TransactionDate, 'YYYY-MM-DD HH:mm Z');
@@ -288,10 +307,11 @@ function GetNota(NotaID, Callback) {
                 $('#product').val(response.ProductID);
 
                 var biayaTitip = (response.BiayaTitipKambing > 0) ? response.BiayaTitipKambing : response.BiayaTitipSapi;
-                var bPelihara = convertToRupiah(biayaTitip / response.CareDays);
-                var bPotong = convertToRupiah(response.BPemotongan);
-                var total = Number(response.Price) + Number(biayaTitip) + Number(response.BPemotongan) + Number(response.Infaq);
-                
+                //var bPelihara = convertToRupiah(biayaTitip / response.CareDays);
+                var bPotong = (response.BPemotonganKambing > 0) ? convertToRupiah(response.BPemotonganKambing) : convertToRupiah(response.BPemotonganSapi);
+                //var total = Number(response.Price) + Number(biayaTitip) + Number(response.BPemotongan) + Number(response.Infaq);
+                var total = Number(response.Price) + convertToAngka(bPotong) + Number(response.Infaq);
+
                 if ($('#product').find("option:selected").text().toLowerCase().indexOf("sapi") != -1) {
                     var part = response.PartOfCow * 7;
                     $('#p_bagian').show();
@@ -300,10 +320,11 @@ function GetNota(NotaID, Callback) {
                     $('#p_bagian1').html('(' + part + '/7)');
 
                     $('#bagian_sapi').show();
-                    $('#bagian').val(part + '/7');                    
+                    $('#bagian').val(part + '/7');
                 }
                 $('#qtydays').val(response.CareDays);
-                $('#BiayaPemeliharaan').val(bPelihara);
+                //$('#BiayaPemeliharaan').val(bPelihara);
+                $('#BiayaPemotongan').val(bPotong);                
                 $('#Harga').val(convertToRupiah(response.Price));
                 $('#Infaq').val(convertToRupiah(response.Infaq));
                 $('#Total').val(convertToRupiah(total));
@@ -350,14 +371,14 @@ function GetNota(NotaID, Callback) {
                 $('#p_harga1').html(convertToRupiah(response.Price));
                 $('#p_biayapemotongan').html(bPotong);
                 $('#p_biayapemotongan1').html(bPotong);
-                $('#p_biayapemeliharaan').html(bPelihara);
-                $('#p_biayapemeliharaan1').html(bPelihara);
+                //$('#p_biayapemeliharaan').html(bPelihara);
+                //$('#p_biayapemeliharaan1').html(bPelihara);
                 $('#p_total').html(convertToRupiah(total));
                 $('#p_total1').html(convertToRupiah(total));
                 $('#p_family').append(tagFamz + '</ul>');
                 $('#p_family1').append(tagFamz + '</ul>');
 
-                DisableInput(['Infaq', 'product', 'producttype', 'vendor', 'Nama', 'Req', 'qtydays', 'Telp', 'Address','bagian'], true);
+                DisableInput(['Infaq', 'product', 'producttype', 'vendor', 'Nama', 'Req', 'qtydays', 'Telp', 'Address', 'bagian'], true);
                 HideAll(['noProduct', 'nota', 'backbutton'], false);
                 HideAll('submit', true);
 
@@ -377,6 +398,10 @@ function GetNota(NotaID, Callback) {
         }
     });
 }
+
+$('#no_urut').change(function () {
+    Data.Transaksi.NoUrut = this.value;
+});
 
 $('#vendor').change(function () {
 
@@ -433,8 +458,9 @@ $('#vendor').change(function () {
     $("#stok_kambing").html('');
     $("#stok_kambing").append(stokKambing);
     $("#stok_sapi").html('');
-    var bagian = (7 - (bagianDariSapi * 7)) + "/7";
-    var s_sapi = (Number(stokSapi) - 1) + " & " + bagian;
+    var genap = Number(bagianDariSapi.toString().split(".")[0]);
+    var bagian = (bagianDariSapi > 1) ? Math.round((7 - ((bagianDariSapi - genap) * 7))) + "/7" : (7 - (bagianDariSapi * 7)) + "/7";
+    var s_sapi = (Number(stokSapi) - 1 - genap) + " & " + bagian;
     $("#stok_sapi").append(s_sapi);
 
     $("#producttype option").each(function () {
@@ -468,16 +494,24 @@ $('#Infaq, #Harga').keyup(function () {
 
 });
 
-$('#Infaq, #Harga').change(function () {
+$('#Infaq').change(function () {
+    Data.Transaksi.Infaq = convertToAngka(this.value);
+    PopulateTotal();
+});
 
-    Data.Transaksi.Infaq = convertToAngka($("#Infaq").val());
+$('#Harga').change(function () {
 
-    //set harga custom
-    var bagian = $("#bagian").val();
-    var pembagi = (bagian === "6/7") ? 6 / 7 : (bagian === "5/7") ? 5 / 7 : (bagian === "4/7") ? 4 / 7 : (bagian === "3/7") ? 3 / 7 : (bagian === "2/7") ? 2 / 7 : (bagian === "1/7") ? 1 / 7 : 1;
-    HargaHewan = Number($('#producttype').find("option:selected").attr("data-price")) * Number(pembagi);
-    Data.Transaksi.Price = Math.round(HargaHewan / 100) * 100;
-    $('#Harga').val(convertToRupiah(Math.round(HargaHewan / 100) * 100));
+    if (isSapi && !isCustom) {
+        //set harga custom
+        var bagian = $("#bagian").val();
+        var pembagi = (bagian === "6/7") ? 6 / 7 : (bagian === "5/7") ? 5 / 7 : (bagian === "4/7") ? 4 / 7 : (bagian === "3/7") ? 3 / 7 : (bagian === "2/7") ? 2 / 7 : (bagian === "1/7") ? 1 / 7 : 1;
+        HargaHewan = Number($('#producttype').find("option:selected").attr("data-price")) * Number(pembagi);
+        Data.Transaksi.Price = Math.round(HargaHewan / 100) * 100;
+        $('#Harga').val(convertToRupiah(Math.round(HargaHewan / 100) * 100));
+    }
+    if (isCustom) {
+        Data.Transaksi.Price = convertToAngka(this.value);
+    }
     PopulateTotal();
 });
 
@@ -492,9 +526,7 @@ $('#bagian').change(function () {
 
 $('#producttype').change(function () {
     var jenisHewan = this.options[this.selectedIndex].innerHTML;
-    var biayaTitip = 0;
-    var isCustom = true;
-    var isSapi = true;
+    //var biayaTitip = 0;
 
     $('#bagian').prop('selectedIndex', 0);
 
@@ -516,14 +548,17 @@ $('#producttype').change(function () {
         $("#bagian_sapi").hide();
         biayaTitip = convertToRupiah(BiayaTitipKambing);
         isSapi = false;
+        $('#BiayaPemotongan').val(convertToRupiah(BiayaPotongKambing));
+        $("#urutan").hide();        
     } else {
         $("#bagian_sapi").show();
         biayaTitip = convertToRupiah(BiayaTitipSapi);
         isSapi = true;
+        $('#BiayaPemotongan').val(convertToRupiah(BiayaPotongSapi));
+        $("#urutan").show();        
     }
 
     //Get Product list
-
     $.ajax({
         url: API + "Transaksi?loadProduct=true",
         data: {
@@ -564,7 +599,7 @@ $('#producttype').change(function () {
         }
     });
 
-    $('#BiayaPemeliharaan').val(biayaTitip);
+    //$('#BiayaPemeliharaan').val(biayaTitip);
     $('#Total').val(0);
     Data.Transaksi.Price = HargaHewan;
     PopulateTotal();
@@ -593,10 +628,10 @@ $('#product').change(function () {
 function PopulateTotal() {
     var infaq = (CheckObj.isEmptyNullOrUndefined($('#Infaq').val())) ? 0 : convertToAngka($('#Infaq').val());
     var bPotong = convertToAngka($('#BiayaPemotongan').val());
-    var bTitip = convertToAngka($('#BiayaPemeliharaan').val());
-    var totalHrTitip = (CheckObj.isEmptyNullOrUndefined($('#qtydays').val())) ? 1 : $('#qtydays').val();
+    //var bTitip = convertToAngka($('#BiayaPemeliharaan').val());
+    //var totalHrTitip = (CheckObj.isEmptyNullOrUndefined($('#qtydays').val())) ? 1 : $('#qtydays').val();
 
-    var total = infaq + bPotong + Number(Data.Transaksi.Price) + (bTitip * totalHrTitip);
+    var total = infaq + bPotong + Number(Data.Transaksi.Price);// + (bTitip * totalHrTitip);
 
     var totalRupiah = convertToRupiah(total);
     $('#Total').val(totalRupiah);
@@ -638,7 +673,11 @@ function PrintPage() {
 function Submit() {
     LoadingMask.show();
     var bPotong = $('#BiayaPemotongan').val();
-    Data.Transaksi.BiayaPemotongan = convertToAngka(bPotong);
+    if (isSapi) {
+        Data.Transaksi.BiayaPemotonganSapi = convertToAngka(bPotong);
+    } else {
+        Data.Transaksi.BiayaPemotonganKambing = convertToAngka(bPotong);
+    }
     Data.Transaksi.Note = $('#Req').val();
 
     Data.Customer.Name = $('#Nama').val();
@@ -692,12 +731,20 @@ function printAll() {
 }
 
 function add() {
-
     var lastNumber = $('#listFamily input').length;
-    var tagInput = '<div class="row hidden-print" id="' + (lastNumber + 1) + '"><div class="col-md-8" >' +
-        '<input type="text" class="form-control" placeholder="Family" data-id="" id="Family' + (lastNumber + 1) + '"></div>' +
-        '<div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button>&nbsp;<button onclick="remove(' + (lastNumber + 1) + ');"> <i class="glyphicon-minus"></i></button></div>';
-    $('#listFamily').append(tagInput);
+    if (isSapi && lastNumber < 7) {
+        var tagInput = '<div class="row hidden-print" id="' + (lastNumber + 1) + '"><div class="col-md-8" >' +
+            '<input type="text" class="form-control" placeholder="Family" data-id="" id="Family' + (lastNumber + 1) + '"></div>' +
+            '<div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button>&nbsp;<button onclick="remove(' + (lastNumber + 1) + ');"> <i class="glyphicon-minus"></i></button></div>';
+        $('#listFamily').append(tagInput);
+    }
+
+    if (!isSapi && lastNumber <= 1) {
+        var tagInput = '<div class="row hidden-print" id="' + (lastNumber + 1) + '"><div class="col-md-8" >' +
+            '<input type="text" class="form-control" placeholder="Family" data-id="" id="Family' + (lastNumber + 1) + '"></div>' +
+            '<div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button>&nbsp;<button onclick="remove(' + (lastNumber + 1) + ');"> <i class="glyphicon-minus"></i></button></div>';
+        $('#listFamily').append(tagInput);
+    }
 }
 
 function remove(e) {

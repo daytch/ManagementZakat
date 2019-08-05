@@ -12,7 +12,8 @@ namespace SMZ.Models.Response
         public List<Vendor> ListVendor { get; set; }
         public List<CustomerTrans> ListCustomer { get; set; }
         public Cust Customer { get; set; }
-        public decimal? BPemotongan { get; set; }
+        public decimal? BPemotonganKambing { get; set; }
+        public decimal? BPemotonganSapi { get; set; }
         public decimal? BiayaTitipKambing { get; set; }
         public decimal? BiayaTitipSapi { get; set; }
         public decimal Infaq { get; set; }

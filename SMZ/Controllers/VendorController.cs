@@ -120,7 +120,7 @@ namespace SMZ.Controllers
                             SMZEntities.Vendor vendor = new SMZEntities.Vendor();
                             vendor.Name = request.Name;
                             vendor.Address = request.Address;
-                            vendor.Telp = Convert.ToInt32(request.Telp);
+                            vendor.Telp = request.Telp;
                             vendor.Rowstatus = true;
                             vendor.CreatedBy = username;
                             vendor.CreatedOn = DateTime.Now;
@@ -150,7 +150,7 @@ namespace SMZ.Controllers
                             SMZEntities.Vendor vendor = ctx.Vendors.Where(x => x.ID == request.ID && x.Rowstatus == true).First();
                             vendor.Name = request.Name;
                             vendor.Address = request.Address;
-                            vendor.Telp = Convert.ToInt32(request.Telp);
+                            vendor.Telp = request.Telp;
                             vendor.ModifiedBy = username;
                             vendor.ModifiedOn = DateTime.Now;
 

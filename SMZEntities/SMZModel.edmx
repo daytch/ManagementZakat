@@ -37,15 +37,16 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NotaCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="FamilyID" Type="varchar" MaxLength="50" />
+          <Property Name="NotaCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Family" Type="nvarchar(max)" />
           <Property Name="TransactionDate" Type="datetime" Nullable="false" />
-          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="CancellationNote" Type="nvarchar(max)" />
+          <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="CareDays" Type="int" />
-          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
-          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="RowStatus" Type="bit" Nullable="false" />
         </EntityType>
@@ -179,13 +180,13 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Address" Type="varchar(max)" Nullable="false" />
-          <Property Name="Telp" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Telp" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
-          <Property Name="CreatedBy" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime" />
-          <Property Name="ModifiedBy" Type="varchar" MaxLength="150" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="150" />
           <Property Name="Rowstatus" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Family_Customer">
@@ -369,17 +370,11 @@
         <EntityContainer Name="SMZEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Customers" EntityType="SMZModel.Customer" />
           <EntitySet Name="Families" EntityType="SMZModel.Family" />
-          <EntitySet Name="Notas" EntityType="SMZModel.Nota" />
           <AssociationSet Name="FK_Family_Customer" Association="SMZModel.FK_Family_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Family" EntitySet="Families" />
           </AssociationSet>
-          <AssociationSet Name="FK_Nota_Customer" Association="SMZModel.FK_Nota_Customer">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Nota" EntitySet="Notas" />
-          </AssociationSet>
           <EntitySet Name="Users" EntityType="SMZModel.User" />
-          <EntitySet Name="Vendors" EntityType="SMZModel.Vendor" />
           <EntitySet Name="NotaZakats" EntityType="SMZModel.NotaZakat" />
           <EntitySet Name="TypeOfZakats" EntityType="SMZModel.TypeOfZakat" />
           <AssociationSet Name="FK_NotaZakat_Customer" Association="SMZModel.FK_NotaZakat_Customer">
@@ -401,22 +396,28 @@
             <End Role="ProductClass" EntitySet="ProductClasses" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_Vendor" Association="SMZModel.FK_Product_Vendor">
-            <End Role="Vendor" EntitySet="Vendors" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
           <EntitySet Name="ProductHistories" EntityType="SMZModel.ProductHistory" />
           <AssociationSet Name="FK_ProductHistory_ProductHistory" Association="SMZModel.FK_ProductHistory_ProductHistory">
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductHistory" EntitySet="ProductHistories" />
           </AssociationSet>
           <EntitySet Name="NotaDetails" EntityType="SMZModel.NotaDetail" />
-          <AssociationSet Name="FK_NotaDetail_Nota" Association="SMZModel.FK_NotaDetail_Nota">
-            <End Role="Nota" EntitySet="Notas" />
-            <End Role="NotaDetail" EntitySet="NotaDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_NotaDetail_Product" Association="SMZModel.FK_NotaDetail_Product">
             <End Role="Product" EntitySet="Products" />
+            <End Role="NotaDetail" EntitySet="NotaDetails" />
+          </AssociationSet>
+          <EntitySet Name="Vendors" EntityType="SMZModel.Vendor" />
+          <AssociationSet Name="FK_Product_Vendor" Association="SMZModel.FK_Product_Vendor">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="Notas" EntityType="SMZModel.Nota" />
+          <AssociationSet Name="FK_Nota_Customer" Association="SMZModel.FK_Nota_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Nota" EntitySet="Notas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotaDetail_Nota" Association="SMZModel.FK_NotaDetail_Nota">
+            <End Role="Nota" EntitySet="Notas" />
             <End Role="NotaDetail" EntitySet="NotaDetails" />
           </AssociationSet>
           </EntityContainer>
@@ -434,8 +435,8 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Families" Relationship="SMZModel.FK_Family_Customer" FromRole="Customer" ToRole="Family" />
-          <NavigationProperty Name="Notas" Relationship="SMZModel.FK_Nota_Customer" FromRole="Customer" ToRole="Nota" />
           <NavigationProperty Name="NotaZakats" Relationship="SMZModel.FK_NotaZakat_Customer" FromRole="Customer" ToRole="NotaZakat" />
+          <NavigationProperty Name="Notas" Relationship="SMZModel.FK_Nota_Customer" FromRole="Customer" ToRole="Nota" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -451,25 +452,6 @@
           <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="SMZModel.FK_Family_Customer" FromRole="Family" ToRole="Customer" />
         </EntityType>
-        <EntityType Name="Nota">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NotaCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FamilyID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="RowStatus" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Customer" Relationship="SMZModel.FK_Nota_Customer" FromRole="Nota" ToRole="Customer" />
-          <Property Name="CareDays" Type="Int32" />
-          <NavigationProperty Name="NotaDetails" Relationship="SMZModel.FK_NotaDetail_Nota" FromRole="Nota" ToRole="NotaDetail" />
-        </EntityType>
         <Association Name="FK_Family_Customer">
           <End Type="SMZModel.Customer" Role="Customer" Multiplicity="1" />
           <End Type="SMZModel.Family" Role="Family" Multiplicity="*" />
@@ -478,18 +460,6 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Family">
-              <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Nota_Customer">
-          <End Type="SMZModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="SMZModel.Nota" Role="Nota" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Nota">
               <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
@@ -508,21 +478,6 @@
           <Property Name="RowStatus" Type="Boolean" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Telp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Vendor">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Telp" Type="Int32" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="SMZModel.FK_Product_Vendor" FromRole="Vendor" ToRole="Product" />
         </EntityType>
         <EntityType Name="NotaZakat">
           <Key>
@@ -643,9 +598,9 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ProductClass" Relationship="SMZModel.FK_Product_ProductClass" FromRole="Product" ToRole="ProductClass" />
-          <NavigationProperty Name="Vendor" Relationship="SMZModel.FK_Product_Vendor" FromRole="Product" ToRole="Vendor" />
           <NavigationProperty Name="ProductHistories" Relationship="SMZModel.FK_ProductHistory_ProductHistory" FromRole="Product" ToRole="ProductHistory" />
           <NavigationProperty Name="NotaDetails" Relationship="SMZModel.FK_NotaDetail_Product" FromRole="Product" ToRole="NotaDetail" />
+          <NavigationProperty Name="Vendor" Relationship="SMZModel.FK_Product_Vendor" FromRole="Product" ToRole="Vendor" />
         </EntityType>
         <Association Name="FK_Product_ProductClass">
           <End Type="SMZModel.ProductClass" Role="ProductClass" Multiplicity="0..1" />
@@ -656,18 +611,6 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="ClassID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_Vendor">
-          <End Type="SMZModel.Vendor" Role="Vendor" Multiplicity="1" />
-          <End Type="SMZModel.Product" Role="Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vendor">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="VendorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -716,21 +659,9 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="RowStatus" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Nota" Relationship="SMZModel.FK_NotaDetail_Nota" FromRole="NotaDetail" ToRole="Nota" />
           <NavigationProperty Name="Product" Relationship="SMZModel.FK_NotaDetail_Product" FromRole="NotaDetail" ToRole="Product" />
+          <NavigationProperty Name="Nota" Relationship="SMZModel.FK_NotaDetail_Nota" FromRole="NotaDetail" ToRole="Nota" />
         </EntityType>
-        <Association Name="FK_NotaDetail_Nota">
-          <End Type="SMZModel.Nota" Role="Nota" Multiplicity="1" />
-          <End Type="SMZModel.NotaDetail" Role="NotaDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Nota">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="NotaDetail">
-              <PropertyRef Name="NotaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_NotaDetail_Product">
           <End Type="SMZModel.Product" Role="Product" Multiplicity="1" />
           <End Type="SMZModel.NotaDetail" Role="NotaDetail" Multiplicity="*" />
@@ -740,6 +671,77 @@
             </Principal>
             <Dependent Role="NotaDetail">
               <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Telp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Rowstatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="SMZModel.FK_Product_Vendor" FromRole="Vendor" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Product_Vendor">
+          <End Type="SMZModel.Vendor" Role="Vendor" Multiplicity="1" />
+          <End Type="SMZModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Nota">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotaCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Family" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CancellationNote" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CareDays" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="RowStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="SMZModel.FK_Nota_Customer" FromRole="Nota" ToRole="Customer" />
+          <NavigationProperty Name="NotaDetails" Relationship="SMZModel.FK_NotaDetail_Nota" FromRole="Nota" ToRole="NotaDetail" />
+        </EntityType>
+        <Association Name="FK_Nota_Customer">
+          <End Type="SMZModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="SMZModel.Nota" Role="Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotaDetail_Nota">
+          <End Type="SMZModel.Nota" Role="Nota" Multiplicity="1" />
+          <End Type="SMZModel.NotaDetail" Role="NotaDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nota">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotaDetail">
+              <PropertyRef Name="NotaID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -778,24 +780,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Notas">
-            <EntityTypeMapping TypeName="SMZModel.Nota">
-              <MappingFragment StoreEntitySet="Nota">
-                <ScalarProperty Name="CareDays" ColumnName="CareDays" />
-                <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="FamilyID" ColumnName="FamilyID" />
-                <ScalarProperty Name="NotaCode" ColumnName="NotaCode" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SMZModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -808,21 +792,6 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Vendors">
-            <EntityTypeMapping TypeName="SMZModel.Vendor">
-              <MappingFragment StoreEntitySet="Vendor">
-                <ScalarProperty Name="Rowstatus" ColumnName="Rowstatus" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Telp" ColumnName="Telp" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -940,6 +909,40 @@
                 <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="NotaID" ColumnName="NotaID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="SMZModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="Rowstatus" ColumnName="Rowstatus" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Telp" ColumnName="Telp" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notas">
+            <EntityTypeMapping TypeName="SMZModel.Nota">
+              <MappingFragment StoreEntitySet="Nota">
+                <ScalarProperty Name="RowStatus" ColumnName="RowStatus" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CareDays" ColumnName="CareDays" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CancellationNote" ColumnName="CancellationNote" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="NotaCode" ColumnName="NotaCode" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

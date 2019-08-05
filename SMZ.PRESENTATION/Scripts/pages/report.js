@@ -8,14 +8,14 @@
         "columns": [
             { "data": "TransactionDate", "width": "10%" },
             { "data": "NotaCode", "width": "15%" },
-            { "data": "CustomerName", "width": "25%" },
+            { "data": "CustomerName", "width": "20%" },
             {
                 mRender: function (data, type, row) {
 
                     var date = moment.utc(row.TransactionDate, 'YYYY-MM-DD HH:mm Z');
                     var local = date.locale('id').format('LL');
                     return local;
-                }, "width": "20%"
+                }, "width": "15%"
             },
             {
                 mRender: function (data, type, row) {
@@ -40,9 +40,10 @@
             },
             {
                 mRender: function (data, type, row) {
-                    
-                    return '<a class="btn btn-info" href="' + UI + 'Transaksi?NotaID=' + row.NotaID + '">Info</a>'
-                }, "width": "10%"
+
+                    return '<a class="btn btn-info" href="' + UI + 'Transaksi?NotaID=' + row.NotaID + '" placeholfer="Info"><i class="fas fa fa-info-circle"></i></a>' +
+                        '<a class="btn btn-danger" data-id="' + row.NotaID + '" placeholfer="Cancel" data-toggle="modal" data-target="#cancelModal"><i class="fas fa fa-trash-o"></i></a>';
+                }, "width": "15%"
             },
         ],
         "columnDefs": [
@@ -77,101 +78,81 @@
         table.draw();
     });
 
-    $('#save').on('click', function (e) {
-
-        var listFamz = [];
-        var lastNumber = $('#listFamily input').length;
-        for (var i = 1; i <= lastNumber; i++) {
-            var input = $('#Family' + i + '');
-            var list = { ID: input.attr('data-id'), FamilyName: input.val() };
-            listFamz.push(list);
-        }
-        var custData = {
-            Action: title,
-            ID: $("#CustomerID").val(),
-            Name: $("#CustomerName").val(),
-            Telp: $("#Phone").val(),
-            Address: $("#Address").val(),
-            ListFamily: listFamz
-        }
-
-        $.ajax({
-            url: API + "Customer?Save=true",
-            type: "POST",
-            data: custData,
-            success: function (response) {
-                if (response.IsSuccess) {
-                    swal({
-                        title: 'Success',
-                        text: response.Message,
-                        type: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        $('#Customertable').DataTable().ajax.reload();
-                        $("#myModal").modal('hide');
-                        resetModal();
-                    })
-                } else {
-                    swal(
-                        'Failed',
-                        response.Message,
-                        'error'
-                    );
-                }
+    $('#btnSubmitCancel').on('click', function (e) {
+        var ID = $('#ID').val();
+        var Note = $('#Note').val();
+        
+        if (CheckObj.isEmptyNullOrUndefined(ID) || CheckObj.isEmptyNullOrUndefined(Note)) {
+            swal('Info',"Alasan pembatalan wajib diisi.","warning");
+        } else {
+            var custData = {
+                Token: Token.get(),
+                ID: ID,
+                Note: Note
             }
-        });
-    });
 
-    $('#myModal').on('show.bs.modal', function (e) {
-
-        var mainTitle = $('#titleBig').html();
-        title = e.relatedTarget.innerText;
-        $("#modalTitle").html(title + " " + mainTitle);
-
-        if (title.toLowerCase() == 'edit') {
-            var custID = e.relatedTarget.getAttribute('data-id');
-
-            $.ajax({
-                url: API + "Customer?GetCust=true",
-                type: "POST",
-                data: {
-                    ID: custID
-                },
-                success: function (response) {
-                    if (response.IsSuccess) {
-                        $("#CustomerID").val(response.ID);
-                        $("#CustomerName").val(response.Name);
-                        $("#Phone").val(response.Telp);
-                        $("#Address").val(response.Address);
-
-                        //jika ada list family
-                        if (response.ListFamily.length > 0) {
-                            $("#1").remove();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                debugger;
+                if (result.value) {
+                    $.ajax({
+                        url: API + "Transaksi?SubmitCancellation=true",
+                        type: "POST",
+                        data: custData,
+                        success: function (response) {
+                            if (response.IsSuccess) {
+                                swal({
+                                    title: 'Deleted!',
+                                    text: response.Message,
+                                    type: 'success'
+                                }).then(() => {
+                                    $('#ReportTable').DataTable().ajax.reload();
+                                    $("#cancelModal").modal('hide');
+                                    resetModal();
+                                })
+                            } else {
+                                swal(
+                                    'Failed',
+                                    response.Message,
+                                    'error'
+                                );
+                            }
                         }
-
-                        var tagInput = '';
-                        for (var i = 0; i < response.ListFamily.length; i++) {
-                            tagInput = tagInput + '<div class="row" id="' + (i + 1) + '"><div class="col-md-8" >' +
-                                '<input type="text" class="form-control" value="' + response.ListFamily[i].FamilyName + '" placeholder="Family" data-id="' + response.ListFamily[i].ID + '" id="Family' + (i + 1) + '"></div>' +
-                                '<div class="col-md-4"><button onclick="add();"> <i class="glyphicon-plus"></i></button>&nbsp;<button onclick="remove(' + (i + 1) + ');"> <i class="glyphicon-minus"></i></button></div></div>';
-                        }
-                        $('#listFamily').append(tagInput);
-                    } else {
-                        swal(
-                            'Failed',
-                            response.Message,
-                            'error'
-                        );
-                    }
+                    });
                 }
             });
         }
     });
 
+    $('#cancelModal').on('show.bs.modal', function (e) {
+        var ID = e.relatedTarget.getAttribute('data-id');
+        $("#ID").val(ID);
+    });
 });
+
+// Reset all input in modal and remove family input list
+$('[data-dismiss=modal]').on('click', function (e) {
+    resetModal();
+})
+
+function resetModal() {
+    var $t = $('[data-dismiss=modal]'),
+        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+    $(target)
+        .find("input,textarea,select")
+        .val('')
+        .end()
+        .find("input[type=checkbox], input[type=radio]")
+        .prop("checked", "")
+        .end();
+}
 
 function deleteData(e) {
     var custID = e.getAttribute('data-id');

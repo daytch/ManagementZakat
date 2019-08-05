@@ -1,7 +1,6 @@
 ﻿@{
     ViewBag.Title = "Laporan Qurban";
 }
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary list-panel" id="list-panel">
@@ -45,7 +44,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -56,21 +54,34 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="modalCancelTitle">
+    <div class="modal-dialog" style="width:500px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalTitle">Pembatalan Tansaksi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="Note">Alasan Pembatalan</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea type="text" class="form-control col-md-10" id="Note" placeholder="Alasan Pembatalan" required></textarea>
+                        </div>
+                        <input type="hidden" class="form-control" id="ID">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="btnSubmitCancel">Submit</button>
+                <button class="btn btn-info" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @section Scripts
 {
-    <style>
-        .modal-dialog {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .modal-content {
-            height: auto;
-            min-height: 100%;
-            border-radius: 0;
-        }
-    </style>
     <script type="text/javascript" src="~/Scripts/pages/report.js?v=@DateTime.Now" asp-append-version="true"></script>
 }

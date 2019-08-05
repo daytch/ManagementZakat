@@ -8,6 +8,8 @@ namespace SMZ.Models.Request
 {
     public class TransaksiRequest : RequestBase
     {
+        public int ID { get; set; }
+        public string Note { get; set; }
         public Trx Transaksi { get; set; }
         public List<CustomerTrans> ListCustomer { get; set; }
         public int CustomerID { get; set; }
@@ -29,16 +31,19 @@ namespace SMZ.Models.Request
         public int ProductID { get; set; }
         public int Price { get; set; }
         public int Infaq { get; set; }
-        public int BiayaPemotongan { get; set; }
-        public int BiayaPemeliharaan { get; set; }
+        public int BiayaPemotonganKambing { get; set; }
+        public int BiayaPemotonganSapi { get; set; }
+        //public int BiayaPemeliharaan { get; set; }
         public string Note { get; set; }
         public int? CareDays { get; set; }
         public double PartOfCow { get; set; }
+        public int NoUrut { get; set; }
     }
 
     public class Panitia
     {
-        public int PotongID { get; set; }
+        public int PotongKambingID { get; set; }
+        public int PotongSapiID { get; set; }
         public int TitipKambingID { get; set; }
         public int TitipSapiID { get; set; }
         public int InfaqID { get; set; }

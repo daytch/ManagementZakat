@@ -99,17 +99,22 @@ namespace SMZ.Controllers
                         List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true).ToList();
 
                         Panitia p = GetPanitiaProduct();
-                        List<int> ListPanitiaID = new List<int>() { p.PotongID, p.TitipKambingID, p.TitipSapiID, p.InfaqID };
+                        List<int> ListPanitiaID = new List<int>() { p.PotongKambingID, p.PotongSapiID, p.TitipKambingID, p.TitipSapiID, p.InfaqID };
                         Nota nota = ctx.Notas.Where(x => x.RowStatus == true && x.ID == request.NotaID).First();
                         List<NotaDetail> ListDetail = ctx.NotaDetails.Where(x => x.RowStatus == true && x.NotaID == nota.ID).ToList();
                         Customer customer = ctx.Customers.Where(x => x.Rowstatus == true && x.ID == nota.CustomerID).First();
-                        List<Family> listFamily = ctx.Families.Where(x => x.Rowstatus == true && x.CustomerID == customer.ID).ToList();
+                        //List<Family> listFamily = ctx.Families.Where(x => x.Rowstatus == true && x.CustomerID == customer.ID).ToList();
 
                         custom.ID = customer.ID;
                         custom.Address = customer.Address;
                         custom.Name = customer.Name;
                         custom.Telp = customer.Telp;
-                        custom.ListFamily = listFamily.Select(x => new Famz() { ID = x.ID, FamilyName = x.Name }).ToList();
+                        if (nota.Family != null)
+                        {
+                            List<string> listFamily = nota.Family.Remove(0, 1).Split(',').ToList();
+                            custom.ListFamily = listFamily.Select(x => new Famz() { FamilyName = x }).ToList();
+                        }
+                        //custom.ListFamily = listFamily.Select(x => new Famz() { ID = x.ID, FamilyName = x.Name }).ToList();
 
                         nd = ListDetail.Where(x => x.ProductID == p.TitipKambingID).FirstOrDefault();
                         response.BiayaTitipKambing = (nd == null) ? 0 : nd.Price;
@@ -117,8 +122,11 @@ namespace SMZ.Controllers
                         nd = ListDetail.Where(x => x.ProductID == p.TitipSapiID).FirstOrDefault();
                         response.BiayaTitipSapi = (nd == null) ? 0 : nd.Price;
 
-                        nd = ListDetail.Where(x => x.ProductID == p.PotongID).FirstOrDefault();
-                        response.BPemotongan = (nd == null) ? 0 : nd.Price;
+                        nd = ListDetail.Where(x => x.ProductID == p.PotongKambingID).FirstOrDefault();
+                        response.BPemotonganKambing = (nd == null) ? 0 : nd.Price;
+
+                        nd = ListDetail.Where(x => x.ProductID == p.PotongSapiID).FirstOrDefault();
+                        response.BPemotonganSapi = (nd == null) ? 0 : nd.Price;
 
                         nd = ListDetail.Where(x => x.ProductID == p.InfaqID).FirstOrDefault();
                         response.Infaq = (nd == null) ? 0 : nd.Price;
@@ -230,7 +238,9 @@ namespace SMZ.Controllers
                     response.ListProductClass = lp;
                     response.BiayaTitipKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("kambing") && x.VendorID == 1).First().Price;
                     response.BiayaTitipSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("sapi") && x.VendorID == 1).First().Price;
-                    response.BPemotongan = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan").First().Price;
+                    response.BPemotonganKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan Kambing").First().Price;
+                    response.BPemotonganSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan Sapi").First().Price;
+
                     response.IsSuccess = true;
                     response.Message = "Sukses load data.";
                 }
@@ -279,7 +289,8 @@ namespace SMZ.Controllers
                     response.ListProduct = lp;
                     response.BiayaTitipKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("kambing") && x.VendorID == 1).First().Price;
                     response.BiayaTitipSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name.Contains("sapi") && x.VendorID == 1).First().Price;
-                    response.BPemotongan = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan").First().Price;
+                    response.BPemotonganKambing = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan Kambing").First().Price;
+                    response.BPemotonganSapi = ctx.Products.Where(x => x.Rowstatus == true && x.Name == "Biaya Pemotongan Sapi").First().Price;
                     response.IsSuccess = true;
                     response.Message = "Sukses load data.";
                 }
@@ -314,7 +325,8 @@ namespace SMZ.Controllers
                                           ID = pro.ID,
                                           Name = pro.Name
                                       }).ToList();
-                result.PotongID = Listpro.Where(x => x.Name == "Biaya Pemotongan").First().ID;
+                result.PotongKambingID = Listpro.Where(x => x.Name == "Biaya Pemotongan Kambing").First().ID;
+                result.PotongSapiID = Listpro.Where(x => x.Name == "Biaya Pemotongan Sapi").First().ID;
                 result.TitipKambingID = Listpro.Where(x => x.Name.ToLower().Contains("kambing")).FirstOrDefault().ID;
                 result.TitipSapiID = Listpro.Where(x => x.Name.ToLower().Contains("sapi")).First().ID;
                 result.InfaqID = Listpro.Where(x => x.Name == "Infaq").First().ID;
@@ -344,7 +356,7 @@ namespace SMZ.Controllers
                             #region Customer already exist
                             #region Insert in Product and Product history
                             product = ctx.Products.Where(x => x.Rowstatus == true && x.ID == request.Transaksi.ProductID).First();
-                            if (!product.Name.ToLower().Contains("kambing") && !product.Name.ToLower().Contains("domba"))
+                            if (!product.Name.ToLower().Contains("kambing") && !product.Name.ToLower().Contains("domba") && request.Transaksi.NoUrut < 1)
                             {
                                 product.PartOfCow = (product.PartOfCow == null) ? 0 + request.Transaksi.PartOfCow : product.PartOfCow + request.Transaksi.PartOfCow;
                                 if (product.PartOfCow == 1)
@@ -377,20 +389,32 @@ namespace SMZ.Controllers
                             ph.LastNumber = product.LastNumber;
                             ph.CreatedBy = username;
                             ph.CreatedOn = DateTime.Now;
+                            ph.Rowstatus = true;
                             ctx.ProductHistories.Add(ph);
                             #endregion
 
                             #region Insert table Nota
                             List<Nota> ListNota = ctx.Notas.Where(x => x.RowStatus == true).ToList();
                             int lastNotaID = (ListNota.Count == 0) ? 0 : ctx.Notas.Max(x => x.ID);
-                            string famzID = string.Empty;
+
+                            #region
+                            //string famzID = string.Empty;
+
+                            //nota.CustomerID = request.Transaksi.CustomerID;
+                            //foreach (var item in request.Transaksi.FamilyID)
+                            //{
+                            //    famzID = famzID + "," + item.ToString();
+                            //}
+                            #endregion
+
+                            string listFamz = string.Empty;
 
                             nota.CustomerID = request.Transaksi.CustomerID;
-                            foreach (var item in request.Transaksi.FamilyID)
+                            foreach (var item in request.Customer.ListFamily)
                             {
-                                famzID = famzID + "," + item.ToString();
+                                listFamz = listFamz + "," + item.FamilyName;
                             }
-                            nota.FamilyID = famzID;
+                            nota.Family = listFamz;
                             nota.TransactionDate = DateTime.Now;
                             nota.Note = request.Transaksi.Note;
                             nota.CareDays = request.Transaksi.CareDays;
@@ -402,40 +426,56 @@ namespace SMZ.Controllers
                             #endregion
 
                             #region Insert table Nota Detail
-                            Panitia PanitiaProd = GetPanitiaProduct();
-                            if (request.Transaksi.BiayaPemeliharaan > 0)
-                            {
-                                if (product.Name.ToLower().Contains("sapi"))
-                                {
-                                    nd.ProductID = PanitiaProd.TitipSapiID;
-                                }
-                                else
-                                {
-                                    nd.ProductID = PanitiaProd.TitipKambingID;
-                                }
-                                nd.NotaID = nota.ID;
-                                nd.Nota = nota;
-                                nd.Price = request.Transaksi.BiayaPemeliharaan;
-                                nd.Total = 1;
-                                nd.CreatedBy = username;
-                                nd.CreatedOn = DateTime.Now;
-                                nd.RowStatus = true;
-                                ctx.NotaDetails.Add(nd);
-                            }
 
-                            if (request.Transaksi.BiayaPemotongan > 0)
+                            #region
+                            //if (request.Transaksi.BiayaPemeliharaan > 0)
+                            //{
+                            //    if (product.Name.ToLower().Contains("sapi"))
+                            //    {
+                            //        nd.ProductID = PanitiaProd.TitipSapiID;
+                            //    }
+                            //    else
+                            //    {
+                            //        nd.ProductID = PanitiaProd.TitipKambingID;
+                            //    }
+                            //    nd.NotaID = nota.ID;
+                            //    nd.Nota = nota;
+                            //    nd.Price = request.Transaksi.BiayaPemeliharaan;
+                            //    nd.Total = 1;
+                            //    nd.CreatedBy = username;
+                            //    nd.CreatedOn = DateTime.Now;
+                            //    nd.RowStatus = true;
+                            //    ctx.NotaDetails.Add(nd);
+                            //}
+                            #endregion
+
+                            Panitia PanitiaProd = GetPanitiaProduct();
+                            if (request.Transaksi.BiayaPemotonganKambing > 0)
                             {
                                 NotaDetail ndPtong = new NotaDetail();
                                 ndPtong.NotaID = nota.ID;
                                 ndPtong.Nota = nota;
-                                ndPtong.Price = request.Transaksi.BiayaPemotongan;
+                                ndPtong.Price = request.Transaksi.BiayaPemotonganKambing;
                                 ndPtong.Total = 1;
-                                ndPtong.ProductID = PanitiaProd.PotongID;
+                                ndPtong.ProductID = ctx.Products.Where(x => x.VendorID == 1 && x.Rowstatus == true && x.Name == "Biaya Pemotongan Kambing").First().ID;
                                 ndPtong.CreatedBy = username;
                                 ndPtong.CreatedOn = DateTime.Now;
                                 ndPtong.RowStatus = true;
                                 ctx.NotaDetails.Add(ndPtong);
+                            }
 
+                            if (request.Transaksi.BiayaPemotonganSapi > 0)
+                            {
+                                NotaDetail ndPtong = new NotaDetail();
+                                ndPtong.NotaID = nota.ID;
+                                ndPtong.Nota = nota;
+                                ndPtong.Price = request.Transaksi.BiayaPemotonganSapi;
+                                ndPtong.Total = 1;
+                                ndPtong.ProductID = ctx.Products.Where(x => x.VendorID == 1 && x.Rowstatus == true && x.Name == "Biaya Pemotongan Sapi").First().ID;
+                                ndPtong.CreatedBy = username;
+                                ndPtong.CreatedOn = DateTime.Now;
+                                ndPtong.RowStatus = true;
+                                ctx.NotaDetails.Add(ndPtong);
                             }
 
                             if (request.Transaksi.Infaq > 0)
@@ -458,7 +498,7 @@ namespace SMZ.Controllers
                             notaDetail.Price = request.Transaksi.Price;
                             notaDetail.Total = (product.Name.ToLower().Contains("sapi")) ? request.Transaksi.PartOfCow : 1;
                             notaDetail.ProductID = request.Transaksi.ProductID;
-                            notaDetail.ProductNo = product.LastNumber;
+                            notaDetail.ProductNo = (request.Transaksi.NoUrut < 1) ? product.LastNumber : request.Transaksi.NoUrut;
                             notaDetail.CreatedBy = username;
                             notaDetail.CreatedOn = DateTime.Now;
                             notaDetail.RowStatus = true;
@@ -528,12 +568,19 @@ namespace SMZ.Controllers
                             string famzID = string.Empty;
                             nota.CustomerID = c.ID;
 
-                            List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
-                            foreach (var item in listFamz)
+                            //List<Family> listFamz = ctx.Families.Where(x => x.CustomerID == c.ID).ToList();
+                            //foreach (var item in listFamz)
+                            //{
+                            //    famzID = famzID + "," + item.ToString();
+                            //}
+                            //nota.FamilyID = famzID;string listFamz = string.Empty;
+                            string listFamz = string.Empty;
+                            nota.CustomerID = request.Transaksi.CustomerID;
+                            foreach (var item in request.Customer.ListFamily)
                             {
-                                famzID = famzID + "," + item.ToString();
+                                listFamz = listFamz + "," + item.FamilyName;
                             }
-                            nota.FamilyID = famzID;
+                            nota.Family = listFamz;
                             nota.TransactionDate = DateTime.Now;
                             nota.Note = request.Transaksi.Note;
                             nota.CareDays = request.Transaksi.CareDays;
@@ -547,40 +594,53 @@ namespace SMZ.Controllers
                             #region Insert table Nota Detail
 
                             Panitia PanitiaProd = GetPanitiaProduct();
-                            if (request.Transaksi.BiayaPemeliharaan > 0)
-                            {
+                            //if (request.Transaksi.BiayaPemeliharaan > 0)
+                            //{
 
-                                if (product.Name.ToLower().Contains("sapi"))
-                                {
-                                    nd.ProductID = PanitiaProd.TitipSapiID;
-                                }
-                                else
-                                {
-                                    nd.ProductID = PanitiaProd.TitipKambingID;
-                                }
-                                nd.NotaID = nota.ID;
-                                nd.Nota = nota;
-                                nd.Price = request.Transaksi.BiayaPemeliharaan;
-                                nd.Total = 1;
-                                nd.CreatedBy = username;
-                                nd.CreatedOn = DateTime.Now;
-                                nd.RowStatus = true;
-                                ctx.NotaDetails.Add(nd);
-                            }
+                            //    if (product.Name.ToLower().Contains("sapi"))
+                            //    {
+                            //        nd.ProductID = PanitiaProd.TitipSapiID;
+                            //    }
+                            //    else
+                            //    {
+                            //        nd.ProductID = PanitiaProd.TitipKambingID;
+                            //    }
+                            //    nd.NotaID = nota.ID;
+                            //    nd.Nota = nota;
+                            //    nd.Price = request.Transaksi.BiayaPemeliharaan;
+                            //    nd.Total = 1;
+                            //    nd.CreatedBy = username;
+                            //    nd.CreatedOn = DateTime.Now;
+                            //    nd.RowStatus = true;
+                            //    ctx.NotaDetails.Add(nd);
+                            //}
 
-                            if (request.Transaksi.BiayaPemotongan > 0)
+                            if (request.Transaksi.BiayaPemotonganKambing > 0)
                             {
                                 NotaDetail ndPtong = new NotaDetail();
                                 ndPtong.NotaID = nota.ID;
                                 ndPtong.Nota = nota;
-                                ndPtong.Price = request.Transaksi.BiayaPemotongan;
+                                ndPtong.Price = request.Transaksi.BiayaPemotonganKambing;
                                 ndPtong.Total = 1;
-                                ndPtong.ProductID = PanitiaProd.PotongID;
+                                ndPtong.ProductID = ctx.Products.Where(x => x.VendorID == 1 && x.Rowstatus == true && x.Name == "Biaya Pemotongan Kambing").First().ID;
                                 ndPtong.CreatedBy = username;
                                 ndPtong.CreatedOn = DateTime.Now;
                                 ndPtong.RowStatus = true;
                                 ctx.NotaDetails.Add(ndPtong);
+                            }
 
+                            if (request.Transaksi.BiayaPemotonganSapi > 0)
+                            {
+                                NotaDetail ndPtong = new NotaDetail();
+                                ndPtong.NotaID = nota.ID;
+                                ndPtong.Nota = nota;
+                                ndPtong.Price = request.Transaksi.BiayaPemotonganSapi;
+                                ndPtong.Total = 1;
+                                ndPtong.ProductID = ctx.Products.Where(x => x.VendorID == 1 && x.Rowstatus == true && x.Name == "Biaya Pemotongan Sapi").First().ID;
+                                ndPtong.CreatedBy = username;
+                                ndPtong.CreatedOn = DateTime.Now;
+                                ndPtong.RowStatus = true;
+                                ctx.NotaDetails.Add(ndPtong);
                             }
 
                             if (request.Transaksi.Infaq > 0)
@@ -595,7 +655,6 @@ namespace SMZ.Controllers
                                 ndInfaq.CreatedOn = DateTime.Now;
                                 ndInfaq.RowStatus = true;
                                 ctx.NotaDetails.Add(ndInfaq);
-
                             }
 
                             notaDetail.NotaID = nota.ID;
@@ -635,5 +694,72 @@ namespace SMZ.Controllers
             return response;
         }
 
+        public TransaksiResponse CancelTransaksi(string SubmitCancellation, [FromBody] TransaksiRequest request)
+        {
+            TransaksiResponse response = new TransaksiResponse();
+            try
+            {
+                string username = Security.ValidateToken(request.Token);
+                if (username != null)
+                {
+                    response.Token = Security.GenerateToken(username);
+                    using (var ctx = new SMZEntities.SMZEntities())
+                    {
+                        Panitia panitia = GetPanitiaProduct();
+                        List<Product> ListProduct = ctx.Products.Where(x => x.Rowstatus == true).ToList();
+                        Nota nota = ctx.Notas.Where(x => x.RowStatus == true && x.ID == request.ID).First();
+                        List<NotaDetail> ListNotaDetail = ctx.NotaDetails.Where(x => x.RowStatus == true && x.NotaID == nota.ID).ToList();
+                        foreach (NotaDetail item in ListNotaDetail)
+                        {
+                            if (item.ProductID != panitia.InfaqID && item.ProductID != panitia.PotongKambingID && item.ProductID != panitia.PotongSapiID
+                                && item.ProductID != panitia.TitipKambingID && item.ProductID != panitia.TitipSapiID)
+                            {
+                                Product p = ListProduct.Where(x => x.ID == item.ProductID).First();
+                                if (p.Name.ToLower().Contains("sapi") && item.Total < 1)
+                                {
+                                    // Sapi Pecahan
+                                    p.PartOfCow = p.PartOfCow - item.Total;
+                                }
+                                else
+                                {
+                                    // Sapi Utuh / Kambing
+                                    p.Stok = p.Stok.Value + Convert.ToInt32(item.Total);
+                                }
+                            }
+
+                            item.RowStatus = false;
+                            item.ModifiedBy = username;
+                            item.ModifiedOn = DateTime.Now;
+                        }
+
+                        nota.CancellationNote = request.Note;
+                        nota.RowStatus = false;
+                        nota.ModifiedBy = username;
+                        nota.ModifiedOn = DateTime.Now;
+
+                        ctx.SaveChanges();
+
+                        response.IsSuccess = true;
+                        response.Message = "Transaksi berhasil.";
+                    }
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Token = "";
+                    response.Message = "Sorry your session is expired, please re-login to access this page";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Gagal load data. Error : " + ex.ToString();
+                return response;
+            }
+            return response;
+        }
+
+        // SubmitCancellation
     }
 }

@@ -151,6 +151,16 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group" id="urutan">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="no_urut">No Urut Penyembelihan</label>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <input type="number" class="form-control" min="0" placeholder="No Urut Penyembelihan" id="no_urut" />
+                    </div>
+                </div>
+            </div>
             <div class="form-group" id="bagian_sapi">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3">
@@ -190,23 +200,23 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group family">
-                <div class="row">
-                    <div class="col-md-3 col-sm-3 col-xs-3">
-                        <label for="BiayaPemeliharaan">Biaya Titip</label>
-                    </div>
-                    <div class="col-md-8 col-sm-8 col-xs-8">
-                        <div class="row">
-                            <div class="col-sm-8 col-xs-6">
-                                <input type="text" class="form-control" placeholder="Biaya Pemeliharaan" readonly="readonly" id="BiayaPemeliharaan">
-                            </div>
-                            <div class="col-sm-4 col-xs-6">
-                                <input type="number" class="form-control" placeholder="Hari" id="qtydays">
-                            </div>
+            @*<div class="form-group family">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="BiayaPemeliharaan">Biaya Titip</label>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-8">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-6">
+                            <input type="text" class="form-control" placeholder="Biaya Pemeliharaan" readonly="readonly" id="BiayaPemeliharaan">
+                        </div>
+                        <div class="col-sm-4 col-xs-6">
+                            <input type="number" class="form-control" placeholder="Hari" id="qtydays">
                         </div>
                     </div>
                 </div>
             </div>
+        </div>*@
             <div class="form-group family">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3">
@@ -287,11 +297,12 @@
                     <p>Kelas : <span id="p_kelas"></span></p>
                     <p>Harga : <span id="p_harga"></span> <span id="p_bagian"></span></p>
                     <p>Biaya Pemotongan : <span id="p_biayapemotongan"></span></p>
-                    <p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan"></span></p>
+                    @*<p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan"></span></p>*@
                     <p>Infaq : <span id="p_infaq"></span></p>
                     <p>Total : <span id="p_total"></span></p>
                     <p>Bagian Hewan Qurban yang diinginkan :</p>
                     <p id="p_note"></p>
+                    <br />
                     <br />
                     <p>Mohon tanda terima ini dibawa ketika Hari Penyembelihan Hewan Qurban</p>
                 </div>
@@ -305,7 +316,7 @@
                     <br />
                     <p>(<span id="p_penerima"></span>)</p>
                 </div>
-                <div class="col-md-6 col-xs-6 text-center" ">
+                <div class="col-md-6 col-xs-6 text-center">
                     <p>Yang Menyerahkan :</p>
                     <br />
                     <br />
@@ -360,11 +371,12 @@
                     <p>Kelas : <span id="p_kelas1"></span></p>
                     <p>Harga : <span id="p_harga1"></span> <span id="p_bagian1"></span></p>
                     <p>Biaya Pemotongan : <span id="p_biayapemotongan1"></span></p>
-                    <p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan1"></span></p>
+                    @*<p>Biaya Pemeliharaan : <span id="p_biayapemeliharaan1"></span></p>*@
                     <p>Infaq : <span id="p_infaq1"></span></p>
                     <p>Total : <span id="p_total1"></span></p>
                     <p>Bagian Hewan Qurban yang diinginkan :</p>
                     <p id="p_note1"></p>
+                    <br />
                     <br />
                     <p>Mohon tanda terima ini dibawa ketika Hari Penyembelihan Hewan Qurban</p>
                 </div>
@@ -378,7 +390,7 @@
                     <br />
                     <p>(<span id="p_penerima1"></span>)</p>
                 </div>
-                <div class="col-md-6 col-xs-6 text-center" ">
+                <div class="col-md-6 col-xs-6 text-center">
                     <p>Yang Menyerahkan :</p>
                     <br />
                     <br />
