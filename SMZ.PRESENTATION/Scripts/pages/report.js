@@ -100,7 +100,7 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-                debugger;
+                
                 if (result.value) {
                     $.ajax({
                         url: API + "Transaksi?SubmitCancellation=true",

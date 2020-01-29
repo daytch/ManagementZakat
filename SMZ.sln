@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMZ", "SMZ\SMZ.csproj", "{56D8077C-2E7A-4E7F-87CB-B08E9834AFD2}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E3F23D5C-387D-47CD-B7C2-391FBA4FF1BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMZ.PRESENTATION", "SMZ.PRESENTATION\SMZ.PRESENTATION.csproj", "{658586B3-5B69-444B-B394-6B9F56801357}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Query", "Query", "{18609A94-0278-4F1D-B91B-12C6D9E48405}"
+	ProjectSection(SolutionItems) = preProject
+		SMZ.sql = SMZ.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
